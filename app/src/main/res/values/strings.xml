@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Netplix</string>
+    <string name="popular">Popular ✨🍿</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="textview">TextView</string>
+    <string name="trendy_this_week">Trendy This Week</string>
+</resources>

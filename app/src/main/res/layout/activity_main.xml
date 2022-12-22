@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#20242B"
+        tools:context=".MainActivity">
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/snakBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="0dp"
+            />
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/app_name"
+            android:textAllCaps="true"
+            android:textColor="@color/plix_red"
+            android:textSize="34sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:layout_margin="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            app:tabBackground="@color/bg"
+            android:id="@+id/tabLayout"
+            app:tabMode="fixed"
+            app:tabGravity="center"
+            app:tabIndicatorGravity="center"
+            app:tabSelectedTextColor="@color/white"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabIndicatorColor="#525353"/>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/viewPager2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:nestedScrollingEnabled="true"
+            android:orientation="horizontal"
+            android:overScrollMode="ifContentScrolls"
+            android:scrollbars="none" />
+
+    </LinearLayout>
+</layout>

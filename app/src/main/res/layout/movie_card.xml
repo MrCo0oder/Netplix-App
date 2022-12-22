@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="listItem"
+            type="com.example.netplix.pojo.MovieModel" />
+    </data>
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:background="@color/black"
+        android:checkable="true"
+        android:clickable="true"
+        android:clipToPadding="true"
+        android:elevation="5dp"
+        android:focusable="true"
+        android:foreground="?android:attr/selectableItemBackground"
+        app:cardCornerRadius="20dp"
+        app:cardElevation="5dp"
+        app:cardUseCompatPadding="true">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/black"
+            android:transitionGroup="false">
+
+            <com.github.chuross.AspectRatioImageView
+                android:id="@+id/movie_imgv"
+                android:layout_width="300dp"
+                android:layout_height="300dp"
+                android:contentDescription=""
+                android:scaleType="centerCrop"
+                app:ariv_fit="height"
+                app:ariv_heightRatio="3"
+                app:ariv_widthRatio="2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@mipmap/ic_launcher_round" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:background="@drawable/bg"
+                android:backgroundTintMode="src_over"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/movie_imgv"
+                app:layout_constraintStart_toStartOf="@+id/movie_imgv"
+                app:layout_constraintTop_toBottomOf="@+id/progressBar2">
+
+
+                <TextView
+                    android:id="@+id/movie_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:layout_marginBottom="8dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/rajdhani_semibold"
+                    android:gravity="start|center_vertical"
+                    android:maxLines="1"
+                    android:text="@{listItem.title}"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toTopOf="@+id/ratingBar"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <TextView
+                    android:id="@+id/rating_tv"
+                    android:layout_width="wrap_content"
+                    android:layout_height="44dp"
+                    android:fontFamily="@font/rajdhani_semibold"
+                    android:gravity="center_vertical"
+                    android:lines="1"
+                    android:maxLines="1"
+                    android:text="@{String.valueOf(listItem.vote_average)}"
+                    android:textColor="#FFC107"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/movie_name" />
+
+                <ImageView
+                    android:id="@+id/ratingBar"
+                    style="@style/Widget.AppCompat.RatingBar.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="4dp"
+                    android:progressTint="#FF9800"
+                    android:src="@drawable/ic_star"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/rating_tv"
+                    app:layout_constraintTop_toTopOf="@+id/rating_tv" />
+
+                <TextView
+                    android:id="@+id/votecount"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="4dp"
+                    android:text="@{String.valueOf(listItem.vote_count)}"
+                    app:layout_constraintBottom_toBottomOf="@+id/ratingBar"
+                    app:layout_constraintEnd_toStartOf="@+id/imageView"
+                    app:layout_constraintTop_toTopOf="@+id/ratingBar" />
+
+                <ImageView
+                    android:id="@+id/imageView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toBottomOf="@+id/votecount"
+                    app:layout_constraintEnd_toEndOf="@+id/movie_name"
+                    app:layout_constraintTop_toTopOf="@+id/votecount"
+                    app:srcCompat="@drawable/ic_person" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ProgressBar
+                android:id="@+id/progressBar2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminate="true"
+                android:indeterminateBehavior="cycle"
+                android:indeterminateTint="@color/plix_red"
+                app:layout_constraintBottom_toBottomOf="@+id/movie_imgv"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/movie_imgv"
+                app:layout_constraintTop_toTopOf="@+id/movie_imgv" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+</layout>
+
