@@ -1,54 +1,64 @@
 package com.example.netplix.ui
+
+import android.annotation.SuppressLint
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import androidx.core.content.ContextCompat.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStore
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.netplix.adapter.CarouselAdapter
 import com.example.netplix.adapter.PopularRVAdapter
 import com.example.netplix.adapter.TrendyRVAdapter
 import com.example.netplix.databinding.FragmentMoviesBinding
 import com.example.netplix.pojo.MovieModel
 import com.example.netplix.pojo.Page
 import com.example.netplix.viewmodel.MovieViewModel
+import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 
 
 class MoviesFragment : Fragment() {
     lateinit var binding: FragmentMoviesBinding
     lateinit var rvAdapter: PopularRVAdapter
-    private val popMoviesViewModel: MovieViewModel by lazy {
+
+    private val moviesViewModel: MovieViewModel by lazy {
         ViewModelProvider(this).get(MovieViewModel::class.java)
     }
     lateinit var trendyAdapter: TrendyRVAdapter
-    private val trendyMoviesViewModel: MovieViewModel by lazy {
-        ViewModelProvider(this).get(MovieViewModel::class.java)
-    }
     lateinit var popMoviesList: List<MovieModel>
     lateinit var trendyMoviesList: List<MovieModel>
-
+    lateinit var upComingList: List<MovieModel>
+    lateinit var carouselAdapter :CarouselAdapter
+    lateinit var linearLayoutManager: CarouselLayoutManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if (savedInstanceState == null) {
+            getData("First")
+        }
+
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = FragmentMoviesBinding.inflate(inflater, container, false)
+        val layoutInflater = LayoutInflater.from(requireActivity())
+        binding = FragmentMoviesBinding.inflate(layoutInflater, container, false)
         initRV()
-        binding.swipe.setRefreshing(true)
         binding.swipe.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
-            loadData("Refresh")
+            getData("Refresh")
             binding.swipe.setRefreshing(false);
-
         })
-        getData()
-     //   rvAdapter = PopularRVAdapter(requireActivity().baseContext, popMoviesList)
-       // binding.popMRV.adapter = rvAdapter
+
         return binding.root
     }
 
@@ -56,70 +66,87 @@ class MoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private fun loadData(type: String) {
-        binding.swipe.isRefreshing = true
+
         if (type.equals("Refresh")) {
+
+            binding.carouselRecyclerview.apply {
+                binding.carouselRecyclerview.adapter = CarouselAdapter(requireActivity(),upComingList)
+                set3DItem(true)
+                setAlpha(true)
+                setInfinite(true)
+            }
             binding.popMRV.apply {
                 rvAdapter = PopularRVAdapter(requireActivity().baseContext, popMoviesList)
                 binding.popMRV.adapter = rvAdapter
-                binding.swipe.isRefreshing = false
-                rvAdapter.notifyDataSetChanged()
             }
 
             binding.trendyMRV.apply {
-                trendyAdapter = TrendyRVAdapter(requireActivity().baseContext, trendyMoviesList)
+                trendyAdapter = TrendyRVAdapter(requireActivity().baseContext, trendyMoviesList.shuffled())
                 binding.trendyMRV.adapter = trendyAdapter
-                binding.swipe.isRefreshing = false
-                trendyAdapter.notifyDataSetChanged()
             }
-            Toast.makeText(requireActivity().baseContext, "Refreshing...", Toast.LENGTH_SHORT)
-                .show()
 
         } else {
             try {
+
+                binding.carouselRecyclerview.apply {
+                    binding.carouselRecyclerview.adapter = CarouselAdapter(requireActivity(),upComingList)
+                    set3DItem(true)
+                    setAlpha(true)
+                    setInfinite(true)
+                }
                 binding.popMRV.apply {
                     rvAdapter = PopularRVAdapter(requireActivity().baseContext, popMoviesList)
                     binding.popMRV.adapter = rvAdapter
-                    rvAdapter.notifyDataSetChanged()
+
                 }
                 binding.trendyMRV.apply {
-                    trendyAdapter = TrendyRVAdapter(requireActivity().baseContext, trendyMoviesList)
+                    trendyAdapter = TrendyRVAdapter(requireActivity().baseContext, trendyMoviesList.shuffled())
                     binding.trendyMRV.adapter = trendyAdapter
-                    trendyAdapter.notifyDataSetChanged()
-                }
-                binding.swipe.isRefreshing = false
 
+                }
             } catch (e: Exception) {
-                Toast.makeText(requireActivity().baseContext, e.message, Toast.LENGTH_SHORT).show()
-                binding.swipe.isRefreshing = false
+                Log.d("Movie fragment 1", e.localizedMessage as String)
             }
         }
 
+        binding.swipe.isRefreshing = false
     }
 
-    private fun getData() {
+    private fun getData(s: String) {
+
         try {
-            popMoviesViewModel.getMovie().first.observe(viewLifecycleOwner, object : Observer<Page> { override fun onChanged(t: Page) {
-                        popMoviesList = t.results
-                        loadData("first")
+            moviesViewModel.getMovie().first.observe(requireActivity(), object : Observer<Page> { override fun onChanged(t: Page) {
+                        popMoviesList = t.results.sortedBy { movieModel -> movieModel.vote_average }.reversed()
+                loadData(s)
+
                     } })
-            popMoviesViewModel.getMovie().second.observe(viewLifecycleOwner, object : Observer<String> { override fun onChanged(t: String) { Toast.makeText(requireActivity().baseContext, t, Toast.LENGTH_SHORT).show() } })
-            trendyMoviesViewModel.getWeekTrendingMovies().first.observe(viewLifecycleOwner, object : Observer<Page> {
+            moviesViewModel.getMovie().second.observe(requireActivity(), object : Observer<String> { override fun onChanged(t: String) {
+                Log.d("Movie fragment 4",t)    } })
+            moviesViewModel.getWeekTrendingMovies().first.observe(requireActivity(), object : Observer<Page> {
                     override fun onChanged(t: Page) {
                         trendyMoviesList = t.results
-                        loadData("first")
+                        loadData(s)
 
                     }
                 })
-            trendyMoviesViewModel.getWeekTrendingMovies().second.observe(viewLifecycleOwner, object : Observer<String> {
+            moviesViewModel.getWeekTrendingMovies().second.observe(requireActivity(), object : Observer<String> {
                     override fun onChanged(t: String) {
-                        Toast.makeText(requireActivity().baseContext, t, Toast.LENGTH_SHORT).show()
-
+                        Log.d("Movie fragment 2",t)
+                        binding.swipe.isRefreshing = false
                     }
-
                 })
+            moviesViewModel.getUpcomingMovies().first.observe(requireActivity(), object : Observer<Page> { override fun onChanged(t: Page) {
+                upComingList = t.results.sortedBy { movieModel -> movieModel.vote_average }.reversed()
+                loadData(s)
+
+            } })
+            moviesViewModel.getUpcomingMovies().second.observe(requireActivity(), object : Observer<String> { override fun onChanged(t: String) {
+                Log.d("Movie fragment 4",t)    } })
         }catch (e:Exception){
-            Toast.makeText(requireActivity().baseContext, e.message, Toast.LENGTH_SHORT).show()
+            Log.d("Movie fragment 3", e.localizedMessage as String)
+            binding.swipe.isRefreshing = false
         }
     }
     fun initRV(){
@@ -129,7 +156,23 @@ class MoviesFragment : Fragment() {
         binding.trendyMRV.layoutManager=LinearLayoutManager(requireActivity().baseContext,LinearLayoutManager.HORIZONTAL,false)
         binding.trendyMRV.setHasFixedSize(true)
         trendyMoviesList = ArrayList()
+        upComingList  = ArrayList()
+        linearLayoutManager= CarouselLayoutManager(true,true,0.5f,false,true,true, HORIZONTAL)
+        binding.carouselRecyclerview.layoutManager = linearLayoutManager
+
     }
+    override fun onResume() {
+        super.onResume()
+        getData("")
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+        if (savedInstanceState == null) {
+            getData("")
+        }
+    }
+
 
 }
 

@@ -1,5 +1,8 @@
 package com.example.netplix.pojo
 
+import androidx.databinding.BaseObservable
+import java.io.Serializable
+
 data class MovieModel(
     var adult: Boolean,
     var backdrop_path: String,
@@ -15,4 +18,5 @@ data class MovieModel(
     var video: Boolean,
     var vote_average: Double,
     var vote_count: Int
-)
+): Serializable
+

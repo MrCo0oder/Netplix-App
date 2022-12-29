@@ -8,12 +8,21 @@ import com.example.netplix.repo.MoviesRepo
 
 class MovieViewModel : ViewModel() {
 
-    private val getMovie: MoviesRepo = MovieImpli()
-    private val getWeekTrendingMovies: MoviesRepo = MovieImpli()
+    private val instance: MoviesRepo = MovieImpli()
+
     fun getMovie(): Pair<MutableLiveData<Page>, MutableLiveData<String>> {
-        return getMovie.getMovie()
+        return instance.getMovie()
     }
   fun getWeekTrendingMovies():Pair<MutableLiveData<Page>, MutableLiveData<String>> {
-        return getWeekTrendingMovies.getWeekTrendingMovies()
+        return instance.getWeekTrendingMovies()
     }
+    fun getUpcomingMovies():Pair<MutableLiveData<Page>, MutableLiveData<String>> {
+        return instance.getUpcomingMovies()
+    }
+    fun getSearchMovies(query: String):Pair<MutableLiveData<Page>, MutableLiveData<String>> {
+        return instance.getSearchMovies(query)
+    }
+fun getSearchTv(query: String):Pair<MutableLiveData<Page>, MutableLiveData<String>> {
+    return instance.getSearchTv(query)
+}
 }
