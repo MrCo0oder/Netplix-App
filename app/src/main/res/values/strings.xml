@@ -2,17 +2,21 @@
     <string name="app_name">Netplix</string>
     <string name="popular">Popular ✨🍿</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="textview">TextView</string>
+    <string name="textview" translatable="false">TextView</string>
     <string name="trendy_this_week">Trendy This Week 💅🥳</string>
     <string name="storyline">StoryLine</string>
     <string name="back">Back</string>
     <string name="popularity">Popularity</string>
     <string name="total_rating">Total Rating</string>
-    <string name="rating" />
+    <string name="rating">Rating</string>
     <string name="internet_connection">Good Internet Connection</string>
     <string name="tv_shows">TV Shows</string>
     <string name="movies">Movies</string>
     <string name="search">Search</string>
     <string name="movie_search">Looking for a amazing Movie? 👀</string>
+    <string name="tv_search">Looking for a amazing Tv Show? 👀</string>
+    <string name="toprated_tv_shows">TopRated TV Shows🤩 📺 </string>
+    <string name="yes" translatable="false">Yes 😭 </string>
+    <string name="no" translatable="false">No 🥳 </string>
+    <string name="exit" translatable="false">Exit Application ?🥺</string>
 </resources>

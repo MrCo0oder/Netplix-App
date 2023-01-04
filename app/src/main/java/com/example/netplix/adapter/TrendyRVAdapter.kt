@@ -15,8 +15,9 @@ import com.example.netplix.ui.MoviesDetailsActivity
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class TrendyRVAdapter(var context: Context, var trendyMovieList: List<MovieModel>) :
+class TrendyRVAdapter(var context: Context) :
     RecyclerView.Adapter<TrendyRVAdapter.ViewHolder>() {
+    lateinit var trendyMovieList: List<MovieModel>
     class ViewHolder(val binding: TrendyMovieCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item:MovieModel){
             binding.item=item
@@ -57,10 +58,12 @@ class TrendyRVAdapter(var context: Context, var trendyMovieList: List<MovieModel
     override fun getItemCount(): Int {
         return trendyMovieList.size
     }
-
-    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.post))
+//    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
+//        super.onViewAttachedToWindow(holder)
+//        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.post))
+//    }
+    fun setData(list:List<MovieModel>){
+        trendyMovieList=list
+        notifyDataSetChanged()
     }
-
 }

@@ -6,9 +6,7 @@ import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Process
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.get
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2.*
 import com.example.netplix.R
@@ -18,21 +16,23 @@ import com.example.netplix.utils.NetworkChecker
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayout.*
 import com.google.android.material.tabs.TabLayoutMediator
+import dagger.hilt.android.AndroidEntryPoint
 
 
 @Suppress("DEPRECATION")
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
     lateinit var fragmentsAdapter: MyFragmentAdapter
     lateinit var binding: ActivityMainBinding
-    lateinit var networkChecker:NetworkChecker
+    lateinit var networkChecker: NetworkChecker
     lateinit var fragmentManager: FragmentManager
+    var curr: Int = 0
+
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
         //Network Checker
         networkChecker = NetworkChecker(this)
         registerReceiver(networkChecker, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
@@ -50,24 +50,26 @@ class MainActivity : AppCompatActivity() {
                 1 -> {
                     tab.text = getText(R.string.tv_shows)
                     tab.icon = getDrawable(R.drawable.ic_tv_show)
-                    tab.tabLabelVisibility= TAB_LABEL_VISIBILITY_UNLABELED
+                    tab.tabLabelVisibility = TAB_LABEL_VISIBILITY_UNLABELED
                 }
-                else ->{
+                else -> {
                     tab.text = getText(R.string.search)
                     tab.icon = getDrawable(R.drawable.ic_search)
-                    tab.tabLabelVisibility= TAB_LABEL_VISIBILITY_UNLABELED
+                    tab.tabLabelVisibility = TAB_LABEL_VISIBILITY_UNLABELED
                 }
             }
         }.attach()
         binding.tabLayout.addOnTabSelectedListener(object : OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
-               binding.viewPager2.currentItem = tab.position
-                tab.tabLabelVisibility= TAB_LABEL_VISIBILITY_LABELED
+                binding.viewPager2.currentItem = tab.position
+                tab.tabLabelVisibility = TAB_LABEL_VISIBILITY_LABELED
 
             }
+
             override fun onTabUnselected(tab: TabLayout.Tab) {
-                tab.tabLabelVisibility= TAB_LABEL_VISIBILITY_UNLABELED
-                            }
+                tab.tabLabelVisibility = TAB_LABEL_VISIBILITY_UNLABELED
+            }
+
             override fun onTabReselected(tab: TabLayout.Tab) {
 
 
@@ -76,39 +78,50 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewPager2.registerOnPageChangeCallback(object : OnPageChangeCallback() {
             override fun onPageSelected(position: Int) {
-                binding.tabLayout.selectTab( binding.tabLayout.getTabAt(position))
+                binding.tabLayout.selectTab(binding.tabLayout.getTabAt(position))
             }
         })
 
     }
+
     override fun onDestroy() {
         super.onDestroy()
         unregisterReceiver(networkChecker)
     }
 
+    override fun onPause() {
+        super.onPause()
+        curr = binding.viewPager2.currentItem
+    }
+
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val alertDialogBuilder = AlertDialog.Builder(this)
-        alertDialogBuilder.setTitle("Exit Application ?🥺")
-        val yes="Yes 😭"
-        val no = "No 🥳"
-        alertDialogBuilder.setCancelable(true).setIcon(R.mipmap.ic_launcher).setPositiveButton(yes) { dialog, id ->
-            moveTaskToBack(true)
-            Process.killProcess(Process.myPid())
-            System.exit(1)
-            unregisterReceiver(networkChecker)
-        }.setNegativeButton(no) { dialog, _ -> dialog.cancel() }
+        alertDialogBuilder.setTitle(getText(R.string.exit))
+        val yes = getText(R.string.yes)
+        val no = getText(R.string.no)
+        alertDialogBuilder.setCancelable(true).setIcon(R.mipmap.ic_launcher)
+            .setPositiveButton(yes) { dialog, id ->
+                moveTaskToBack(true)
+                Process.killProcess(Process.myPid())
+                System.exit(1)
+                unregisterReceiver(networkChecker)
+            }.setNegativeButton(no) { dialog, _ -> dialog.cancel() }
         alertDialogBuilder.create().show()
     }
 
-
     override fun onResumeFragments() {
         super.onResumeFragments()
+        if (intent.hasExtra("curr"))
+            curr = intent.getIntExtra("curr", 0)
+        binding.viewPager2.currentItem = curr
         registerReceiver(networkChecker, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 
 
 }
+
+
 
 
 

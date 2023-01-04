@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.netplix.R
 import com.example.netplix.databinding.MovieCardBinding
@@ -16,8 +15,10 @@ import com.example.netplix.ui.MoviesDetailsActivity
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class SearchAdapter(var context: Context, var list: List<MovieModel>) :
-    RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
+class MoviesCarouselAdapter(var context: Context, var list: List<MovieModel>) :
+    RecyclerView.Adapter<MoviesCarouselAdapter.ViewHolder>() {
+
+
     class ViewHolder(val binding: MovieCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item:MovieModel){
             binding.listItem=item
@@ -29,7 +30,6 @@ class SearchAdapter(var context: Context, var list: List<MovieModel>) :
         val listItemBinding=MovieCardBinding.inflate(itemView,parent,false)
         return ViewHolder(listItemBinding)
     }
-
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.binding.root.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View) {
@@ -47,8 +47,9 @@ class SearchAdapter(var context: Context, var list: List<MovieModel>) :
             }
 
             override fun onError(e: Exception) {
-                holder.binding.progressBar2.visibility = View.GONE
-                Log.d("search adapter",e.message.toString())
+
+                Log.d("pop Adapter",e.message.toString())
+
             }
         })
         holder.bind(list[position])
@@ -57,13 +58,10 @@ class SearchAdapter(var context: Context, var list: List<MovieModel>) :
     override fun getItemCount(): Int {
         return list.size
     }
-    fun clearData() {
-        val data: List<MovieModel> = ArrayList()
-        list=data
-        notifyDataSetChanged()
-    }
-    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
-        super.onViewAttachedToWindow(holder)
-        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.post))
-    }
+
+//    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
+//        super.onViewAttachedToWindow(holder)
+//        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.post))
+//    }
+
 }

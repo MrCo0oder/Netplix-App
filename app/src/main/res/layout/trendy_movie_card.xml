@@ -70,7 +70,7 @@
                     android:fontFamily="@font/patrick_hand_sc"
                     android:gravity="start|center_vertical"
                     android:maxLines="1"
-                    android:text="@{item.title}"
+                    android:text="@{item.original_title}"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"

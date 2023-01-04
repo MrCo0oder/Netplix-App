@@ -7,65 +7,72 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import androidx.recyclerview.widget.RecyclerView
 import com.example.netplix.R
 import com.example.netplix.databinding.MovieCardBinding
-import com.example.netplix.pojo.MovieModel
-import com.example.netplix.ui.MoviesDetailsActivity
+import com.example.netplix.databinding.TvCardBinding
+import com.example.netplix.pojo.TvModel
+import com.example.netplix.ui.TvDetailsActivity
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class PopularRVAdapter(var context: Context) :
-    RecyclerView.Adapter<PopularRVAdapter.ViewHolder>() {
+class TvRecyclerAdapter(var context: Context) :
+    RecyclerView.Adapter<TvRecyclerAdapter.ViewHolder>() {
+     var list: List<TvModel> = ArrayList()
 
-    lateinit var moviesList: List<MovieModel>
-    class ViewHolder(val binding: MovieCardBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(item:MovieModel){
+    class ViewHolder(val binding: TvCardBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(item:TvModel){
             binding.listItem=item
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val itemView = LayoutInflater.from(parent.context)
-        val listItemBinding=MovieCardBinding.inflate(itemView,parent,false)
+        val listItemBinding=TvCardBinding.inflate(itemView,parent,false)
         return ViewHolder(listItemBinding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.binding.root.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View) {
-                val intent = Intent(context, MoviesDetailsActivity::class.java)
+                if (!list[position].original_name.isNullOrBlank()){
+                    val intent = Intent(context, TvDetailsActivity::class.java)
+                    intent.putExtra("Tv", list.get(position))
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                    context.startActivity(intent)
+                }
 
-                intent.putExtra("Movie", moviesList.get(position))
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                context.startActivity(intent)
             }
         })
-        val url: String = "https://image.tmdb.org/t/p/w500" + moviesList[position].poster_path
-        Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.binding.movieImgv, object : Callback {
+        val url: String = "https://image.tmdb.org/t/p/w500" + list[position].poster_path
+        Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.binding.tvImgv, object : Callback {
 
             override fun onSuccess() {
                     holder.binding.progressBar2.visibility = View.GONE
             }
 
             override fun onError(e: Exception) {
-                Log.d("pop Adapter",e.message.toString())
+                holder.binding.progressBar2.visibility = View.GONE
+                Log.d("search adapter",e.message.toString())
             }
         })
-        holder.bind(moviesList[position])
+        holder.bind(list[position])
     }
 
     override fun getItemCount(): Int {
-        return moviesList.size
+        return list.size
     }
-
+    fun clearData() {
+        val data: List<TvModel> = ArrayList()
+        list=data
+        notifyDataSetChanged()
+    }
+    fun setData(data:List<TvModel>) {
+        list=data
+        notifyDataSetChanged()
+    }
 //    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
 //        super.onViewAttachedToWindow(holder)
 //        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.post))
 //    }
-    fun setData(list:List<MovieModel>){
-        moviesList=list
-        notifyDataSetChanged()
-    }
 }

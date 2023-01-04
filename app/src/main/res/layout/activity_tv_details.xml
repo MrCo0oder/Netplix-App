@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-
     <data>
 
     </data>
-
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -25,7 +24,7 @@
             >
 
             <com.github.chuross.AspectRatioImageView
-                android:id="@+id/movie_img"
+                android:id="@+id/tv_img"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
                 android:contentDescription=""
@@ -49,10 +48,10 @@
                 android:background="@drawable/img_fg"
                 android:backgroundTint="@color/bg"
                 android:backgroundTintMode="src_atop"
-                app:layout_constraintBottom_toBottomOf="@+id/movie_img"
-                app:layout_constraintEnd_toEndOf="@+id/movie_img"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_img"
+                app:layout_constraintEnd_toEndOf="@+id/tv_img"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/movie_img" />
+                app:layout_constraintTop_toTopOf="@+id/tv_img" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -61,10 +60,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="32dp"
                 android:indeterminateTint="@color/plix_red"
-                app:layout_constraintBottom_toBottomOf="@+id/movie_img"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_img"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/movie_img" />
+                app:layout_constraintTop_toTopOf="@+id/tv_img" />
 
             <TextView
                 android:id="@+id/titleTV"
@@ -81,7 +80,7 @@
                 android:textIsSelectable="true"
                 android:textSize="26sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/movie_img"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_img"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 tools:ignore="TouchTargetSizeCheck"
@@ -152,11 +151,11 @@
                 android:clickable="true"
                 android:contentDescription="@string/back"
                 android:focusable="true"
+                android:src="@drawable/ic_arrow_back"
                 android:tooltipText="@string/back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:rippleColor="#FFFFFF"
-                app:srcCompat="@drawable/ic_arrow_back"
                 tools:ignore="RedundantDescriptionCheck,TouchTargetSizeCheck"
                 tools:targetApi="o" />
 
@@ -188,7 +187,7 @@
                 android:contentDescription="@string/popularity"
                 android:focusable="true"
                 android:tooltipText="@string/popularity"
-                app:layout_constraintStart_toStartOf="@+id/movie_img"
+                app:layout_constraintStart_toStartOf="@+id/tv_img"
                 app:layout_constraintTop_toBottomOf="@+id/ratingBar2"
                 app:srcCompat="@drawable/ic_eye"
                 tools:ignore="ImageContrastCheck,TouchTargetSizeCheck"
@@ -221,10 +220,10 @@
                 android:numStars="5"
                 android:progressTint="#FFAB00"
                 android:secondaryProgressTint="#A9FFFFFF"
-                app:layout_constraintEnd_toEndOf="@+id/movie_img"
-                app:layout_constraintStart_toStartOf="@+id/movie_img"
+                app:layout_constraintEnd_toEndOf="@+id/tv_img"
+                app:layout_constraintStart_toStartOf="@+id/tv_img"
                 app:layout_constraintTop_toBottomOf="@+id/titleTV"
-                />
+                tools:targetApi="o" />
 
 
             <ImageView
@@ -237,22 +236,13 @@
                 android:contentDescription="@string/total_rating"
                 android:focusable="true"
                 android:tooltipText="@string/total_rating"
-                app:layout_constraintEnd_toEndOf="@+id/movie_img"
+                app:layout_constraintEnd_toEndOf="@+id/tv_img"
                 app:layout_constraintTop_toBottomOf="@+id/ratingBar2"
                 app:srcCompat="@drawable/ic_person"
                 tools:ignore="ImageContrastCheck,TouchTargetSizeCheck"
                 tools:targetApi="o" />
 
-            <ImageView
-                android:id="@+id/adultTV"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_rating"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                 />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

@@ -12,7 +12,6 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.example.netplix.R;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,25 +22,26 @@ public class NetworkChecker extends BroadcastReceiver {
     private ImageView imageView;
     private ConnectivityManager connectivityManager;
 
-    public NetworkChecker(){}
+    public NetworkChecker() {
+    }
 
-    public NetworkChecker(@NonNull Activity activity){
+    public NetworkChecker(@NonNull Activity activity) {
         connectivityManager = (ConnectivityManager) activity.getSystemService(Context.CONNECTIVITY_SERVICE);
-            snackbar1 = Snackbar.make(activity.findViewById(R.id.snackBar),"No Internet Connection", Snackbar.LENGTH_INDEFINITE)
-                    .setBackgroundTint(ContextCompat.getColor(activity, R.color.plix_red))
-                    .setTextColor(Color.WHITE)
-                    .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE);
-                    imageView=activity.findViewById(R.id.wifiIV);
+        snackbar1 = Snackbar.make(activity.findViewById(R.id.snackBar), "No Internet Connection", Snackbar.LENGTH_INDEFINITE)
+                .setBackgroundTint(ContextCompat.getColor(activity, R.color.plix_red))
+                .setTextColor(Color.WHITE)
+                .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE);
+        imageView = activity.findViewById(R.id.wifiIV);
 
-        }
+    }
+
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if(connectivityManager.getActiveNetworkInfo()!=null && connectivityManager.getActiveNetworkInfo().isConnected()) {
+        if (connectivityManager.getActiveNetworkInfo() != null && connectivityManager.getActiveNetworkInfo().isConnected()) {
             imageView.setVisibility(View.VISIBLE);
             snackbar1.dismiss();
-        }
-        else {
+        } else {
             imageView.setVisibility(View.GONE);
             snackbar1.show();
         }

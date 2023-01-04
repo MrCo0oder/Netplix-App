@@ -7,7 +7,7 @@
     <data>
         <variable
             name="listItem"
-            type="com.example.netplix.pojo.MovieModel" />
+            type="com.example.netplix.pojo.TvModel" />
     </data>
 
     <androidx.cardview.widget.CardView
@@ -32,7 +32,7 @@
             android:transitionGroup="false">
 
             <com.github.chuross.AspectRatioImageView
-                android:id="@+id/movie_imgv"
+                android:id="@+id/tv_imgv"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:contentDescription=""
@@ -54,13 +54,13 @@
                 android:background="@drawable/bg"
                 android:backgroundTintMode="src_over"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/movie_imgv"
-                app:layout_constraintStart_toStartOf="@+id/movie_imgv"
+                app:layout_constraintEnd_toEndOf="@+id/tv_imgv"
+                app:layout_constraintStart_toStartOf="@+id/tv_imgv"
                 app:layout_constraintTop_toBottomOf="@+id/progressBar2">
 
 
                 <TextView
-                    android:id="@+id/movie_name"
+                    android:id="@+id/tv_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
@@ -69,7 +69,7 @@
                     android:fontFamily="@font/patrick_hand_sc"
                     android:gravity="start|center_vertical"
                     android:maxLines="1"
-                    android:text="@{listItem.original_title}"
+                    android:text="@{listItem.original_name}"
                     android:textColor="@color/white"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -89,7 +89,7 @@
                     android:textColor="#FFC107"
                     android:textSize="15sp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="@+id/movie_name" />
+                    app:layout_constraintStart_toStartOf="@+id/tv_name" />
 
                 <ImageView
                     android:id="@+id/ratingBar"
@@ -120,7 +120,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="@+id/votecount"
-                    app:layout_constraintEnd_toEndOf="@+id/movie_name"
+                    app:layout_constraintEnd_toEndOf="@+id/tv_name"
                     app:layout_constraintTop_toTopOf="@+id/votecount"
                     app:srcCompat="@drawable/ic_person" />
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -132,12 +132,10 @@
                 android:indeterminate="true"
                 android:indeterminateBehavior="cycle"
                 android:indeterminateTint="@color/plix_red"
-                app:layout_constraintBottom_toBottomOf="@+id/movie_imgv"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_imgv"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/movie_imgv"
-                app:layout_constraintTop_toTopOf="@+id/movie_imgv" />
-
-
+                app:layout_constraintStart_toStartOf="@+id/tv_imgv"
+                app:layout_constraintTop_toTopOf="@+id/tv_imgv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

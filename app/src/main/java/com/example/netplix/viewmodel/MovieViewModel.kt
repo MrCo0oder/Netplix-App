@@ -1,28 +1,128 @@
 package com.example.netplix.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.netplix.pojo.Page
-import com.example.netplix.repo.MovieImpli
-import com.example.netplix.repo.MoviesRepo
+import com.example.netplix.pojo.MovieModel
+import com.example.netplix.pojo.MoviesPage
+import com.example.netplix.pojo.TvModel
+import com.example.netplix.pojo.TvPage
+import com.example.netplix.repository.Repo
+import dagger.hilt.android.lifecycle.HiltViewModel
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.functions.Function
+import io.reactivex.rxjava3.schedulers.Schedulers
+import javax.inject.Inject
 
-class MovieViewModel : ViewModel() {
+@HiltViewModel
+class MovieViewModel @Inject constructor(var repository: Repo): ViewModel(){
+    private val TAG = "MovieViewModel"
+    private val popMoviesList: MutableLiveData<List<MovieModel>> = MutableLiveData<List<MovieModel>>()
+    private val trendyList: MutableLiveData<List<MovieModel>> = MutableLiveData<List<MovieModel>>()
+    private val upComingList: MutableLiveData<List<MovieModel>> = MutableLiveData<List<MovieModel>>()
+    private val moviesSearchList: MutableLiveData<List<MovieModel>> = MutableLiveData<List<MovieModel>>()
+    private val tvSearchList: MutableLiveData<List<TvModel>> = MutableLiveData<List<TvModel>>()
 
-    private val instance: MoviesRepo = MovieImpli()
+    fun getPopMoviesList(): MutableLiveData<List<MovieModel>> {
+        return popMoviesList
+    }
+    fun getTrendyMoviesList(): MutableLiveData<List<MovieModel>> {
+        return trendyList
+    }
+    fun getUpComingList(): MutableLiveData<List<MovieModel>> {
+        return upComingList
+    }
+    fun getMoviesSearchList(): MutableLiveData<List<MovieModel>> {
+        return moviesSearchList
+    }
+    fun getTvSearchList(): MutableLiveData<List<TvModel>> {
+        return tvSearchList
+    }
 
-    fun getMovie(): Pair<MutableLiveData<Page>, MutableLiveData<String>> {
-        return instance.getMovie()
+    fun getPopMovies(){
+        repository.getPopMovies()
+            .subscribeOn(Schedulers.io())
+            .map(object : Function<MoviesPage,List<MovieModel>> {
+                override fun apply(t: MoviesPage): List<MovieModel> {
+                    return t.results
+                }
+
+            })
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe ({ s ->popMoviesList.postValue(s)   },{
+                it ->
+                Log.e(TAG, "getPopMovies: "+it )
+            })
+
     }
-  fun getWeekTrendingMovies():Pair<MutableLiveData<Page>, MutableLiveData<String>> {
-        return instance.getWeekTrendingMovies()
+    fun getTrendyMovies(){
+        repository.getTrendyMovies()
+            .subscribeOn(Schedulers.io())
+            .map(object : Function<MoviesPage,List<MovieModel>> {
+                override fun apply(t: MoviesPage): List<MovieModel> {
+                    return t.results
+                }
+
+            })
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe ({ s ->trendyList.postValue(s)   },{
+                    it ->
+                Log.e(TAG, "getTrendyMovies: "+it )
+            })
+
     }
-    fun getUpcomingMovies():Pair<MutableLiveData<Page>, MutableLiveData<String>> {
-        return instance.getUpcomingMovies()
+    fun getUpComing(){
+        repository.getUpComing()
+            .subscribeOn(Schedulers.io())
+            .map(object : Function<MoviesPage,List<MovieModel>> {
+                override fun apply(t: MoviesPage): List<MovieModel> {
+                    return t.results
+                }
+
+            })
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe ({ s ->upComingList.postValue(s)   },{
+                    it ->
+                Log.e(TAG, "getUpComingMovies: "+it )
+            })
+
     }
-    fun getSearchMovies(query: String):Pair<MutableLiveData<Page>, MutableLiveData<String>> {
-        return instance.getSearchMovies(query)
+    fun getSearchMovies(query: String){
+        repository.getSearchMovies(query).subscribeOn(Schedulers.io())
+            .map(object : Function<MoviesPage,List<MovieModel>> {
+                override fun apply(t: MoviesPage): List<MovieModel> {
+                    return t.results
+                }
+
+            })
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe ({ s ->moviesSearchList.postValue(s)   },{
+                    it ->
+                Log.e(TAG, "getMoviesSearch: "+it )
+            })
     }
-fun getSearchTv(query: String):Pair<MutableLiveData<Page>, MutableLiveData<String>> {
-    return instance.getSearchTv(query)
+    fun getSearchTv(query: String){
+        repository.getSearchTv(query).subscribeOn(Schedulers.io())
+            .map(object : Function<TvPage,List<TvModel>> {
+                override fun apply(t: TvPage): List<TvModel> {
+                    return t.results
+                }
+
+            })
+            .subscribeOn(AndroidSchedulers.mainThread())
+            .subscribe ({ s ->tvSearchList.postValue(s)   },{
+                    it ->
+                Log.e(TAG, "getTvSearch: "+it )
+            })
+    }
 }
-}
+
+
+
+
+
+
+
+
+
+

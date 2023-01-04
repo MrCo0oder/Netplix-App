@@ -54,6 +54,7 @@
                 android:clickable="true"
                 android:contentDescription="@string/internet_connection"
                 android:focusable="true"
+                android:tooltipText="@string/internet_connection"
                 android:src="@drawable/ic_wifi"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

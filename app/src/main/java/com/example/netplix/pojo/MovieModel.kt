@@ -1,10 +1,12 @@
 package com.example.netplix.pojo
 
 import androidx.databinding.BaseObservable
+import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class MovieModel(
-    var adult: Boolean,
+    @SerializedName("adult")
+    var adult:Boolean,
     var backdrop_path: String,
     var genre_ids: List<Int>,
     var id: Int,
