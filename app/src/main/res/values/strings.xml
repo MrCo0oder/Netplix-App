@@ -19,4 +19,11 @@
     <string name="yes" translatable="false">Yes 😭 </string>
     <string name="no" translatable="false">No 🥳 </string>
     <string name="exit" translatable="false">Exit Application ?🥺</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="wish_list">Watch List</string>
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
 </resources>

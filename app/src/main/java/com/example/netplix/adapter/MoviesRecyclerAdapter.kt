@@ -15,10 +15,10 @@ import com.example.netplix.ui.MoviesDetailsActivity
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 
-class MoviesCarouselAdapter(var context: Context, var list: List<MovieModel>) :
-    RecyclerView.Adapter<MoviesCarouselAdapter.ViewHolder>() {
+class MoviesRecyclerAdapter(var context: Context) :
+    RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder>() {
 
-
+    lateinit var moviesList: List<MovieModel>
     class ViewHolder(val binding: MovieCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item:MovieModel){
             binding.listItem=item
@@ -30,16 +30,18 @@ class MoviesCarouselAdapter(var context: Context, var list: List<MovieModel>) :
         val listItemBinding=MovieCardBinding.inflate(itemView,parent,false)
         return ViewHolder(listItemBinding)
     }
+
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
         holder.binding.root.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View) {
                 val intent = Intent(context, MoviesDetailsActivity::class.java)
-                intent.putExtra("Movie", list.get(position))
+
+                intent.putExtra("Movie", moviesList.get(position))
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 context.startActivity(intent)
             }
         })
-        val url: String = "https://image.tmdb.org/t/p/w500" + list[position].poster_path
+        val url: String = "https://image.tmdb.org/t/p/w500" + moviesList[position].poster_path
         Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.binding.movieImgv, object : Callback {
 
             override fun onSuccess() {
@@ -47,21 +49,31 @@ class MoviesCarouselAdapter(var context: Context, var list: List<MovieModel>) :
             }
 
             override fun onError(e: Exception) {
-
                 Log.d("pop Adapter",e.message.toString())
-
             }
         })
-        holder.bind(list[position])
+        holder.bind(moviesList[position])
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return moviesList.size
     }
 
 //    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
 //        super.onViewAttachedToWindow(holder)
 //        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.post))
 //    }
+    fun setData(list:List<MovieModel>){
+        moviesList=list
+        notifyDataSetChanged()
+    }
+    fun clearData() {
+        val data: List<MovieModel> = ArrayList()
+        moviesList=data
+        notifyDataSetChanged()
+    }
 
+    fun getMovieAt(swipedPosition: Int): MovieModel {
+        return moviesList.get(swipedPosition);
+    }
 }

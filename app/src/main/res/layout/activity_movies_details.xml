@@ -51,8 +51,10 @@
                 android:backgroundTintMode="src_atop"
                 app:layout_constraintBottom_toBottomOf="@+id/movie_img"
                 app:layout_constraintEnd_toEndOf="@+id/movie_img"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/movie_img" />
+                app:layout_constraintTop_toTopOf="@+id/movie_img"
+                app:layout_constraintVertical_bias="0.0" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
@@ -122,7 +124,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginBottom="24dp"
                 android:contentDescription="@string/storyline"
@@ -212,7 +214,7 @@
                 android:id="@+id/ratingBar2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:contentDescription="@string/rating"
                 android:indeterminate="false"
                 android:indeterminateOnly="false"
@@ -223,8 +225,7 @@
                 android:secondaryProgressTint="#A9FFFFFF"
                 app:layout_constraintEnd_toEndOf="@+id/movie_img"
                 app:layout_constraintStart_toStartOf="@+id/movie_img"
-                app:layout_constraintTop_toBottomOf="@+id/titleTV"
-                />
+                app:layout_constraintTop_toBottomOf="@+id/catsTV" />
 
 
             <ImageView
@@ -251,8 +252,34 @@
                 android:layout_marginEnd="16dp"
                 android:src="@drawable/ic_rating"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                 />
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/catsTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/ratingBar2"
+                app:layout_constraintStart_toStartOf="@+id/ratingBar2"
+                app:layout_constraintTop_toBottomOf="@+id/titleTV" />
+
+            <ImageButton
+                android:id="@+id/likeBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:background="#00FFFFFF"
+                android:backgroundTint="#00FFFFFF"
+                android:minWidth="48dp"
+                android:minHeight="48dp"
+                android:src="@drawable/unlisted_heart"
+                app:layout_constraintEnd_toEndOf="@+id/adultTV"
+                app:layout_constraintStart_toStartOf="@+id/adultTV"
+                app:layout_constraintTop_toBottomOf="@+id/adultTV"
+                tools:ignore="SpeakableTextPresentCheck" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

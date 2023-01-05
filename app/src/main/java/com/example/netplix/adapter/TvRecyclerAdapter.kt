@@ -71,6 +71,10 @@ class TvRecyclerAdapter(var context: Context) :
         list=data
         notifyDataSetChanged()
     }
+
+    fun getTvAt(swipedTvPosition: Int): TvModel {
+        return list.get(swipedTvPosition);
+    }
 //    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
 //        super.onViewAttachedToWindow(holder)
 //        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.post))

@@ -52,6 +52,11 @@ class MainActivity : AppCompatActivity() {
                     tab.icon = getDrawable(R.drawable.ic_tv_show)
                     tab.tabLabelVisibility = TAB_LABEL_VISIBILITY_UNLABELED
                 }
+                2 -> {
+                tab.text = getText(R.string.wish_list)
+                tab.icon = getDrawable(R.drawable.heart)
+                tab.tabLabelVisibility = TAB_LABEL_VISIBILITY_UNLABELED
+            }
                 else -> {
                     tab.text = getText(R.string.search)
                     tab.icon = getDrawable(R.drawable.ic_search)
@@ -117,8 +122,6 @@ class MainActivity : AppCompatActivity() {
         binding.viewPager2.currentItem = curr
         registerReceiver(networkChecker, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
-
-
 }
 
 

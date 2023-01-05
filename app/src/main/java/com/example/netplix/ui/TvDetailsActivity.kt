@@ -6,14 +6,21 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.example.netplix.R
 import com.example.netplix.databinding.ActivityTvDetailsBinding
 import com.example.netplix.pojo.TvModel
+import com.example.netplix.viewmodel.MovieViewModel
+import com.example.netplix.viewmodel.TvViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
-
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale
+@AndroidEntryPoint
 class TvDetailsActivity : AppCompatActivity() {
+    val tvViewModel: TvViewModel by lazy { ViewModelProvider(this).get(TvViewModel::class.java) }
     lateinit var binding: ActivityTvDetailsBinding
     lateinit var context: Context
     var cats = mapOf(
@@ -41,10 +48,14 @@ class TvDetailsActivity : AppCompatActivity() {
         setContentView(binding.root)
         context = this
         var myObject: TvModel = intent.getSerializableExtra("Tv") as TvModel
+        binding.likeBTN.setOnClickListener {
+            tvViewModel.insertTv(myObject)
+            Toast.makeText(context,"ADDED",Toast.LENGTH_SHORT).show()
+            binding.likeBTN.visibility= View.INVISIBLE
+        }
         val url: String = "https://image.tmdb.org/t/p/w500" + myObject.poster_path
-        val info: String =
-            (myObject.first_air_date + " | " + "Movie | " + myObject.original_language)
-
+        val info: String = (myObject.first_air_date + " | " + "TV Show | " + Locale(myObject.original_language).getDisplayName())
+        binding.infoTV.text = info
         Picasso.get().load(url).placeholder(R.drawable.placeholder)
             .into(binding.tvImg, object : Callback {
                 override fun onSuccess() {
@@ -61,10 +72,9 @@ class TvDetailsActivity : AppCompatActivity() {
         for (i in myObject.genre_ids) {
             str += cats.get(i) + " | "
         }
-        binding.infoTV.text = str
+        binding.catTV.text = str
         if (!myObject.genre_ids.isEmpty())
-            binding.infoTV.text =
-                binding.infoTV.text.removeRange((binding.infoTV.text.length - 3)..(binding.infoTV.text.length - 1))
+        { binding.catTV.text = binding.catTV.text.removeRange((binding.catTV.text.length - 3)..(binding.catTV.text.length - 1))}
         binding.storyTV.text = myObject.overview
         binding.titleTV.text = myObject.original_name
         binding.ratingBar2.rating = (myObject.vote_average.toFloat()) / 2

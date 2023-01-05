@@ -121,9 +121,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginEnd="16dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginBottom="16dp"
                 android:contentDescription="@string/storyline"
                 android:fontFamily="@font/patrick_hand_sc"
                 android:minHeight="48dp"
@@ -211,7 +211,7 @@
                 android:id="@+id/ratingBar2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:contentDescription="@string/rating"
                 android:indeterminate="false"
                 android:indeterminateOnly="false"
@@ -222,7 +222,7 @@
                 android:secondaryProgressTint="#A9FFFFFF"
                 app:layout_constraintEnd_toEndOf="@+id/tv_img"
                 app:layout_constraintStart_toStartOf="@+id/tv_img"
-                app:layout_constraintTop_toBottomOf="@+id/titleTV"
+                app:layout_constraintTop_toBottomOf="@+id/catTV"
                 tools:targetApi="o" />
 
 
@@ -242,6 +242,31 @@
                 tools:ignore="ImageContrastCheck,TouchTargetSizeCheck"
                 tools:targetApi="o" />
 
+            <TextView
+                android:id="@+id/catTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/ratingBar2"
+                app:layout_constraintStart_toStartOf="@+id/ratingBar2"
+                app:layout_constraintTop_toBottomOf="@+id/titleTV" />
+
+            <ImageButton
+                android:id="@+id/like_BTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginEnd="16dp"
+                android:backgroundTint="#00FFFFFF"
+                android:minHeight="48dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/heart"
+                tools:ignore="SpeakableTextPresentCheck" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

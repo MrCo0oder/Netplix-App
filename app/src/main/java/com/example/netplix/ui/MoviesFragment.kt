@@ -11,9 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.example.netplix.adapter.MoviesCarouselAdapter
-import com.example.netplix.adapter.PopularRVAdapter
-import com.example.netplix.adapter.TrendyRVAdapter
+import com.example.netplix.adapter.MoviesRecyclerAdapter
 import com.example.netplix.databinding.FragmentMoviesBinding
 import com.example.netplix.pojo.MovieModel
 import com.example.netplix.viewmodel.MovieViewModel
@@ -22,13 +20,13 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
     lateinit var binding: FragmentMoviesBinding
-    lateinit var rvAdapter: PopularRVAdapter
     private val moviesViewModel: MovieViewModel by lazy { ViewModelProvider(this).get(MovieViewModel::class.java) }
-    lateinit var trendyAdapter: TrendyRVAdapter
+    lateinit var rvAdapter: MoviesRecyclerAdapter
+    lateinit var trendyAdapter: MoviesRecyclerAdapter
     lateinit var popMoviesList: List<MovieModel>
     lateinit var trendyMoviesList: List<MovieModel>
     lateinit var upComingList: List<MovieModel>
-    lateinit var moviesCarouselAdapter: MoviesCarouselAdapter
+    lateinit var moviesCarouselAdapter: MoviesRecyclerAdapter
     lateinit var linearLayoutManager: CarouselLayoutManager
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,33 +76,30 @@ class MoviesFragment : Fragment() {
             .observe(viewLifecycleOwner, object : Observer<List<MovieModel>> {
                 override fun onChanged(t: List<MovieModel>) {
                     upComingList = t
-                    binding.carouselRecyclerview.apply {
-                        binding.carouselRecyclerview.adapter = MoviesCarouselAdapter(requireActivity(), upComingList)
-                        set3DItem(true)
-                        setAlpha(true)
-                        setInfinite(true)
-                    }
+                    moviesCarouselAdapter.setData(upComingList)
                 }
             })
     }
-
     fun initRV() {
         popMoviesList = ArrayList()
         binding.popMRV.layoutManager = LinearLayoutManager(requireActivity().baseContext, LinearLayoutManager.HORIZONTAL, false)
         binding.popMRV.setHasFixedSize(true)
-        rvAdapter= PopularRVAdapter(requireActivity())
+        rvAdapter= MoviesRecyclerAdapter(requireActivity())
         binding.popMRV.adapter = rvAdapter
         rvAdapter.setData(popMoviesList)
 
         trendyMoviesList = ArrayList()
         binding.trendyMRV.layoutManager = LinearLayoutManager(requireActivity().baseContext, LinearLayoutManager.HORIZONTAL, false)
         binding.trendyMRV.setHasFixedSize(true)
-        trendyAdapter= TrendyRVAdapter(requireActivity())
+        trendyAdapter= MoviesRecyclerAdapter(requireActivity())
         binding.trendyMRV.adapter = trendyAdapter
         trendyAdapter.setData(trendyMoviesList)
 
         upComingList = ArrayList()
-        linearLayoutManager = CarouselLayoutManager(true, true, 0.5f, false, true, true, HORIZONTAL)
+        moviesCarouselAdapter=MoviesRecyclerAdapter(requireActivity())
+        binding.carouselRecyclerview.adapter = moviesCarouselAdapter
+        moviesCarouselAdapter.setData(upComingList)
+        linearLayoutManager = CarouselLayoutManager(false, true, 0.5f, false, true, true, HORIZONTAL)
         binding.carouselRecyclerview.layoutManager = linearLayoutManager
 
     }

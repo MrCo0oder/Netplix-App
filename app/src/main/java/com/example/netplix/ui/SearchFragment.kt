@@ -12,8 +12,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.netplix.R
-import com.example.netplix.adapter.MoviesSearchAdapter
-import com.example.netplix.adapter.TvSearchAdapter
+import com.example.netplix.adapter.MoviesRecyclerAdapter
+import com.example.netplix.adapter.TvRecyclerAdapter
 import com.example.netplix.databinding.FragmentSearchBinding
 import com.example.netplix.pojo.MovieModel
 import com.example.netplix.pojo.TvModel
@@ -26,10 +26,10 @@ class SearchFragment : Fragment() {
     lateinit var binding: FragmentSearchBinding
     private val viewModel: MovieViewModel by lazy { ViewModelProvider(this).get(MovieViewModel::class.java) }
 
-    lateinit var searchMoviesAdapter: MoviesSearchAdapter
+    lateinit var searchMoviesAdapter: MoviesRecyclerAdapter
     lateinit var searchMoviesList: List<MovieModel>
 
-    lateinit var searchTvAdapter: TvSearchAdapter
+    lateinit var searchTvAdapter: TvRecyclerAdapter
     lateinit var searchTvList: List<TvModel>
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,7 +69,6 @@ class SearchFragment : Fragment() {
                                 searchMoviesAdapter.setData(searchMoviesList)
                             }
                         })
-
                     } else {
                         binding.movisSearchList.visibility=GONE
                         binding.tvSearchList.visibility= VISIBLE
@@ -91,14 +90,14 @@ class SearchFragment : Fragment() {
         searchMoviesList=ArrayList<MovieModel>()
         binding.movisSearchList.layoutManager = GridLayoutManager(requireActivity().baseContext,2)
         binding.movisSearchList.setHasFixedSize(true)
-        searchMoviesAdapter= MoviesSearchAdapter(requireActivity())
+        searchMoviesAdapter= MoviesRecyclerAdapter(requireActivity())
         binding.movisSearchList.adapter=searchMoviesAdapter
         searchMoviesAdapter.setData(searchMoviesList)
 
         searchTvList=ArrayList<TvModel>()
         binding.tvSearchList.layoutManager = GridLayoutManager(requireActivity().baseContext,2)
         binding.tvSearchList.setHasFixedSize(true)
-        searchTvAdapter= TvSearchAdapter(requireActivity())
+        searchTvAdapter= TvRecyclerAdapter(requireActivity())
         binding.tvSearchList.adapter=searchTvAdapter
         searchTvAdapter.setData(searchTvList)
     }

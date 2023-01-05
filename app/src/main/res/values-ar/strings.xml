@@ -18,4 +18,7 @@
     <string name="yes">"باي 😭  "</string>
     <string name="no">"لا 🥳 "</string>
     <string name="exit">هل تريد المغادرة؟ 🥺</string>
+    <string name="wish_list">Watch List</string>
+    <string name="expand">Expand</string>
+    <string name="collapse">Collapse</string>
 </resources>

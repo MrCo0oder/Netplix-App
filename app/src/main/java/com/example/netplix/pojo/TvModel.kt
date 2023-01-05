@@ -1,12 +1,17 @@
 package com.example.netplix.pojo
 
-import com.google.gson.annotations.SerializedName
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import androidx.room.TypeConverters
 import java.io.Serializable
 
+@Entity(tableName = "tv_list")
+@TypeConverters(TypeConverterInt::class,TypeConverterString::class)
 data class TvModel(
     val backdrop_path: String,
     val first_air_date: String,
     val genre_ids: List<Int>,
+    @PrimaryKey
     val id: Int,
     val name: String,
     val origin_country: List<String>,

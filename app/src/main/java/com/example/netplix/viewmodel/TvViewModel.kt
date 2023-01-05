@@ -1,8 +1,10 @@
 package com.example.netplix.viewmodel
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.netplix.pojo.MovieModel
 import com.example.netplix.pojo.TvModel
 import com.example.netplix.pojo.TvPage
 import com.example.netplix.repository.Repo
@@ -18,7 +20,7 @@ class TvViewModel @Inject constructor(var repository: Repo): ViewModel(){
     private val popTvList: MutableLiveData<List<TvModel>> = MutableLiveData<List<TvModel>>()
     private val topRatedList: MutableLiveData<List<TvModel>> = MutableLiveData<List<TvModel>>()
     private val latestList: MutableLiveData<List<TvModel>> = MutableLiveData<List<TvModel>>()
-
+    private lateinit var tvList: LiveData<List<TvModel>>
 
     fun getPopTvList(): MutableLiveData<List<TvModel>> {
         return popTvList
@@ -29,7 +31,9 @@ class TvViewModel @Inject constructor(var repository: Repo): ViewModel(){
     fun getLatestList(): MutableLiveData<List<TvModel>> {
         return latestList
     }
-
+    fun getTVFromDB(): LiveData<List<TvModel>> {
+        return tvList
+    }
 
     fun getPopTv(){
         repository.getPopTv()
@@ -72,7 +76,19 @@ class TvViewModel @Inject constructor(var repository: Repo): ViewModel(){
             .subscribe ({ s ->latestList.postValue(s)   },
                 { it -> Log.e(TAG, "getLatestTv: "+it ) })
     }
+//ROOM
 
+    public fun insertTv(tvModel: TvModel) {
+        repository.insertTv(tvModel)
+    }
+
+    public fun deleteTv(tvId: Int) {
+        repository.deleteTv(tvId)
+    }
+
+    public fun getAllTv() {
+        tvList = repository.getAllTv()
+    }
 }
 
 

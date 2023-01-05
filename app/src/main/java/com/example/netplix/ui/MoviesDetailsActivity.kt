@@ -8,14 +8,21 @@ import android.util.Log
 import android.view.View
 import android.view.View.*
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.get
 import com.example.netplix.R
 import com.example.netplix.databinding.ActivityMoviesDetailsBinding
 import com.example.netplix.pojo.MovieModel
+import com.example.netplix.viewmodel.MovieViewModel
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
+import java.util.*
 
+@AndroidEntryPoint
 @Suppress("DEPRECATION")
 class MoviesDetailsActivity : AppCompatActivity() {
     lateinit var binding: ActivityMoviesDetailsBinding
@@ -52,13 +59,20 @@ class MoviesDetailsActivity : AppCompatActivity() {
 
         var myObject: MovieModel = intent.getSerializableExtra("Movie") as MovieModel
         val url: String = "https://image.tmdb.org/t/p/w500" + myObject.poster_path
-        val info: String = (myObject.release_date + " | " + "Movie | " + myObject.original_language)
+        val info: String = (myObject.release_date + " | " + "Movie | " + Locale(myObject.original_language).getDisplayName())
+        binding.likeBTN.setOnClickListener {
+            val viewModel: MovieViewModel by viewModels()
+            viewModel.insertMovie(myObject)
+            Toast.makeText(context,"ADDED",Toast.LENGTH_SHORT).show()
+            binding.likeBTN.visibility= INVISIBLE
+        }
+        binding.infoTV.text=info
         if (myObject.adult) {
             binding.adultTV.visibility = VISIBLE
         }
         else
         {
-            binding.adultTV.visibility = GONE
+            binding.adultTV.visibility = INVISIBLE
         }
         Picasso.get().load(url).placeholder(R.drawable.placeholder)
             .into(binding.movieImg, object : Callback {
@@ -75,9 +89,9 @@ class MoviesDetailsActivity : AppCompatActivity() {
         for (i in myObject.genre_ids) {
             str += cats.get(i) + " | "
         }
-        binding.infoTV.text = str
+        binding.catsTV.text = str
         if (!myObject.genre_ids.isEmpty())
-        binding.infoTV.text = binding.infoTV.text.removeRange((binding.infoTV.text.length - 3)..(binding.infoTV.text.length - 1))
+        {binding.catsTV.text = binding.catsTV.text.removeRange((binding.catsTV.text.length - 3)..(binding.catsTV.text.length - 1))}
         binding.storyTV.text = myObject.overview
         binding.titleTV.text = myObject.original_title
         binding.ratingBar2.rating = (myObject.vote_average.toFloat()) / 2
@@ -103,5 +117,6 @@ class MoviesDetailsActivity : AppCompatActivity() {
         startActivity(intent)
         finish()
     }
+
 }
 

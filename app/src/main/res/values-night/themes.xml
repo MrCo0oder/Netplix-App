@@ -15,7 +15,13 @@
         <!-- Customize your theme here. -->
 
     </style>
+
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/patrick_hand_sc</item>
+    </style>
+
+    <style name="ThemeOverlay.Netplix.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_900</item>
+        <item name="fullscreenTextColor">@color/light_blue_A400</item>
     </style>
 </resources>

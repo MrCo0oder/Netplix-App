@@ -1,10 +1,16 @@
 package com.example.netplix.repository
 
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.example.netplix.BuildConfig
+import com.example.netplix.database.Dao
 import com.example.netplix.network.Api
+import com.example.netplix.pojo.MovieModel
 import com.example.netplix.pojo.MoviesPage
+import com.example.netplix.pojo.TvModel
 import com.example.netplix.pojo.TvPage
+import kotlin.collections.List
 import io.reactivex.rxjava3.core.Observable
 import java.util.*
 import javax.inject.Inject
@@ -12,10 +18,13 @@ import javax.inject.Inject
 class Repo {
     private val apiKey = BuildConfig.API_KEY
     private  val apiService: Api
+    private  val dbService: Dao
     @Inject
-    constructor(apiService: Api) {
+    constructor(apiService: Api,dbService: Dao) {
         this.apiService = apiService
+        this.dbService = dbService
     }
+    //API
     //Movies
     public fun getPopMovies():Observable<MoviesPage>{
         return apiService.getPopularMovie(apiKey, Locale.getDefault().language.toString())
@@ -42,5 +51,26 @@ class Repo {
     }
     public fun  getSearchTv(query: String):Observable<TvPage>{
         return apiService.searchTV(apiKey,query, Locale.getDefault().language.toString())
+    }
+    //Room
+    //Movies
+    public fun insertMovie(movieModel: MovieModel){
+        dbService.insertMovie(movieModel)
+    }
+    public fun deleteMovie(movieId: Int){
+        dbService.deleteMovie(movieId)
+    }
+    public fun getAllMovies(): LiveData<List<MovieModel>>{
+        return dbService.getAllMovies()
+    }
+    //Tv
+    public fun insertTv(tvModel: TvModel){
+        dbService.insertTv(tvModel)
+    }
+    public fun deleteTv(tvId: Int){
+        dbService.deleteTv(tvId)
+    }
+    public fun getAllTv():LiveData<List<TvModel>>{
+        return dbService.getAllTv()
     }
 }
