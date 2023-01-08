@@ -2,7 +2,6 @@
     <string name="app_name">Netplix</string>
     <string name="popular">Popular ✨🍿</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="textview" translatable="false">TextView</string>
     <string name="trendy_this_week">Trendy This Week 💅🥳</string>
     <string name="storyline">StoryLine</string>
     <string name="back">Back</string>
@@ -16,14 +15,44 @@
     <string name="movie_search">Looking for a amazing Movie? 👀</string>
     <string name="tv_search">Looking for a amazing Tv Show? 👀</string>
     <string name="toprated_tv_shows">TopRated TV Shows🤩 📺 </string>
-    <string name="yes" translatable="false">Yes 😭 </string>
-    <string name="no" translatable="false">No 🥳 </string>
-    <string name="exit" translatable="false">Exit Application ?🥺</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="yes">Yes 😭 </string>
+    <string name="no">No 🥳 </string>
+    <string name="exit">Exit Application ?🥺</string>
     <string name="wish_list">Watch List</string>
     <string name="expand">Expand</string>
     <string name="collapse">Collapse</string>
+    <string name="action">Action</string>
+    <string name="adventure">Adventure</string>
+    <string name="animation">Animation</string>
+    <string name="comedy">Comedy</string>
+    <string name="Crime">Crime</string>
+    <string name="Documentary">Documentary</string>
+    <string name="Drama">Drama</string>
+    <string name="Family">Family</string>
+    <string name="Fantasy">Fantasy</string>
+    <string name="Horror">Horror</string>
+    <string name="Music">Music</string>
+    <string name="Mystery">Mystery</string>
+    <string name="Romance">Romance</string>
+    <string name="science_fiction">Science Fiction</string>
+    <string name="TV_Movie">TV Movie</string>
+    <string name="Thriller">Thriller</string>
+    <string name="War">War</string>
+    <string name="Western">Western</string>
+    <string name="Action_Adventure">Action-Adventure</string>
+    <string name="Kids">Kids</string>
+    <string name="News">News</string>
+    <string name="Reality">Reality</string>
+    <string name="SciFi_Fantasy">Sci-Fi-Fantasy</string>
+    <string name="Soap">Soap</string>
+    <string name="Talk">Talk</string>
+    <string name="War_Politics">War-Politics</string>
+    <string name="History">History</string>
+    <string name="FirstShow">" First Show: </string>
+    <string name="rate">" /10"</string>
+    <string name="movie">movie</string>
+    <string name="tv_show">TV Show</string>
+    <string name="Added">Added To Watch List</string>
+    <string name="deleted">item deleted from database</string>
+    <string name="nostory">No story provided yet 👀</string>
 </resources>

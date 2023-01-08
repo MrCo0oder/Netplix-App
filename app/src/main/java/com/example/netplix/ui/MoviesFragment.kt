@@ -1,5 +1,6 @@
 package com.example.netplix.ui
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,11 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.*
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.netplix.adapter.MoviesRecyclerAdapter
+import com.example.netplix.adapter.RecyclerItemClickListener
 import com.example.netplix.databinding.FragmentMoviesBinding
 import com.example.netplix.pojo.MovieModel
 import com.example.netplix.viewmodel.MovieViewModel
@@ -45,6 +48,9 @@ class MoviesFragment : Fragment() {
         })
         initRV()
         loadData()
+        onItemClicked(rvAdapter,binding.popMRV)
+        onItemClicked(trendyAdapter,binding.trendyMRV)
+        onItemClicked(moviesCarouselAdapter,binding.carouselRecyclerview)
         return binding.root
     }
 
@@ -79,6 +85,21 @@ class MoviesFragment : Fragment() {
                     moviesCarouselAdapter.setData(upComingList)
                 }
             })
+    }
+    fun onItemClicked(adapter: MoviesRecyclerAdapter,recyclerView:RecyclerView){
+
+        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireContext(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+
+            override fun onItemClick(view: View, position: Int) {
+                val tappedMovie: MovieModel = adapter.getItemAt(position)
+                val intent = Intent(context, MoviesDetailsActivity::class.java)
+                intent.putExtra("Movie",tappedMovie)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                requireContext().startActivity(intent)
+            }
+            override fun onItemLongClick(view: View?, position: Int) {
+            }
+        }))
     }
     fun initRV() {
         popMoviesList = ArrayList()

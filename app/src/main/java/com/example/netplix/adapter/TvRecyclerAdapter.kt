@@ -33,17 +33,6 @@ class TvRecyclerAdapter(var context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        holder.binding.root.setOnClickListener(object : OnClickListener {
-            override fun onClick(v: View) {
-                if (!list[position].original_name.isNullOrBlank()){
-                    val intent = Intent(context, TvDetailsActivity::class.java)
-                    intent.putExtra("Tv", list.get(position))
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                    context.startActivity(intent)
-                }
-
-            }
-        })
         val url: String = "https://image.tmdb.org/t/p/w500" + list[position].poster_path
         Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.binding.tvImgv, object : Callback {
 
@@ -75,6 +64,8 @@ class TvRecyclerAdapter(var context: Context) :
     fun getTvAt(swipedTvPosition: Int): TvModel {
         return list.get(swipedTvPosition);
     }
+
+
 //    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
 //        super.onViewAttachedToWindow(holder)
 //        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.post))

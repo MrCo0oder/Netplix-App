@@ -4,10 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.netplix.pojo.MovieModel
-import com.example.netplix.pojo.MoviesPage
-import com.example.netplix.pojo.TvModel
-import com.example.netplix.pojo.TvPage
+import com.example.netplix.pojo.*
 import com.example.netplix.repository.Repo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -27,6 +24,7 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
         MutableLiveData<List<MovieModel>>()
     private val tvSearchList: MutableLiveData<List<TvModel>> = MutableLiveData<List<TvModel>>()
     private lateinit var moviesList: LiveData<List<MovieModel>>
+
     fun getPopMoviesList(): MutableLiveData<List<MovieModel>> {
         return popMoviesList
     }
@@ -135,6 +133,8 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
         moviesList = repository.getAllMovies()
     }
 }
+
+
 
 
 

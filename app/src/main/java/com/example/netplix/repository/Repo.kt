@@ -6,10 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.example.netplix.BuildConfig
 import com.example.netplix.database.Dao
 import com.example.netplix.network.Api
-import com.example.netplix.pojo.MovieModel
-import com.example.netplix.pojo.MoviesPage
-import com.example.netplix.pojo.TvModel
-import com.example.netplix.pojo.TvPage
+import com.example.netplix.pojo.*
 import kotlin.collections.List
 import io.reactivex.rxjava3.core.Observable
 import java.util.*
@@ -29,6 +26,7 @@ class Repo {
     public fun getPopMovies():Observable<MoviesPage>{
         return apiService.getPopularMovie(apiKey, Locale.getDefault().language.toString())
     }
+
     public fun getTrendyMovies():Observable<MoviesPage>{
         return apiService.getWeekTrendingMovies(apiKey, Locale.getDefault().language.toString())
     }

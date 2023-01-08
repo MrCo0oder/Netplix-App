@@ -26,7 +26,6 @@ class MainActivity : AppCompatActivity() {
     lateinit var binding: ActivityMainBinding
     lateinit var networkChecker: NetworkChecker
     lateinit var fragmentManager: FragmentManager
-    var curr: Int = 0
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,11 +93,6 @@ class MainActivity : AppCompatActivity() {
         unregisterReceiver(networkChecker)
     }
 
-    override fun onPause() {
-        super.onPause()
-        curr = binding.viewPager2.currentItem
-    }
-
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
         val alertDialogBuilder = AlertDialog.Builder(this)
@@ -106,7 +100,7 @@ class MainActivity : AppCompatActivity() {
         val yes = getText(R.string.yes)
         val no = getText(R.string.no)
         alertDialogBuilder.setCancelable(true).setIcon(R.mipmap.ic_launcher)
-            .setPositiveButton(yes) { dialog, id ->
+            .setPositiveButton(yes) { _, _ ->
                 moveTaskToBack(true)
                 Process.killProcess(Process.myPid())
                 System.exit(1)
@@ -117,9 +111,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResumeFragments() {
         super.onResumeFragments()
-        if (intent.hasExtra("curr"))
-            curr = intent.getIntExtra("curr", 0)
-        binding.viewPager2.currentItem = curr
         registerReceiver(networkChecker, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 }

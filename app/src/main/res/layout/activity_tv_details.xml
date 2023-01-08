@@ -8,12 +8,13 @@
     </data>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:background="@color/bg"
         android:contentDescription="@string/app_name"
+        android:fitsSystemWindows="true"
         android:nestedScrollingEnabled="true"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/bg"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -21,7 +22,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/bg"
-            >
+
+            android:fitsSystemWindows="true">
 
             <com.github.chuross.AspectRatioImageView
                 android:id="@+id/tv_img"
@@ -30,14 +32,12 @@
                 android:contentDescription=""
                 android:scaleType="centerCrop"
                 app:ariv_fit="width"
-                app:ariv_heightRatio="3"
-                app:ariv_widthRatio="2"
+                app:ariv_heightRatio="2"
+                app:ariv_widthRatio="3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:srcCompat="@drawable/placeholder"
-                app:tint="#090000"
-                app:tintMode="add"
                 tools:ignore="ImageContrastCheck,UnusedAttribute"
                 tools:targetApi="m" />
 
@@ -48,17 +48,20 @@
                 android:background="@drawable/img_fg"
                 android:backgroundTint="@color/bg"
                 android:backgroundTintMode="src_atop"
+                android:fitsSystemWindows="true"
+                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_img"
                 app:layout_constraintEnd_toEndOf="@+id/tv_img"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/tv_img" />
+                app:layout_constraintTop_toTopOf="@+id/tv_img"
+                app:layout_constraintVertical_bias="0.0" />
 
             <ProgressBar
                 android:id="@+id/progressBar"
                 style="?android:attr/progressBarStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
                 android:indeterminateTint="@color/plix_red"
                 app:layout_constraintBottom_toBottomOf="@+id/tv_img"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -69,20 +72,20 @@
                 android:id="@+id/titleTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginEnd="24dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginStart="16dp"
                 android:fontFamily="@font/patrick_hand_sc"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:padding="4dp"
                 android:selectAllOnFocus="false"
                 android:textColor="@color/white"
                 android:textIsSelectable="true"
                 android:textSize="26sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_img"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="@+id/posterCard"
+                app:layout_constraintEnd_toEndOf="@+id/likeBTN"
+                app:layout_constraintStart_toEndOf="@+id/posterCard"
+                app:layout_constraintTop_toTopOf="@+id/posterCard"
+                app:layout_constraintVertical_bias="0.31"
                 tools:ignore="TouchTargetSizeCheck"
                 tools:text="Black Adam" />
 
@@ -97,8 +100,8 @@
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 app:guidelineUseRtl="true"
-                app:layout_constraintEnd_toEndOf="@+id/ratingBar2"
-                app:layout_constraintStart_toStartOf="@+id/ratingBar2"
+                app:layout_constraintEnd_toEndOf="@+id/imageView2"
+                app:layout_constraintStart_toStartOf="@+id/imageView4"
                 app:layout_constraintTop_toBottomOf="@+id/imageView4"
                 tools:text="Info" />
 
@@ -112,23 +115,21 @@
                 android:textColor="@color/white"
                 android:textSize="24sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/infoTV"
+                app:layout_constraintStart_toStartOf="@+id/infoTV"
                 app:layout_constraintTop_toBottomOf="@+id/infoTV" />
 
             <TextView
                 android:id="@+id/storyTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
                 android:layout_marginTop="16dp"
-                android:layout_marginEnd="16dp"
                 android:layout_marginBottom="16dp"
                 android:contentDescription="@string/storyline"
                 android:fontFamily="@font/patrick_hand_sc"
                 android:minHeight="48dp"
                 android:selectAllOnFocus="true"
-                android:textAlignment="textStart"
+                android:textAlignment="viewStart"
                 android:textColor="@color/white"
                 android:textColorHighlight="#D3E50914"
                 android:textColorLink="@color/plix_red"
@@ -137,26 +138,26 @@
                 android:textStyle="normal"
                 android:typeface="monospace"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/textView4"
+                app:layout_constraintStart_toStartOf="@+id/textView4"
                 app:layout_constraintTop_toBottomOf="@+id/textView4"
                 tools:ignore="DuplicateSpeakableTextCheck" />
 
-            <ImageView
+            <ImageButton
                 android:id="@+id/backBtn"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginStart="24dp"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginStart="16dp"
                 android:layout_marginTop="24dp"
+                android:backgroundTint="#00FFFFFF"
                 android:clickable="true"
                 android:contentDescription="@string/back"
                 android:focusable="true"
-                android:src="@drawable/ic_arrow_back"
                 android:tooltipText="@string/back"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:rippleColor="#FFFFFF"
-                tools:ignore="RedundantDescriptionCheck,TouchTargetSizeCheck"
+                app:srcCompat="@drawable/ic_arrow_back"
                 tools:targetApi="o" />
 
             <TextView
@@ -164,31 +165,30 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="4dp"
+                android:clickable="true"
                 android:ellipsize="middle"
+                android:focusable="true"
                 android:fontFamily="@font/patrick_hand_sc"
                 android:gravity="center"
                 android:textColor="@color/white"
                 android:textSize="16sp"
-                android:clickable="true"
                 android:tooltipText="@string/total_rating"
                 app:layout_constraintBottom_toBottomOf="@+id/imageView2"
                 app:layout_constraintEnd_toStartOf="@+id/imageView2"
                 app:layout_constraintTop_toTopOf="@+id/imageView2"
-                tools:targetApi="o"
-                android:focusable="true" />
+                tools:targetApi="o" />
 
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:clickable="true"
                 android:contentDescription="@string/popularity"
                 android:focusable="true"
                 android:tooltipText="@string/popularity"
-                app:layout_constraintStart_toStartOf="@+id/tv_img"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBar2"
+                app:layout_constraintStart_toStartOf="@+id/posterCard"
+                app:layout_constraintTop_toBottomOf="@+id/posterCard"
                 app:srcCompat="@drawable/ic_eye"
                 tools:ignore="ImageContrastCheck,TouchTargetSizeCheck"
                 tools:targetApi="o" />
@@ -207,68 +207,122 @@
                 app:layout_constraintStart_toEndOf="@+id/imageView4"
                 app:layout_constraintTop_toTopOf="@+id/imageView4" />
 
-            <RatingBar
-                android:id="@+id/ratingBar2"
+
+            <TextView
+                android:id="@+id/ratingTV"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:contentDescription="@string/rating"
-                android:indeterminate="false"
-                android:indeterminateOnly="false"
-                android:indeterminateTint="#FFD600"
-                android:isIndicator="true"
-                android:numStars="5"
-                android:progressTint="#FFAB00"
-                android:secondaryProgressTint="#A9FFFFFF"
-                app:layout_constraintEnd_toEndOf="@+id/tv_img"
-                app:layout_constraintStart_toStartOf="@+id/tv_img"
-                app:layout_constraintTop_toBottomOf="@+id/catTV"
-                tools:targetApi="o" />
+                android:ellipsize="middle"
+                android:fontFamily="@font/patrick_hand_sc"
+                android:gravity="start|center_vertical"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                app:guidelineUseRtl="true"
+                app:layout_constraintEnd_toEndOf="@+id/catsTV"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="@+id/catsTV"
+                app:layout_constraintTop_toBottomOf="@+id/catsTV" />
 
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="24dp"
+                android:layout_marginEnd="16dp"
                 android:clickable="true"
                 android:contentDescription="@string/total_rating"
                 android:focusable="true"
                 android:tooltipText="@string/total_rating"
-                app:layout_constraintEnd_toEndOf="@+id/tv_img"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBar2"
+                app:layout_constraintBottom_toBottomOf="@+id/imageView4"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/imageView4"
                 app:srcCompat="@drawable/ic_person"
                 tools:ignore="ImageContrastCheck,TouchTargetSizeCheck"
                 tools:targetApi="o" />
 
+
             <TextView
-                android:id="@+id/catTV"
+                android:id="@+id/catsTV"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:gravity="center"
+                android:gravity="start|center_vertical"
                 android:textColor="@color/white"
-                android:textSize="16sp"
                 android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="@+id/ratingBar2"
-                app:layout_constraintStart_toStartOf="@+id/ratingBar2"
+                app:layout_constraintEnd_toEndOf="@+id/titleTV"
+                app:layout_constraintStart_toStartOf="@+id/titleTV"
                 app:layout_constraintTop_toBottomOf="@+id/titleTV" />
 
             <ImageButton
-                android:id="@+id/like_BTN"
+                android:id="@+id/likeBTN"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="16dp"
+                android:background="#00FFFFFF"
                 android:backgroundTint="#00FFFFFF"
+                android:minWidth="48dp"
                 android:minHeight="48dp"
+                android:src="@drawable/heart"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/heart"
                 tools:ignore="SpeakableTextPresentCheck" />
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/posterCard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="10dp"
+                app:layout_constraintBottom_toBottomOf="@+id/tv_img"
+                app:layout_constraintStart_toStartOf="@+id/backBtn"
+                app:layout_constraintTop_toBottomOf="@+id/tv_img">
+
+                <com.github.chuross.AspectRatioImageView
+                    android:id="@+id/posterIV"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:contentDescription=""
+                    android:scaleType="centerCrop"
+                    app:ariv_fit="height"
+                    app:ariv_heightRatio="3"
+                    app:ariv_widthRatio="2"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/placeholder"
+                    app:tint="#090000"
+                    app:tintMode="add"
+                    tools:ignore="ImageContrastCheck,UnusedAttribute"
+                    tools:targetApi="m" />
+
+            </androidx.cardview.widget.CardView>
+
+            <ProgressBar
+                android:id="@+id/progressBar3"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateTint="@color/plix_red"
+                app:layout_constraintBottom_toBottomOf="@+id/posterCard"
+                app:layout_constraintEnd_toEndOf="@+id/posterCard"
+                app:layout_constraintStart_toStartOf="@+id/posterCard"
+                app:layout_constraintTop_toTopOf="@+id/posterCard" />
+
+            <ImageView
+                android:id="@+id/imageView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="4dp"
+                app:layout_constraintBottom_toBottomOf="@+id/ratingTV"
+                app:layout_constraintStart_toEndOf="@+id/ratingTV"
+                app:layout_constraintTop_toTopOf="@+id/ratingTV"
+                app:srcCompat="@drawable/ic_star" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
+
 </layout>

@@ -1,6 +1,7 @@
 package com.example.netplix.ui
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.transition.AutoTransition
@@ -13,11 +14,12 @@ import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.netplix.R
 import com.example.netplix.adapter.MoviesRecyclerAdapter
+import com.example.netplix.adapter.RecyclerItemClickListener
 import com.example.netplix.adapter.TvRecyclerAdapter
 import com.example.netplix.databinding.FragmentWishListBinding
 import com.example.netplix.pojo.MovieModel
@@ -84,6 +86,8 @@ class WishListFragment : Fragment() {
             }
         }
         initRV()
+        onMovieClicked(moviesAdapter,binding.moviesWishList)
+        onTvClicked(tvAdapter,binding.tvWishList)
         moviesViewModel.getAllMovies()
         moviesViewModel.getMoviesFromDB().observe(viewLifecycleOwner,object :Observer<List<MovieModel>>{
             override fun onChanged(t: List<MovieModel>) {
@@ -105,24 +109,55 @@ class WishListFragment : Fragment() {
     }
     fun initRV() {
         moviesList = ArrayList()
-        binding.moviesWishList.layoutManager = LinearLayoutManager(requireActivity().baseContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.moviesWishList.layoutManager = GridLayoutManager(requireContext(),2)
         binding.moviesWishList.setHasFixedSize(true)
         moviesAdapter= MoviesRecyclerAdapter(requireActivity())
         binding.moviesWishList.adapter = moviesAdapter
         moviesAdapter.setData(moviesList)
 
         tvList = ArrayList()
-        binding.tvWishList.layoutManager = LinearLayoutManager(requireActivity().baseContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.tvWishList.layoutManager = GridLayoutManager(requireContext(),2)
         binding.tvWishList.setHasFixedSize(true)
         tvAdapter= TvRecyclerAdapter(requireActivity())
         binding.tvWishList.adapter = tvAdapter
         tvAdapter.setData(tvList)
 
     }
+    fun onMovieClicked(adapter: MoviesRecyclerAdapter, recyclerView: RecyclerView){
+
+        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireContext(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+
+            override fun onItemClick(view: View, position: Int) {
+                val tappedMovie: MovieModel = adapter.getItemAt(position)
+                val intent = Intent(context, MoviesDetailsActivity::class.java)
+                intent.putExtra("Movie",tappedMovie)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                requireContext().startActivity(intent)
+            }
+            override fun onItemLongClick(view: View?, position: Int) {
+            }
+        }))
+    }
+
+    fun onTvClicked(adapter: TvRecyclerAdapter, recyclerView: RecyclerView){
+
+        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireContext(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+
+            override fun onItemClick(view: View, position: Int) {
+                val tappedTv: TvModel = adapter.getTvAt(position)
+                val intent = Intent(context, TvDetailsActivity::class.java)
+                intent.putExtra("Tv",tappedTv)
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                requireContext().startActivity(intent)
+            }
+            override fun onItemLongClick(view: View?, position: Int) {
+            }
+        }))
+    }
     private fun setupMoviesSwipe() {
         val callback: ItemTouchHelper.SimpleCallback =
 
-            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.UP) {
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 override fun onMove(
                     @NonNull recyclerView: RecyclerView,
                     @NonNull viewHolder: RecyclerView.ViewHolder,
@@ -136,12 +171,12 @@ class WishListFragment : Fragment() {
                     direction: Int
                 ) {
                     val swipedMoviePosition = viewHolder.adapterPosition
-                    val swipedMovie: MovieModel = moviesAdapter.getMovieAt(swipedMoviePosition)
+                    val swipedMovie: MovieModel = moviesAdapter.getItemAt(swipedMoviePosition)
                     moviesViewModel.deleteMovie(swipedMovie.id)
                     moviesAdapter.notifyDataSetChanged()
                     Toast.makeText(
                         context,
-                        "movie deleted from database",
+                        getString(R.string.deleted),
                         Toast.LENGTH_SHORT
                     ).show()
                 }
@@ -151,8 +186,7 @@ class WishListFragment : Fragment() {
     }
     private fun setupTVSwipe() {
         val callback: ItemTouchHelper.SimpleCallback =
-
-            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.UP) {
+            object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 override fun onMove(
                     @NonNull recyclerView: RecyclerView,
                     @NonNull viewHolder: RecyclerView.ViewHolder,
@@ -171,7 +205,7 @@ class WishListFragment : Fragment() {
                     tvAdapter.notifyDataSetChanged()
                     Toast.makeText(
                         context,
-                        "tv deleted from database",
+                        getString(R.string.deleted),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

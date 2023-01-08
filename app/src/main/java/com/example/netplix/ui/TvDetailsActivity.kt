@@ -18,73 +18,82 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.Locale
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class TvDetailsActivity : AppCompatActivity() {
     val tvViewModel: TvViewModel by lazy { ViewModelProvider(this).get(TvViewModel::class.java) }
     lateinit var binding: ActivityTvDetailsBinding
     lateinit var context: Context
-    var cats = mapOf(
-        10759 to "Action & Adventure",
-        16 to "Animation",
-        35 to "Comedy",
-        80 to "Crime",
-        99 to "Documentary",
-        18 to "Drama",
-        10751 to "Family",
-        10762 to "Kids",
-        9648 to "Mystery",
-        10763 to "News",
-        10764 to "Reality",
-        10765 to "Sci-Fi & Fantasy",
-        10766 to "Soap",
-        10767 to "Talk",
-        10768 to "War & Politics",
-        37 to "Western"
-    )
+    lateinit var cats: Map<Int, String>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityTvDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        cats = mapOf(
+            10759 to getString(R.string.Action_Adventure),
+            16 to getString(R.string.animation),
+            35 to getString(R.string.comedy),
+            80 to getString(R.string.Crime),
+            99 to getString(R.string.Documentary),
+            18 to getString(R.string.Drama),
+            10751 to getString(R.string.Family),
+            10762 to getString(R.string.Kids),
+            9648 to getString(R.string.Mystery),
+            10763 to getString(R.string.News),
+            10764 to getString(R.string.Reality),
+            10765 to getString(R.string.SciFi_Fantasy),
+            10766 to getString(R.string.Soap),
+            10767 to getString(R.string.Talk),
+            10768 to getString(R.string.War_Politics),
+            37 to getString(R.string.Western)
+        )
         context = this
         var myObject: TvModel = intent.getSerializableExtra("Tv") as TvModel
         binding.likeBTN.setOnClickListener {
             tvViewModel.insertTv(myObject)
-            Toast.makeText(context,"ADDED",Toast.LENGTH_SHORT).show()
-            binding.likeBTN.visibility= View.INVISIBLE
+            Toast.makeText(context,getString(R.string.Added),Toast.LENGTH_SHORT).show()
         }
-        val url: String = "https://image.tmdb.org/t/p/w500" + myObject.poster_path
-        val info: String = (myObject.first_air_date + " | " + "TV Show | " + Locale(myObject.original_language).getDisplayName())
+        val posterUrl: String = "https://image.tmdb.org/t/p/w500" + myObject.poster_path
+        val info: String = (getString(R.string.tv_show)+" | "+  Locale(myObject.original_language).getDisplayName()+" | " + getString(R.string.FirstShow)+ myObject.first_air_date )
         binding.infoTV.text = info
-        Picasso.get().load(url).placeholder(R.drawable.placeholder)
+        val backDropUrl: String = "https://image.tmdb.org/t/p/w500" + myObject.backdrop_path
+        Picasso.get().load(backDropUrl).placeholder(R.drawable.placeholder)
             .into(binding.tvImg, object : Callback {
                 override fun onSuccess() {
                     binding.progressBar.visibility = View.GONE
                 }
-
                 override fun onError(e: Exception) {
-                    Log.d("details", e.message.toString())
                     Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
                     binding.progressBar.visibility = View.GONE
+                }
+            })
+        Picasso.get().load(posterUrl).placeholder(R.drawable.placeholder)
+            .into(binding.posterIV, object : Callback {
+                override fun onSuccess() {
+                    binding.progressBar3.visibility = View.GONE
+                }
+                override fun onError(e: Exception) {
+                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    binding.progressBar3.visibility = View.GONE
                 }
             })
         var str = ""
         for (i in myObject.genre_ids) {
             str += cats.get(i) + " | "
         }
-        binding.catTV.text = str
+        binding.catsTV.text = str
         if (!myObject.genre_ids.isEmpty())
-        { binding.catTV.text = binding.catTV.text.removeRange((binding.catTV.text.length - 3)..(binding.catTV.text.length - 1))}
-        binding.storyTV.text = myObject.overview
-        binding.titleTV.text = myObject.original_name
-        binding.ratingBar2.rating = (myObject.vote_average.toFloat()) / 2
+        { binding.catsTV.text = binding.catsTV.text.removeRange((binding.catsTV.text.length - 3)..(binding.catsTV.text.length - 1))}
+        when(myObject.overview.isNullOrEmpty()){true->{binding.storyTV.text = getString(R.string.nostory)} false ->{binding.storyTV.text =myObject.overview}}
+        binding.titleTV.text = myObject.name
+        binding.ratingTV.text = myObject.vote_average.toFloat().toString().plus(getString(R.string.rate))
         binding.countTV.text = myObject.vote_count.toString()
         binding.popTV.text = myObject.popularity.toString()
 
         binding.backBtn.setOnClickListener(object : View.OnClickListener {
             override fun onClick(v: View) {
                 val intent = Intent(context, MainActivity::class.java)
-                intent.putExtra("curr",1)
                 context.startActivity(intent)
                 finish()
             }
@@ -93,9 +102,6 @@ class TvDetailsActivity : AppCompatActivity() {
 
     @Deprecated("Deprecated in Java")
     override fun onBackPressed() {
-        val intent = Intent(context, MainActivity::class.java)
-        intent.putExtra("curr",1)
-        startActivity(intent)
         finish()
     }
 }

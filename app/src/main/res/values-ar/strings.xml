@@ -1,24 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">نـتبليكس</string>
-    <string name="popular" translatable="false">"الأكثر مشاهدة ✨🍿 "</string>
-    <string name="trendy_this_week" translatable="false">"رائج هذا الاسبوع 💅🥳 "</string>
-    <string name="storyline" translatable="false">القصة</string>
-    <string name="back" translatable="false">رجوع</string>
-    <string name="popularity" translatable="false">الشعبية</string>
-    <string name="total_rating" translatable="false">مجموع التقييمات</string>
-    <string name="rating" translatable="false">التقييم</string>
-    <string name="internet_connection" translatable="false">اتصال جيد بالانترنت</string>
-    <string name="tv_shows" translatable="false">العروض التليفيزيونية</string>
-    <string name="movies" translatable="false">الأفلام</string>
-    <string name="search" translatable="false">بحث</string>
-    <string name="movie_search" translatable="false">هل تبحث عن فيلم؟ 👀</string>
-    <string name="tv_search" translatable="false">هل تبحث عن مسلسل؟ 👀</string>
-    <string name="toprated_tv_shows" translatable="false">"المسلسلات والعروض الأعلى تقييماً 🤩 📺 "</string>
+    <string name="popular" >"الأكثر مشاهدة ✨🍿 "</string>
+    <string name="trendy_this_week" >"رائج هذا الاسبوع 💅🥳 "</string>
+    <string name="storyline">القصة</string>
+    <string name="back" >رجوع</string>
+    <string name="popularity" >الشعبية</string>
+    <string name="total_rating" >مجموع التقييمات</string>
+    <string name="rating" >التقييم</string>
+    <string name="internet_connection">اتصال جيد بالانترنت</string>
+    <string name="tv_shows">العروض التليفيزيونية</string>
+    <string name="movies" >الأفلام</string>
+    <string name="search" >بحث</string>
+    <string name="movie_search" >هل تبحث عن فيلم؟ 👀</string>
+    <string name="tv_search" >هل تبحث عن مسلسل؟ 👀</string>
+    <string name="toprated_tv_shows">"المسلسلات والعروض الأعلى تقييماً 🤩 📺 "</string>
     <string name="yes">"باي 😭  "</string>
     <string name="no">"لا 🥳 "</string>
     <string name="exit">هل تريد المغادرة؟ 🥺</string>
-    <string name="wish_list">Watch List</string>
-    <string name="expand">Expand</string>
-    <string name="collapse">Collapse</string>
+    <string name="wish_list">قائمتك</string>
+    <string name="expand">عرض</string>
+    <string name="collapse">إخفاء</string>
+    <string name="action">آكشن</string>
+    <string name="adventure">مغامرة</string>
+    <string name="animation">انمي</string>
+    <string name="comedy">كوميدي</string>
+    <string name="Crime">جريمة</string>
+    <string name="Documentary">وثائقي</string>
+    <string name="Drama">دراما</string>
+    <string name="Family">عائلة</string>
+    <string name="Fantasy">خيال</string>
+    <string name="History">تاريخي</string>
+    <string name="Horror">رعب</string>
+    <string name="Music">موسيقى</string>
+    <string name="Mystery">غموض</string>
+    <string name="Romance">رومنسي</string>
+    <string name="science_fiction">خيال علمي</string>
+    <string name="TV_Movie">" فيلم تلفزيوني"</string>
+    <string name="Thriller">إثارة</string>
+    <string name="War">حرب</string>
+    <string name="Western">غربي</string>
+    <string name="Action_Adventure"> مغامرة &amp;أكشن </string>
+    <string name="Kids">آطفال</string>
+    <string name="News">أخبار</string>
+    <string name="Reality">واقعية</string>
+    <string name="SciFi_Fantasy">خيال علمي &amp; غموض</string>
+    <string name="Soap">سووب</string>
+    <string name="Talk">كلام</string>
+    <string name="War_Politics">حرب &amp; سياسي</string>
+    <string name="FirstShow">  العرض الأول:  " </string>
+    <string name="rate">" /10"</string>
+    <string name="movie">فيلم</string>
+    <string name="tv_show" >عرض تليفيزيوني</string>
+    <string name="Added">تم الحفظ في قائمتك</string>
+    <string name="deleted">تم الحذف من قائمتك</string>
+    <string name="nostory">لم تتوفر قصة بعد 👀</string>
 </resources>

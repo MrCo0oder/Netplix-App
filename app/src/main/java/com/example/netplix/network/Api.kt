@@ -5,6 +5,7 @@ import com.example.netplix.pojo.TvPage
 import io.reactivex.rxjava3.core.Observable
 
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.util.TimeZone
 
@@ -14,21 +15,21 @@ public interface Api {
     fun getPopularMovie(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = true
+        @Query("include_adult") adult: Boolean = false
     ): Observable<MoviesPage>;
 
     @GET("trending/movie/week")
     fun getWeekTrendingMovies(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = true
+        @Query("include_adult") adult: Boolean = false
     ): Observable<MoviesPage>;
 
     @GET("movie/upcoming")
     fun getUpcomingMovies(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = true
+        @Query("include_adult") adult: Boolean = false
     ): Observable<MoviesPage>;
 
     //TV Api
@@ -36,21 +37,21 @@ public interface Api {
     fun getPopularTv(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = true
+        @Query("include_adult") adult: Boolean = false
     ): Observable<TvPage>;
 
     @GET("tv/top_rated")
     fun getTopRatedTv(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = true
+        @Query("include_adult") adult: Boolean = false
     ): Observable<TvPage>;
 
     @GET("tv/airing_today")
     fun getLatestTv(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = true,
+        @Query("include_adult") adult: Boolean = false,
         @Query("timezone")timeZone: String=TimeZone.getDefault().id
     ): Observable<TvPage>;
 
@@ -60,7 +61,7 @@ public interface Api {
         @Query("api_key") api_key: String,
         @Query("query") query: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = true
+        @Query("include_adult") adult: Boolean = false
     ): Observable<MoviesPage>;
 
     @GET("search/tv")
@@ -68,6 +69,6 @@ public interface Api {
         @Query("api_key") api_key: String,
         @Query("query") query: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = true
+        @Query("include_adult") adult: Boolean = false
     ): Observable<TvPage>;
 }
