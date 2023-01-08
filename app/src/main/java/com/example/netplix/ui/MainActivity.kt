@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                 0 -> {
                     tab.text = getText(R.string.movies)
                     tab.icon = getDrawable(R.drawable.ic_movies)
+                    tab.select()
                 }
                 1 -> {
                     tab.text = getText(R.string.tv_shows)
@@ -67,7 +68,7 @@ class MainActivity : AppCompatActivity() {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 binding.viewPager2.currentItem = tab.position
                 tab.tabLabelVisibility = TAB_LABEL_VISIBILITY_LABELED
-
+                tab.select()
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab) {

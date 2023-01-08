@@ -67,28 +67,34 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            app:tabIndicator="@drawable/bg"
-            app:tabInlineLabel="true"
-            app:tabIndicatorAnimationMode="elastic"
-            app:tabMode="auto"
             android:background="@color/bg"
-            app:tabTextAppearance="@style/tab_text"
-            app:tabSelectedTextColor="@color/white" >
+            android:foregroundTint="@color/white"
+            app:tabIconTint="@drawable/icon_color"
+            app:tabIndicator="@drawable/bg"
+            app:tabIndicatorAnimationMode="elastic"
+            app:tabIndicatorGravity="center"
+            app:tabInlineLabel="true"
+            app:tabMode="auto"
+            app:tabSelectedTextColor="@color/white"
+            app:tabTextAppearance="@style/tab_text">
+
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/mm"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                android:icon="@drawable/ic_movies" />
+
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/n"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                />
+                android:focusable="auto"
+                android:icon="@drawable/ic_tv_show" />
+
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/o"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                />
+                android:layout_height="wrap_content" />
         </com.google.android.material.tabs.TabLayout>
 
         <androidx.viewpager2.widget.ViewPager2

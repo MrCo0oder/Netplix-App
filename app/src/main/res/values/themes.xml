@@ -8,11 +8,10 @@
         <!-- Secondary brand color. -->
         <item name="colorSecondary">#D3E50914</item>
         <item name="colorSecondaryVariant">#BCE50914</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <item name="android:statusBarColor">?attr/colorSecondary</item>
         <item name="android:fontFamily">@font/patrick_hand_sc</item>
-
     </style>
 
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
