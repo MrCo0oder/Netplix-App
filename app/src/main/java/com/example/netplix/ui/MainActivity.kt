@@ -7,6 +7,7 @@ import android.net.ConnectivityManager
 import android.os.Bundle
 import android.os.Process
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.widget.ViewPager2.*
 import com.example.netplix.R
@@ -115,11 +116,3 @@ class MainActivity : AppCompatActivity() {
         registerReceiver(networkChecker, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
     }
 }
-
-
-
-
-
-
-
-

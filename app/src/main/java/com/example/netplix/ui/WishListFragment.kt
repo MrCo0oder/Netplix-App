@@ -29,6 +29,7 @@ import com.example.netplix.viewmodel.TvViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class WishListFragment : Fragment() {
     val moviesViewModel: MovieViewModel by lazy { ViewModelProvider(this).get(MovieViewModel::class.java) }
@@ -129,10 +130,10 @@ class WishListFragment : Fragment() {
 
             override fun onItemClick(view: View, position: Int) {
                 val tappedMovie: MovieModel = adapter.getItemAt(position)
-                val intent = Intent(context, MoviesDetailsActivity::class.java)
+                val intent = Intent(requireActivity(), MoviesDetailsActivity::class.java)
                 intent.putExtra("Movie",tappedMovie)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireContext().startActivity(intent)
+                requireActivity().startActivity(intent)
             }
             override fun onItemLongClick(view: View?, position: Int) {
             }
@@ -145,10 +146,10 @@ class WishListFragment : Fragment() {
 
             override fun onItemClick(view: View, position: Int) {
                 val tappedTv: TvModel = adapter.getTvAt(position)
-                val intent = Intent(context, TvDetailsActivity::class.java)
+                val intent = Intent(requireActivity(), TvDetailsActivity::class.java)
                 intent.putExtra("Tv",tappedTv)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireContext().startActivity(intent)
+                requireActivity().startActivity(intent)
             }
             override fun onItemLongClick(view: View?, position: Int) {
             }
@@ -175,7 +176,7 @@ class WishListFragment : Fragment() {
                     moviesViewModel.deleteMovie(swipedMovie.id)
                     moviesAdapter.notifyDataSetChanged()
                     Toast.makeText(
-                        context,
+                        requireActivity(),
                         getString(R.string.deleted),
                         Toast.LENGTH_SHORT
                     ).show()
@@ -204,7 +205,7 @@ class WishListFragment : Fragment() {
                     tvViewModel.deleteTv(swipedTv.id)
                     tvAdapter.notifyDataSetChanged()
                     Toast.makeText(
-                        context,
+                        requireActivity(),
                         getString(R.string.deleted),
                         Toast.LENGTH_SHORT
                     ).show()

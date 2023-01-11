@@ -17,5 +17,8 @@
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/patrick_hand_sc</item>
     </style>
+    <style name="SplashTheme" parent="Theme.Netplix">
+        <item name="android:windowBackground">@drawable/ic_launcher_foreground</item>
+    </style>
 
 </resources>

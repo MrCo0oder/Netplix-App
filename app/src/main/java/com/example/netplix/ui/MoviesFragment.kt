@@ -59,7 +59,6 @@ class MoviesFragment : Fragment() {
     }
 
     @SuppressLint("NotifyDataSetChanged")
-
     fun loadData() {
         moviesViewModel.getPopMovies()
         moviesViewModel.getPopMoviesList()
@@ -88,14 +87,14 @@ class MoviesFragment : Fragment() {
     }
     fun onItemClicked(adapter: MoviesRecyclerAdapter,recyclerView:RecyclerView){
 
-        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireContext(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireActivity(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
 
             override fun onItemClick(view: View, position: Int) {
                 val tappedMovie: MovieModel = adapter.getItemAt(position)
-                val intent = Intent(context, MoviesDetailsActivity::class.java)
+                val intent = Intent(requireActivity(), MoviesDetailsActivity::class.java)
                 intent.putExtra("Movie",tappedMovie)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireContext().startActivity(intent)
+                requireActivity().startActivity(intent)
             }
             override fun onItemLongClick(view: View?, position: Int) {
             }
@@ -103,14 +102,14 @@ class MoviesFragment : Fragment() {
     }
     fun initRV() {
         popMoviesList = ArrayList()
-        binding.popMRV.layoutManager = LinearLayoutManager(requireActivity().baseContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.popMRV.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.popMRV.setHasFixedSize(true)
         rvAdapter= MoviesRecyclerAdapter(requireActivity())
         binding.popMRV.adapter = rvAdapter
         rvAdapter.setData(popMoviesList)
 
         trendyMoviesList = ArrayList()
-        binding.trendyMRV.layoutManager = LinearLayoutManager(requireActivity().baseContext, LinearLayoutManager.HORIZONTAL, false)
+        binding.trendyMRV.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
         binding.trendyMRV.setHasFixedSize(true)
         trendyAdapter= MoviesRecyclerAdapter(requireActivity())
         binding.trendyMRV.adapter = trendyAdapter
@@ -133,8 +132,4 @@ class MoviesFragment : Fragment() {
             loadData()
         }
     }
-
-
 }
-
-

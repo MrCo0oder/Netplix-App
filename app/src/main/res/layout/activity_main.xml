@@ -81,15 +81,13 @@
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/mm"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:icon="@drawable/ic_movies" />
+                android:layout_height="wrap_content" />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/n"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:focusable="auto"
-                android:icon="@drawable/ic_tv_show" />
+              />
 
             <com.google.android.material.tabs.TabItem
                 android:id="@+id/o"

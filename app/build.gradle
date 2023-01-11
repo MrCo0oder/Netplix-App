@@ -97,11 +97,13 @@ dependencies {
     //room
     def room_version = "2.4.3"
     implementation "androidx.room:room-runtime:$room_version"
-//    annotationProcessor "androidx.room:room-compiler:$room_version"
+//annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-
     // optional - RxJava2 support for Room
     implementation "androidx.room:room-rxjava2:$room_version"
+    //splashscreen
+    implementation 'androidx.core:core-splashscreen:1.0.0'
+
 }
 kapt {
     correctErrorTypes true

@@ -24,14 +24,12 @@ import java.util.*
 @Suppress("DEPRECATION")
 class MoviesDetailsActivity : AppCompatActivity() {
     lateinit var binding: ActivityMoviesDetailsBinding
-    lateinit var context: Context
     lateinit var cats: Map<Int, String>
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMoviesDetailsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        context = this
          cats = mapOf(
             28 to getString(R.string.action),
             12 to getString(R.string.adventure),
@@ -61,7 +59,7 @@ class MoviesDetailsActivity : AppCompatActivity() {
         binding.likeBTN.setOnClickListener {
             val viewModel: MovieViewModel by viewModels()
             viewModel.insertMovie(myObject)
-            Toast.makeText(context,getString(R.string.Added),Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@MoviesDetailsActivity,getString(R.string.Added),Toast.LENGTH_SHORT).show()
         }
         binding.infoTV.text=info
         when(myObject.adult)
@@ -76,7 +74,7 @@ class MoviesDetailsActivity : AppCompatActivity() {
                 }
                 override fun onError(e: Exception) {
                     Log.d("details", e.message.toString())
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MoviesDetailsActivity, e.message, Toast.LENGTH_SHORT).show()
                     binding.progressBar3.visibility = View.GONE
                 }
             })
@@ -87,7 +85,7 @@ class MoviesDetailsActivity : AppCompatActivity() {
                 }
                 override fun onError(e: Exception) {
                     Log.d("details", e.message.toString())
-                    Toast.makeText(context, e.message, Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this@MoviesDetailsActivity, e.message, Toast.LENGTH_SHORT).show()
                     binding.progressBar.visibility = View.GONE
                 }
             })
@@ -105,8 +103,8 @@ class MoviesDetailsActivity : AppCompatActivity() {
         binding.popTV.text = myObject.popularity.toString()
         binding.backBtn.setOnClickListener(object : OnClickListener {
             override fun onClick(v: View) {
-                val intent = Intent(context, MainActivity::class.java)
-                context.startActivity(intent)
+                val intent = Intent(this@MoviesDetailsActivity, MainActivity::class.java)
+                this@MoviesDetailsActivity.startActivity(intent)
                 finish()
             }
         })

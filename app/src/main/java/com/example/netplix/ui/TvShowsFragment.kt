@@ -86,7 +86,7 @@ class TvShowsFragment : Fragment() {
     fun initRV() {
         popTvList = ArrayList()
         binding.popTvRV.layoutManager = LinearLayoutManager(
-            requireActivity().baseContext,
+            requireActivity(),
             LinearLayoutManager.HORIZONTAL,
             false
         )
@@ -97,7 +97,7 @@ class TvShowsFragment : Fragment() {
 
         topRatedList = ArrayList()
         binding.topRatedRV.layoutManager = LinearLayoutManager(
-            requireActivity().baseContext,
+            requireActivity(),
             LinearLayoutManager.HORIZONTAL,
             false
         )
@@ -116,16 +116,17 @@ class TvShowsFragment : Fragment() {
     }
     fun onItemClicked(adapter: TvRecyclerAdapter, recyclerView:RecyclerView){
 
-        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireContext(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireActivity(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
 
             override fun onItemClick(view: View, position: Int) {
                 val tappedTv: TvModel = adapter.getTvAt(position)
                 val intent = Intent(context, TvDetailsActivity::class.java)
                 intent.putExtra("Tv",tappedTv)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireContext().startActivity(intent)
+                requireActivity().startActivity(intent)
             }
             override fun onItemLongClick(view: View?, position: Int) {
+
             }
         }))
     }

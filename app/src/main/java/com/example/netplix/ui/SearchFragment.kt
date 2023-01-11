@@ -93,13 +93,13 @@ class SearchFragment : Fragment() {
     }
     fun initRV(){
         searchMoviesList=ArrayList<MovieModel>()
-        binding.movisSearchList.layoutManager = GridLayoutManager(requireActivity().baseContext,2)
+        binding.movisSearchList.layoutManager = GridLayoutManager(requireActivity(),2)
         binding.movisSearchList.setHasFixedSize(true)
         searchMoviesAdapter= MoviesRecyclerAdapter(requireActivity())
         binding.movisSearchList.adapter=searchMoviesAdapter
         searchMoviesAdapter.setData(searchMoviesList)
         searchTvList=ArrayList<TvModel>()
-        binding.tvSearchList.layoutManager = GridLayoutManager(requireActivity().baseContext,2)
+        binding.tvSearchList.layoutManager = GridLayoutManager(requireActivity(),2)
         binding.tvSearchList.setHasFixedSize(true)
         searchTvAdapter= TvRecyclerAdapter(requireActivity())
         binding.tvSearchList.adapter=searchTvAdapter
@@ -107,14 +107,14 @@ class SearchFragment : Fragment() {
     }
     fun onMovieClicked(adapter: MoviesRecyclerAdapter, recyclerView: RecyclerView){
 
-        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireContext(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireActivity(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
 
             override fun onItemClick(view: View, position: Int) {
                 val tappedMovie: MovieModel = adapter.getItemAt(position)
-                val intent = Intent(context, MoviesDetailsActivity::class.java)
+                val intent = Intent(requireActivity(), MoviesDetailsActivity::class.java)
                 intent.putExtra("Movie",tappedMovie)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireContext().startActivity(intent)
+                requireActivity().startActivity(intent)
             }
             override fun onItemLongClick(view: View?, position: Int) {
             }
@@ -123,14 +123,14 @@ class SearchFragment : Fragment() {
 
     fun onTvClicked(adapter: TvRecyclerAdapter, recyclerView: RecyclerView){
 
-        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireContext(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireActivity(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
 
             override fun onItemClick(view: View, position: Int) {
                 val tappedTv: TvModel = adapter.getTvAt(position)
-                val intent = Intent(context, TvDetailsActivity::class.java)
+                val intent = Intent(requireActivity(), TvDetailsActivity::class.java)
                 intent.putExtra("Tv",tappedTv)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireContext().startActivity(intent)
+                requireActivity().startActivity(intent)
             }
             override fun onItemLongClick(view: View?, position: Int) {
             }

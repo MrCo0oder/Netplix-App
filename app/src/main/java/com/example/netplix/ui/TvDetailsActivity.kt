@@ -48,7 +48,7 @@ class TvDetailsActivity : AppCompatActivity() {
             10768 to getString(R.string.War_Politics),
             37 to getString(R.string.Western)
         )
-        context = this
+        context = this@TvDetailsActivity
         var myObject: TvModel = intent.getSerializableExtra("Tv") as TvModel
         binding.likeBTN.setOnClickListener {
             tvViewModel.insertTv(myObject)

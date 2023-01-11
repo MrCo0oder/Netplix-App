@@ -52,7 +52,7 @@ public interface Api {
         @Query("api_key") api_key: String,
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false,
-        @Query("timezone")timeZone: String=TimeZone.getDefault().id
+        @Query("timezone")timeZone: String="UTC+02:00"
     ): Observable<TvPage>;
 
     //Search
