@@ -32,11 +32,12 @@
             android:transitionGroup="false">
 
             <com.github.chuross.AspectRatioImageView
+                app:image="@{listItem.poster_path}"
                 android:id="@+id/tv_imgv"
                 android:layout_width="300dp"
                 android:layout_height="300dp"
                 android:contentDescription=""
-                android:scaleType="centerCrop"
+                android:scaleType="matrix"
                 app:ariv_fit="height"
                 app:ariv_heightRatio="3"
                 app:ariv_widthRatio="2"
@@ -50,13 +51,12 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:background="@drawable/bg"
                 android:backgroundTintMode="src_over"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/tv_imgv"
-                app:layout_constraintStart_toStartOf="@+id/tv_imgv"
-                app:layout_constraintTop_toBottomOf="@+id/progressBar2">
+                app:layout_constraintStart_toStartOf="@+id/tv_imgv">
 
 
                 <TextView
@@ -125,17 +125,6 @@
                     app:srcCompat="@drawable/ic_person" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <ProgressBar
-                android:id="@+id/progressBar2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:indeterminate="true"
-                android:indeterminateBehavior="cycle"
-                android:indeterminateTint="@color/plix_red"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_imgv"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="@+id/tv_imgv"
-                app:layout_constraintTop_toTopOf="@+id/tv_imgv" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 </layout>

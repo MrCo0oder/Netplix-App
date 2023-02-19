@@ -33,18 +33,6 @@ class TvRecyclerAdapter(var context: Context) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
-        val url: String = "https://image.tmdb.org/t/p/w500" + list[position].poster_path
-        Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.binding.tvImgv, object : Callback {
-
-            override fun onSuccess() {
-                    holder.binding.progressBar2.visibility = View.GONE
-            }
-
-            override fun onError(e: Exception) {
-                holder.binding.progressBar2.visibility = View.GONE
-                Log.d("search adapter",e.message.toString())
-            }
-        })
         holder.bind(list[position])
     }
 
@@ -64,10 +52,4 @@ class TvRecyclerAdapter(var context: Context) :
     fun getTvAt(swipedTvPosition: Int): TvModel {
         return list.get(swipedTvPosition);
     }
-
-
-//    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
-//        super.onViewAttachedToWindow(holder)
-//        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.post))
-//    }
 }

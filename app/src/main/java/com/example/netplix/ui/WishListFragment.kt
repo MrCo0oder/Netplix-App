@@ -155,20 +155,21 @@ class WishListFragment : Fragment() {
             }
         }))
     }
+    @SuppressLint("NotifyDataSetChanged")
     private fun setupMoviesSwipe() {
         val callback: ItemTouchHelper.SimpleCallback =
 
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 override fun onMove(
-                    @NonNull recyclerView: RecyclerView,
-                    @NonNull viewHolder: RecyclerView.ViewHolder,
-                    @NonNull target: RecyclerView.ViewHolder
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
                 ): Boolean {
                     return false
                 }
 
                 override fun onSwiped(
-                    @NonNull viewHolder: RecyclerView.ViewHolder,
+                    viewHolder: RecyclerView.ViewHolder,
                     direction: Int
                 ) {
                     val swipedMoviePosition = viewHolder.adapterPosition
@@ -189,15 +190,17 @@ class WishListFragment : Fragment() {
         val callback: ItemTouchHelper.SimpleCallback =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
                 override fun onMove(
-                    @NonNull recyclerView: RecyclerView,
-                    @NonNull viewHolder: RecyclerView.ViewHolder,
-                    @NonNull target: RecyclerView.ViewHolder
+                    recyclerView: RecyclerView,
+                    viewHolder: RecyclerView.ViewHolder,
+                    target: RecyclerView.ViewHolder
                 ): Boolean {
                     return false
                 }
 
+
+                @SuppressLint("NotifyDataSetChanged")
                 override fun onSwiped(
-                    @NonNull viewHolder: RecyclerView.ViewHolder,
+                    viewHolder: RecyclerView.ViewHolder,
                     direction: Int
                 ) {
                     val swipedTvPosition = viewHolder.adapterPosition

@@ -31,17 +31,6 @@ class MoviesRecyclerAdapter(var context: Context) :
 
     override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
 
-        val url: String = "https://image.tmdb.org/t/p/w500" + moviesList[position].poster_path
-        Picasso.get().load(url).placeholder(R.drawable.placeholder).into(holder.binding.movieImgv, object : Callback {
-
-            override fun onSuccess() {
-                    holder.binding.progressBar2.visibility = View.GONE
-            }
-
-            override fun onError(e: Exception) {
-                Log.d("pop Adapter",e.message.toString())
-            }
-        })
         holder.bind(moviesList[position])
     }
 

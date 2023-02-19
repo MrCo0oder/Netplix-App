@@ -1,6 +1,5 @@
 package com.example.netplix.repository
 
-
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.netplix.BuildConfig
@@ -12,15 +11,8 @@ import io.reactivex.rxjava3.core.Observable
 import java.util.*
 import javax.inject.Inject
 
-class Repo {
+class Repo @Inject constructor(private val apiService: Api, private val dbService: Dao) {
     private val apiKey = BuildConfig.API_KEY
-    private  val apiService: Api
-    private  val dbService: Dao
-    @Inject
-    constructor(apiService: Api,dbService: Dao) {
-        this.apiService = apiService
-        this.dbService = dbService
-    }
     //API
     //Movies
     public fun getPopMovies():Observable<MoviesPage>{

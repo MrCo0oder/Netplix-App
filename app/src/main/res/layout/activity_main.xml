@@ -36,6 +36,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="TouchTargetSizeCheck" />
+
             <androidx.coordinatorlayout.widget.CoordinatorLayout
                 android:id="@+id/snackBar"
                 android:layout_width="match_parent"
@@ -43,7 +44,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent" />
 
             <ImageView
                 android:id="@+id/wifiIV"
