@@ -10,7 +10,7 @@ import java.io.Serializable
 data class MovieModel(
     @SerializedName("adult")
     var adult:Boolean,
-    var backdrop_path: String,
+    var backdrop_path: String?="",
     var genre_ids: List<Int>,
     @PrimaryKey
     var id: Int,
@@ -18,7 +18,7 @@ data class MovieModel(
     var original_title: String,
     var overview: String,
     var popularity: Double,
-    var poster_path: String,
+    var poster_path: String?="",
     var release_date: String,
     var title: String,
     var video: Boolean,

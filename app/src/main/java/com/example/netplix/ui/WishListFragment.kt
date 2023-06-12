@@ -6,6 +6,7 @@ import android.os.Build
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
+import android.transition.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class WishListFragment : Fragment() {
-    val moviesViewModel: MovieViewModel by lazy { ViewModelProvider(this).get(MovieViewModel::class.java) }
+    val moviesViewModel: MovieViewModel by lazy { ViewModelProvider(this)[MovieViewModel::class.java] }
     val tvViewModel:TvViewModel by lazy { ViewModelProvider(this).get(TvViewModel::class.java) }
     lateinit var moviesAdapter: MoviesRecyclerAdapter
     lateinit var tvAdapter: TvRecyclerAdapter
@@ -92,16 +93,33 @@ class WishListFragment : Fragment() {
         moviesViewModel.getAllMovies()
         moviesViewModel.getMoviesFromDB().observe(viewLifecycleOwner,object :Observer<List<MovieModel>>{
             override fun onChanged(t: List<MovieModel>) {
-                moviesList=t
-                moviesAdapter.setData(t)
+
+                if (t.isEmpty())
+                {
+                    binding.moviesCardview.visibility=View.GONE
+
+                }else
+                {
+                    moviesList=t
+                    moviesAdapter.setData(t)
+                    binding.moviesCardview.visibility=View.VISIBLE
+                }
+
             }
 
         })
         tvViewModel.getAllTv()
         tvViewModel.getTVFromDB().observe(viewLifecycleOwner,object :Observer<List<TvModel>>{
             override fun onChanged(t: List<TvModel>) {
-                tvList=t
-                tvAdapter.setData(tvList)
+                if (t.isEmpty())
+                {
+                    binding.tvCardview.visibility=View.GONE
+                }else
+                {
+                    tvList=t
+                    tvAdapter.setData(tvList)
+                    binding.tvCardview.visibility=View.VISIBLE
+                }
             }
         })
         setupMoviesSwipe()
@@ -115,7 +133,6 @@ class WishListFragment : Fragment() {
         moviesAdapter= MoviesRecyclerAdapter(requireActivity())
         binding.moviesWishList.adapter = moviesAdapter
         moviesAdapter.setData(moviesList)
-
         tvList = ArrayList()
         binding.tvWishList.layoutManager = GridLayoutManager(requireContext(),2)
         binding.tvWishList.setHasFixedSize(true)

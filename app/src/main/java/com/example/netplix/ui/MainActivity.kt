@@ -31,7 +31,9 @@ class MainActivity : AppCompatActivity() {
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen()
         binding = ActivityMainBinding.inflate(layoutInflater)
+        Thread.sleep(3000)
         setContentView(binding.root)
         //Network Checker
         networkChecker = NetworkChecker(this)
@@ -77,8 +79,6 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onTabReselected(tab: TabLayout.Tab) {
-
-
             }
         })
 

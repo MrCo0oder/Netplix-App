@@ -98,7 +98,7 @@ class MoviesDetailsActivity : AppCompatActivity() {
         {binding.catsTV.text = binding.catsTV.text.removeRange((binding.catsTV.text.length - 3)..(binding.catsTV.text.length - 1))}
         when(myObject.overview.isNullOrEmpty()){true->{binding.storyTV.text = getString(R.string.nostory)} false ->{binding.storyTV.text =myObject.overview}}
         binding.titleTV.text = myObject.title
-        binding.ratingTV.text = myObject.vote_average.toFloat().toString().plus(getString(R.string.rate))
+        binding.ratingTV.text = myObject.vote_average.toDouble().toString().plus(getString(R.string.rate))
         binding.countTV.text = myObject.vote_count.toString()
         binding.popTV.text = myObject.popularity.toString()
         binding.backBtn.setOnClickListener(object : OnClickListener {

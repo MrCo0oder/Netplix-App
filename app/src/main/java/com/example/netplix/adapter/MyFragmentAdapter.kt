@@ -24,5 +24,6 @@ class MyFragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) 
                 return SearchFragment()
             }
         }
+
     }
 }

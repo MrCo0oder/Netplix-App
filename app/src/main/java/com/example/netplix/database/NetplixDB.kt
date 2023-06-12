@@ -5,7 +5,7 @@ import androidx.room.RoomDatabase
 import com.example.netplix.pojo.MovieModel
 import com.example.netplix.pojo.TvModel
 
-@Database(entities = [MovieModel::class, TvModel::class], version = 1, exportSchema = false)
+@Database(entities = [MovieModel::class, TvModel::class], version = 2, exportSchema = false)
 public abstract class NetplixDB : RoomDatabase() {
     public abstract fun dao(): Dao
 }

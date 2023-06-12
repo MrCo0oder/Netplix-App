@@ -2,7 +2,7 @@
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+   >
 
     <data>
         <variable
@@ -21,7 +21,7 @@
         android:elevation="5dp"
         android:focusable="true"
         android:foreground="?android:attr/selectableItemBackground"
-        app:cardCornerRadius="20dp"
+        app:cardCornerRadius="25dp"
         app:cardElevation="5dp"
         app:cardUseCompatPadding="true">
 
@@ -31,32 +31,41 @@
             android:background="@color/black"
             android:transitionGroup="false">
 
-            <com.github.chuross.AspectRatioImageView
-                app:image="@{listItem.poster_path}"
-                android:id="@+id/tv_imgv"
-                android:layout_width="300dp"
-                android:layout_height="300dp"
-                android:contentDescription=""
-                android:scaleType="matrix"
-                app:ariv_fit="height"
-                app:ariv_heightRatio="3"
-                app:ariv_widthRatio="2"
-                app:layout_constraintBottom_toBottomOf="parent"
+            <androidx.cardview.widget.CardView
+                android:id="@+id/tv_card"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardBackgroundColor="@color/bg"
+                app:cardCornerRadius="20dp"
+                app:cardElevation="5dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.0"
-                app:srcCompat="@mipmap/ic_launcher_round" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.github.chuross.AspectRatioImageView
+                    android:id="@+id/tv_imgv"
+                    android:layout_width="300dp"
+                    android:layout_height="300dp"
+                    android:contentDescription=""
+                    android:scaleType="matrix"
+                    app:ariv_fit="height"
+                    app:ariv_heightRatio="16"
+                    app:ariv_widthRatio="9"
+                    app:image="@{listItem.poster_path}" />
+            </androidx.cardview.widget.CardView>
+
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:background="@drawable/bg"
                 android:backgroundTintMode="src_over"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/tv_imgv"
-                app:layout_constraintStart_toStartOf="@+id/tv_imgv">
+                app:layout_constraintEnd_toEndOf="@+id/tv_card"
+                app:layout_constraintStart_toStartOf="@+id/tv_card"
+                app:layout_constraintTop_toBottomOf="@+id/tv_card">
 
 
                 <TextView

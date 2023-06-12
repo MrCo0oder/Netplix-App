@@ -8,6 +8,7 @@ import com.example.netplix.network.Api
 import com.example.netplix.pojo.*
 import kotlin.collections.List
 import io.reactivex.rxjava3.core.Observable
+import retrofit2.Response
 import java.util.*
 import javax.inject.Inject
 
@@ -15,8 +16,8 @@ class Repo @Inject constructor(private val apiService: Api, private val dbServic
     private val apiKey = BuildConfig.API_KEY
     //API
     //Movies
-    public fun getPopMovies():Observable<MoviesPage>{
-        return apiService.getPopularMovie(apiKey, Locale.getDefault().language.toString())
+    suspend fun getPopMovies(page: Int): Response<MoviesPage> {
+        return apiService.getPopularMovie(apiKey, Locale.getDefault().language.toString(),page=page)
     }
 
     public fun getTrendyMovies():Observable<MoviesPage>{

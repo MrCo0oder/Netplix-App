@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <!-- Base application theme. -->
     <style name="Theme.Netplix" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
@@ -12,13 +12,14 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorSecondary</item>
         <item name="android:fontFamily">@font/patrick_hand_sc</item>
-        <!-- Customize your theme here. -->
     </style>
 
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/patrick_hand_sc</item>
     </style>
-    <style name="SplashTheme" parent="Theme.Netplix">
-        <item name="android:windowBackground">@drawable/ic_launcher_foreground</item>
+    <style name="SplashTheme" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/black</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground2</item>
+        <item name="postSplashScreenTheme">@style/Theme.Netplix</item>
     </style>
 </resources>

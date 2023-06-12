@@ -1,15 +1,22 @@
 package com.example.netplix.viewmodel
 
+import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.cachedIn
+import com.example.netplix.PagingMoviesSource
 import com.example.netplix.pojo.*
 import com.example.netplix.repository.Repo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.functions.Function
 import io.reactivex.rxjava3.schedulers.Schedulers
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +31,10 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
         MutableLiveData<List<MovieModel>>()
     private val tvSearchList: MutableLiveData<List<TvModel>> = MutableLiveData<List<TvModel>>()
     private lateinit var moviesList: LiveData<List<MovieModel>>
-
+    val loading=MutableLiveData<Boolean>()
+    val  moviesPagingList=Pager(PagingConfig(1)){
+        PagingMoviesSource(repository)
+    }.flow.cachedIn(viewModelScope)
     fun getPopMoviesList(): MutableLiveData<List<MovieModel>> {
         return popMoviesList
     }
@@ -49,24 +59,27 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
         return moviesList
     }
 
-    fun getPopMovies() {
-        repository.getPopMovies()
-            .subscribeOn(Schedulers.io())
-            .map(object : Function<MoviesPage, List<MovieModel>> {
-                override fun apply(t: MoviesPage): List<MovieModel> {
-                    return t.results
-                }
-            })
-            .subscribeOn(AndroidSchedulers.mainThread())
-            .subscribe({ s -> popMoviesList.postValue(s) }, { it ->
-                Log.e(TAG, "getPopMovies: " + it)
-            })
+    @SuppressLint("CheckResult")
+     fun getPopMovies() {
+//        repository.getPopMovies()
+//            .subscribeOn(Schedulers.io())
+//            .map(object : Function<MoviesPage, List<MovieModel>> {
+//                override fun apply(t: MoviesPage): List<MovieModel> {
+//                    return t.results
+//                }
+//            })
+//            .subscribeOn(AndroidSchedulers.mainThread()).debounce(2,TimeUnit.SECONDS)
+//            .subscribe({ s -> popMoviesList.postValue(s) }, { it ->
+//                Log.e(TAG, "getPopMovies: " + it)
+//            })
 
     }
+    @SuppressLint("CheckResult")
     fun getTrendyMovies() {
         repository.getTrendyMovies()
             .subscribeOn(Schedulers.io())
-            .map(object : Function<MoviesPage, List<MovieModel>> {
+            .map(@SuppressLint("CheckResult")
+            object : Function<MoviesPage, List<MovieModel>> {
                 override fun apply(t: MoviesPage): List<MovieModel> {
                     return t.results
                 }
@@ -78,6 +91,7 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
             })
 
     }
+    @SuppressLint("CheckResult")
     fun getUpComing() {
         repository.getUpComing()
             .subscribeOn(Schedulers.io())
@@ -87,12 +101,14 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
                 }
 
             })
+            .distinctUntilChanged()
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({ s -> upComingList.postValue(s) }, { it ->
                 Log.e(TAG, "getUpComingMovies: " + it)
             })
 
     }
+    @SuppressLint("CheckResult")
     fun getSearchMovies(query: String) {
         repository.getSearchMovies(query).subscribeOn(Schedulers.io())
             .map(object : Function<MoviesPage, List<MovieModel>> {
@@ -100,12 +116,14 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
                     return t.results
                 }
 
-            })
+            }).debounce(3,TimeUnit.SECONDS)
+            .distinctUntilChanged()
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({ s -> moviesSearchList.postValue(s) }, { it ->
                 Log.e(TAG, "getMoviesSearch: " + it)
             })
     }
+    @SuppressLint("CheckResult")
     fun getSearchTv(query: String) {
         repository.getSearchTv(query).subscribeOn(Schedulers.io())
             .map(object : Function<TvPage, List<TvModel>> {
@@ -113,7 +131,8 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
                     return t.results
                 }
 
-            })
+            }).debounce(3,TimeUnit.SECONDS)
+            .distinctUntilChanged()
             .subscribeOn(AndroidSchedulers.mainThread())
             .subscribe({ s -> tvSearchList.postValue(s) }, { it ->
                 Log.e(TAG, "getTvSearch: " + it)

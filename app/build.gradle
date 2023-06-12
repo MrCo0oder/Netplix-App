@@ -94,14 +94,21 @@ dependencies {
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     //room
     def room_version = "2.4.3"
+    //noinspection GradleDependency
     implementation "androidx.room:room-runtime:$room_version"
 //annotationProcessor "androidx.room:room-compiler:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
-    // optional - RxJava2 support for Room
+    //noinspection GradleDependency
     implementation "androidx.room:room-rxjava2:$room_version"
     //splashscreen
-    implementation 'androidx.core:core-splashscreen:1.0.0'
+    implementation 'androidx.core:core-splashscreen:1.0.1'
 
+    def paging_version = "3.1.1"
+    implementation "androidx.paging:paging-runtime:$paging_version"
+    testImplementation "androidx.paging:paging-common:$paging_version"
+    
+    def lottieVersion = "3.4.0"
+    implementation "com.airbnb.android:lottie:$lottieVersion"
 }
 kapt {
     correctErrorTypes true

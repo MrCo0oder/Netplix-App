@@ -1,6 +1,7 @@
 package com.example.netplix.utils;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -35,6 +36,7 @@ public class NetworkChecker extends BroadcastReceiver {
 
     }
 
+    @SuppressLint("UnsafeProtectedBroadcastReceiver")
     @Override
     public void onReceive(Context context, Intent intent) {
 

@@ -3,6 +3,7 @@ package com.example.netplix.network
 import com.example.netplix.pojo.MoviesPage
 import com.example.netplix.pojo.TvPage
 import io.reactivex.rxjava3.core.Observable
+import retrofit2.Response
 
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -12,25 +13,26 @@ import java.util.TimeZone
 public interface Api {
     //Movies Api
     @GET("movie/popular")
-    fun getPopularMovie(
+    suspend fun getPopularMovie(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = false
-    ): Observable<MoviesPage>;
+        @Query("include_adult") adult: Boolean = false,
+        @Query("page") page: Int
+    ): Response<MoviesPage>
 
     @GET("trending/movie/week")
     fun getWeekTrendingMovies(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false
-    ): Observable<MoviesPage>;
+    ): Observable<MoviesPage>
 
     @GET("movie/upcoming")
     fun getUpcomingMovies(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false
-    ): Observable<MoviesPage>;
+    ): Observable<MoviesPage>
 
     //TV Api
     @GET("tv/popular")
@@ -38,14 +40,14 @@ public interface Api {
         @Query("api_key") api_key: String,
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false
-    ): Observable<TvPage>;
+    ): Observable<TvPage>
 
     @GET("tv/top_rated")
     fun getTopRatedTv(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false
-    ): Observable<TvPage>;
+    ): Observable<TvPage>
 
     @GET("tv/airing_today")
     fun getLatestTv(
@@ -53,7 +55,7 @@ public interface Api {
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false,
         @Query("timezone")timeZone: String="UTC+02:00"
-    ): Observable<TvPage>;
+    ): Observable<TvPage>
 
     //Search
     @GET("search/movie")
@@ -62,7 +64,7 @@ public interface Api {
         @Query("query") query: String,
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false
-    ): Observable<MoviesPage>;
+    ): Observable<MoviesPage>
 
     @GET("search/tv")
     fun searchTV(
@@ -70,5 +72,5 @@ public interface Api {
         @Query("query") query: String,
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false
-    ): Observable<TvPage>;
+    ): Observable<TvPage>
 }

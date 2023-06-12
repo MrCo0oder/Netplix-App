@@ -38,10 +38,10 @@ class MoviesRecyclerAdapter(var context: Context) :
         return moviesList.size
     }
 
-    override  fun  onViewAttachedToWindow(holder: ViewHolder) {
+ /*   override  fun  onViewAttachedToWindow(holder: ViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim))
-    }
+    }*/
     fun setData(list:List<MovieModel>){
         moviesList=list
         notifyDataSetChanged()
