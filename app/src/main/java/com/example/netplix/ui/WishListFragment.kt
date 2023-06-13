@@ -152,8 +152,7 @@ class WishListFragment : Fragment() {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 requireActivity().startActivity(intent)
             }
-            override fun onItemLongClick(view: View?, position: Int) {
-            }
+
         }))
     }
 
@@ -167,8 +166,6 @@ class WishListFragment : Fragment() {
                 intent.putExtra("Tv",tappedTv)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 requireActivity().startActivity(intent)
-            }
-            override fun onItemLongClick(view: View?, position: Int) {
             }
         }))
     }

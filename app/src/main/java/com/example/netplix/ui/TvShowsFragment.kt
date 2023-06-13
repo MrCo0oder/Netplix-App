@@ -125,9 +125,7 @@ class TvShowsFragment : Fragment() {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 requireActivity().startActivity(intent)
             }
-            override fun onItemLongClick(view: View?, position: Int) {
 
-            }
         }))
     }
 }

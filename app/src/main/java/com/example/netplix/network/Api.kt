@@ -2,13 +2,12 @@ package com.example.netplix.network
 
 import com.example.netplix.pojo.MoviesPage
 import com.example.netplix.pojo.TvPage
+import com.example.netplix.pojo.movieDetails.MovieDetails
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.Response
-
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
-import java.util.TimeZone
 
 public interface Api {
     //Movies Api
@@ -20,12 +19,20 @@ public interface Api {
         @Query("page") page: Int
     ): Response<MoviesPage>
 
-    @GET("trending/movie/week")
-    fun getWeekTrendingMovies(
+    @GET("movie/{movie_id}")
+    fun getMovie(  @Path("movie_id") id: Int,
         @Query("api_key") api_key: String,
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false
-    ): Observable<MoviesPage>
+    ): Observable<MovieDetails>
+
+    @GET("trending/movie/week")
+    suspend fun getWeekTrendingMovies(
+        @Query("api_key") api_key: String,
+        @Query("language") language: String,
+        @Query("include_adult") adult: Boolean = true,
+        @Query("page") page: Int
+    ): Response<MoviesPage>
 
     @GET("movie/upcoming")
     fun getUpcomingMovies(
@@ -54,7 +61,7 @@ public interface Api {
         @Query("api_key") api_key: String,
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false,
-        @Query("timezone")timeZone: String="UTC+02:00"
+        @Query("timezone") timeZone: String = "UTC+02:00"
     ): Observable<TvPage>
 
     //Search

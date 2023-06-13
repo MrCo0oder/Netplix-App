@@ -13,6 +13,7 @@
         android:background="@color/bg"
         android:gravity="center_horizontal"
         android:orientation="vertical"
+        android:animateLayoutChanges="true"
         tools:context=".MainActivity">
 
         <androidx.constraintlayout.widget.ConstraintLayout

@@ -116,8 +116,6 @@ class SearchFragment : Fragment() {
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 requireActivity().startActivity(intent)
             }
-            override fun onItemLongClick(view: View?, position: Int) {
-            }
         }))
     }
 
@@ -131,8 +129,6 @@ class SearchFragment : Fragment() {
                 intent.putExtra("Tv",tappedTv)
                 intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
                 requireActivity().startActivity(intent)
-            }
-            override fun onItemLongClick(view: View?, position: Int) {
             }
         }))
     }

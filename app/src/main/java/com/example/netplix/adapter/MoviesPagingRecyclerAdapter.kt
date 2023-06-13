@@ -4,20 +4,24 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.netplix.R
 import com.example.netplix.databinding.MovieCardBinding
 import com.example.netplix.pojo.MovieModel
 
-class MoviesPagingRecyclerAdapter :
+class MoviesPagingRecyclerAdapter(
+    private val context: Context,
+    val clickListener: (movie: MovieModel) -> Unit
+) :
     PagingDataAdapter<MovieModel, MoviesPagingRecyclerAdapter.ViewHolder>(diffCallback) {
 
-
-    class ViewHolder(val binding: MovieCardBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(val binding: MovieCardBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(item: MovieModel) {
             binding.listItem = item
-            binding.movieName.text=item.title
+            binding.movieName.text = item.title
         }
     }
 
@@ -27,16 +31,18 @@ class MoviesPagingRecyclerAdapter :
         return ViewHolder(listItemBinding)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, @SuppressLint("RecyclerView") position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!)
         holder.setIsRecyclable(false)
+        holder.itemView.setOnClickListener {
+            clickListener(getItem(position)!!)
+        }
     }
 
-
-    /*   override  fun  onViewAttachedToWindow(holder: ViewHolder) {
-           super.onViewAttachedToWindow(holder)
-           holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim))
-       }*/
+    override fun onViewAttachedToWindow(holder: ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim))
+    }
 
     companion object {
         private val diffCallback = object : DiffUtil.ItemCallback<MovieModel>() {
@@ -47,7 +53,6 @@ class MoviesPagingRecyclerAdapter :
             override fun areContentsTheSame(oldItem: MovieModel, newItem: MovieModel): Boolean {
                 return oldItem == newItem
             }
-
         }
     }
 

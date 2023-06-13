@@ -1,18 +1,16 @@
 package com.example.netplix.ui
-import android.annotation.SuppressLint
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat.*
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.*
+import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.netplix.adapter.MoviesPagingRecyclerAdapter
 import com.example.netplix.adapter.MoviesRecyclerAdapter
@@ -22,22 +20,16 @@ import com.example.netplix.pojo.MovieModel
 import com.example.netplix.viewmodel.MovieViewModel
 import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 
 @AndroidEntryPoint
 class MoviesFragment : Fragment() {
     lateinit var binding: FragmentMoviesBinding
-    private val moviesViewModel: MovieViewModel by lazy { ViewModelProvider(this).get(MovieViewModel::class.java) }
-    lateinit var rvAdapter: MoviesPagingRecyclerAdapter
-    lateinit var trendyAdapter: MoviesRecyclerAdapter
-    lateinit var popMoviesList: List<MovieModel>
-    lateinit var trendyMoviesList: List<MovieModel>
-    lateinit var upComingList: List<MovieModel>
-    lateinit var moviesCarouselAdapter: MoviesRecyclerAdapter
-    lateinit var linearLayoutManager: CarouselLayoutManager
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val moviesViewModel: MovieViewModel by lazy { ViewModelProvider(this)[MovieViewModel::class.java] }
+    private lateinit var popularAdapter: MoviesPagingRecyclerAdapter
+    private lateinit var trendyAdapter: MoviesPagingRecyclerAdapter
+    private lateinit var upComingList: List<MovieModel>
+    private lateinit var moviesCarouselAdapter: MoviesRecyclerAdapter
+    private lateinit var linearLayoutManager: CarouselLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -45,7 +37,6 @@ class MoviesFragment : Fragment() {
     ): View? {
         val layoutInflater = LayoutInflater.from(requireActivity())
         binding = FragmentMoviesBinding.inflate(layoutInflater, container, false)
-
         return binding.root
     }
 
@@ -58,100 +49,115 @@ class MoviesFragment : Fragment() {
         })
         initRV()
         loadData()
-//        onItemClicked(rvAdapter,binding.popMRV)
-        onItemClicked(trendyAdapter,binding.trendyMRV)
-        onItemClicked(moviesCarouselAdapter,binding.carouselRecyclerview)
+        onMovieClicked(moviesCarouselAdapter, binding.carouselRecyclerview)
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun loadData() {
         binding.apply {
-            lifecycleScope.launchWhenCreated {
-                moviesViewModel.moviesPagingList.collect{
-                    rvAdapter.submitData(it)
-                    println("888"+it)
-
-                }
-            }
+            listenForPopularMoviesApi()
+            binding.popMRV.adapter = popularAdapter
         }
-        binding.  popMRV.adapter = rvAdapter
-//        moviesViewModel.getPopMovies()
-//        moviesViewModel.getPopMoviesList()
-//            .observe(viewLifecycleOwner, object : Observer<List<MovieModel>> {
-//                override fun onChanged(t: List<MovieModel>) {
-//                    popMoviesList = t.sortedBy { movieModel -> movieModel.vote_average }.reversed()
-//
-//                }
-//            })
-        moviesViewModel.getTrendyMovies()
-        moviesViewModel.getTrendyMoviesList()
-            .observe(viewLifecycleOwner, object : Observer<List<MovieModel>> {
-                override fun onChanged(t: List<MovieModel>) {
-                    trendyMoviesList = t
-                    trendyAdapter.setData(trendyMoviesList)
-                }
-            })
-        moviesViewModel.getUpComing()
-        moviesViewModel.getUpComingList()
-            .observe(viewLifecycleOwner, object : Observer<List<MovieModel>> {
-                override fun onChanged(t: List<MovieModel>) {
-                    upComingList = t
-                    moviesCarouselAdapter.setData(upComingList)
-                }
-            })
-    }
-    fun onItemClicked(adapter: MoviesRecyclerAdapter,recyclerView:RecyclerView){
 
-        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireActivity(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
-
-            override fun onItemClick(view: View, position: Int) {
-                val tappedMovie: MovieModel = adapter.getItemAt(position)
-                val intent = Intent(requireActivity(), MoviesDetailsActivity::class.java)
-                intent.putExtra("Movie",tappedMovie)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireActivity().startActivity(intent)
-            }
-            override fun onItemLongClick(view: View?, position: Int) {
-            }
-        }))
-    }
-    fun initRV() {
-        rvAdapter= MoviesPagingRecyclerAdapter()
-        popMoviesList = ArrayList()
-        binding.popMRV.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-        binding.popMRV.setHasFixedSize(true)
-
-
-//        rvAdapter.setData(popMoviesList)
         binding.apply {
-            lifecycleScope.launchWhenCreated {
-                moviesViewModel.moviesPagingList.collect{
-                    println("888"+it.toString())
-                    rvAdapter.submitData(it)
-                }
-            }
+            listenForTrendyMoviesApi()
+            binding.trendyMRV.adapter = trendyAdapter
         }
 
+        listenForUpcomingApi()
+    }
 
-        trendyMoviesList = ArrayList()
-        binding.trendyMRV.layoutManager = LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
-        binding.trendyMRV.setHasFixedSize(true)
-        trendyAdapter= MoviesRecyclerAdapter(requireActivity())
-        binding.trendyMRV.adapter = trendyAdapter
-        trendyAdapter.setData(trendyMoviesList)
+    fun initRV() {
+        initPopularRecyclerView()
+        initTrendyRecyclerView()
+        initUpComingRecyclerView()
+    }
 
-        upComingList = ArrayList()
-        moviesCarouselAdapter=MoviesRecyclerAdapter(requireActivity())
+
+    private fun initPopularRecyclerView() {
+        popularAdapter = MoviesPagingRecyclerAdapter(requireContext()) {
+            onMovieClicked(it)
+        }
+        binding.apply {
+            popMRV.layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            popMRV.setHasFixedSize(true)
+            listenForPopularMoviesApi()
+        }
+    }
+
+    private fun initTrendyRecyclerView() {
+        trendyAdapter = MoviesPagingRecyclerAdapter(requireContext()) {
+            onMovieClicked(it)
+        }
+        binding.apply {
+            trendyMRV.layoutManager =
+                LinearLayoutManager(requireActivity(), LinearLayoutManager.HORIZONTAL, false)
+            trendyMRV.setHasFixedSize(true)
+            listenForTrendyMoviesApi()
+        }
+    }
+
+    private fun initUpComingRecyclerView() {
+        upComingList = emptyList()
+        moviesCarouselAdapter = MoviesRecyclerAdapter(requireActivity())
         binding.carouselRecyclerview.adapter = moviesCarouselAdapter
         moviesCarouselAdapter.setData(upComingList)
-        linearLayoutManager = CarouselLayoutManager(false, true, 0.5f, false, true, true, HORIZONTAL)
+        linearLayoutManager =
+            CarouselLayoutManager(false, false, 0.5f, false, true, true, HORIZONTAL)
         binding.carouselRecyclerview.layoutManager = linearLayoutManager
-
     }
 
-    override fun onResume() {
-        super.onResume()
+    private fun listenForPopularMoviesApi() {
+        lifecycleScope.launchWhenCreated {
+            moviesViewModel.moviesPagingList.collect {
+                popularAdapter.submitData(it)
+            }
+        }
     }
+
+    private fun listenForTrendyMoviesApi() {
+        lifecycleScope.launchWhenCreated {
+            moviesViewModel.trendyMoviesList.collect {
+                trendyAdapter.submitData(it)
+            }
+        }
+    }
+
+    private fun listenForUpcomingApi() {
+        moviesViewModel.getUpComing()
+        moviesViewModel.getUpComingList()
+            .observe(viewLifecycleOwner) {
+                upComingList = it
+                moviesCarouselAdapter.setData(upComingList)
+            }
+    }
+
+    fun onMovieClicked(item: MovieModel) {
+        goToDetailsActivity(item)
+    }
+
+    fun onMovieClicked(adapter: MoviesRecyclerAdapter, recyclerView: RecyclerView) {
+
+        recyclerView.addOnItemTouchListener(
+            RecyclerItemClickListener(
+                requireActivity(),
+                recyclerView,
+                object : RecyclerItemClickListener.OnItemClickListener {
+
+                    override fun onItemClick(view: View, position: Int) {
+                        goToDetailsActivity(adapter.getItemAt(position))
+                    }
+                })
+        )
+    }
+
+    private fun goToDetailsActivity(tappedMovie: MovieModel) {
+        val intent = Intent(requireActivity(), MoviesDetailsActivity::class.java)
+        intent.putExtra("Movie", tappedMovie)
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        requireActivity().startActivity(intent)
+    }
+
     override fun onViewStateRestored(savedInstanceState: Bundle?) {
         super.onViewStateRestored(savedInstanceState)
         if (savedInstanceState == null) {
