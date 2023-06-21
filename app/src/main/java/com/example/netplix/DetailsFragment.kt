@@ -1,5 +1,6 @@
 package com.example.netplix
 
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ import org.imaginativeworld.whynotimagecarousel.listener.CarouselListener
 import org.imaginativeworld.whynotimagecarousel.model.CarouselItem
 import java.util.Locale
 
+@Suppress("DEPRECATION")
 @AndroidEntryPoint
 class DetailsFragment : Fragment() {
     private lateinit var navigationModule: NavigationModule
@@ -49,9 +51,9 @@ class DetailsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         init()
         if (arguments?.getBoolean(Constants.IS_MOVE) == true)
-            listeningForMoviesMainApi(getMovieFromArgs())
+            getMovieFromArgs()?.let { listeningForMoviesMainApi(it) }
         else
-            listeningForTvMainApi(getTvFromArgs())
+            getTvFromArgs()?.let { listeningForTvMainApi(it) }
     }
 
 
@@ -65,8 +67,18 @@ class DetailsFragment : Fragment() {
         tvViewModel = ViewModelProvider(this)[TvViewModel::class.java]
     }
 
-    private fun getMovieFromArgs() = arguments?.getSerializable(MOVIE_ID) as MovieModel
-    private fun getTvFromArgs() = arguments?.getSerializable(TV_ID) as TvModel
+    private fun getMovieFromArgs() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arguments?.getSerializable(MOVIE_ID, MovieModel::class.java)
+    } else {
+        arguments?.getSerializable(MOVIE_ID) as MovieModel
+
+    }
+
+    private fun getTvFromArgs() = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        arguments?.getSerializable(TV_ID, TvModel::class.java)
+    } else {
+        arguments?.getSerializable(TV_ID) as TvModel
+    }
 
     private fun listeningForMoviesMainApi(movie: MovieModel) {
         moviesViewModel.getMovie(movie.id)
