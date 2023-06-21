@@ -15,7 +15,6 @@ import com.google.android.material.snackbar.Snackbar
 
 class NetworkChecker : BroadcastReceiver {
     private var snackbar1: Snackbar? = null
-    private var imageView: ImageView? = null
     private var connectivityManager: ConnectivityManager? = null
 
     constructor() {}
@@ -30,7 +29,6 @@ class NetworkChecker : BroadcastReceiver {
             .setBackgroundTint(ContextCompat.getColor(activity, R.color.plix_red))
             .setTextColor(Color.WHITE)
             .setAnimationMode(Snackbar.ANIMATION_MODE_SLIDE)
-        imageView = activity.findViewById(R.id.wifiIV)
     }
 
     @SuppressLint("UnsafeProtectedBroadcastReceiver")
@@ -38,10 +36,8 @@ class NetworkChecker : BroadcastReceiver {
         if (connectivityManager!!.activeNetworkInfo != null && connectivityManager!!.activeNetworkInfo!!
                 .isConnected
         ) {
-            imageView!!.visibility = View.VISIBLE
             snackbar1!!.dismiss()
         } else {
-            imageView!!.visibility = View.GONE
             snackbar1!!.show()
         }
     }

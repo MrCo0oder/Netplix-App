@@ -1,6 +1,5 @@
 package com.example.netplix.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,11 +11,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.HORIZONTAL
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.example.netplix.R
 import com.example.netplix.adapter.MoviesPagingRecyclerAdapter
 import com.example.netplix.adapter.MoviesRecyclerAdapter
 import com.example.netplix.adapter.RecyclerItemClickListener
 import com.example.netplix.databinding.FragmentMoviesBinding
+import com.example.netplix.di.NavigationModule
 import com.example.netplix.pojo.MovieModel
+import com.example.netplix.utils.Constants
 import com.example.netplix.viewmodel.MovieViewModel
 import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
@@ -30,7 +32,7 @@ class MoviesFragment : Fragment() {
     private lateinit var upComingList: List<MovieModel>
     private lateinit var moviesCarouselAdapter: MoviesRecyclerAdapter
     private lateinit var linearLayoutManager: CarouselLayoutManager
-
+    lateinit var navigationModule: NavigationModule
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -47,6 +49,7 @@ class MoviesFragment : Fragment() {
             loadData()
             binding.swipe.setRefreshing(false);
         })
+        navigationModule = NavigationModule(requireActivity())
         initRV()
         loadData()
         onMovieClicked(moviesCarouselAdapter, binding.carouselRecyclerview)
@@ -75,7 +78,7 @@ class MoviesFragment : Fragment() {
 
     private fun initPopularRecyclerView() {
         popularAdapter = MoviesPagingRecyclerAdapter(requireContext()) {
-            onMovieClicked(it)
+            handleNavigationToMovieDetailsFragment(it)
         }
         binding.apply {
             popMRV.layoutManager =
@@ -87,7 +90,7 @@ class MoviesFragment : Fragment() {
 
     private fun initTrendyRecyclerView() {
         trendyAdapter = MoviesPagingRecyclerAdapter(requireContext()) {
-            onMovieClicked(it)
+            handleNavigationToMovieDetailsFragment(it)
         }
         binding.apply {
             trendyMRV.layoutManager =
@@ -97,9 +100,21 @@ class MoviesFragment : Fragment() {
         }
     }
 
+    private fun handleNavigationToMovieDetailsFragment(it: MovieModel) {
+        navigationModule.navigateTo(
+            R.id.action_homeFragment_to_detailsFragment,
+            R.id.nav_host_fragment,
+            Bundle().apply {
+                putBoolean(Constants.IS_MOVE, true)
+                putSerializable("MOVIE_ID", it)
+            })
+    }
+
     private fun initUpComingRecyclerView() {
         upComingList = emptyList()
-        moviesCarouselAdapter = MoviesRecyclerAdapter(requireActivity())
+        moviesCarouselAdapter = MoviesRecyclerAdapter(requireActivity()){
+            handleNavigationToMovieDetailsFragment(it)
+        }
         binding.carouselRecyclerview.adapter = moviesCarouselAdapter
         moviesCarouselAdapter.setData(upComingList)
         linearLayoutManager =
@@ -132,9 +147,6 @@ class MoviesFragment : Fragment() {
             }
     }
 
-    fun onMovieClicked(item: MovieModel) {
-        goToDetailsActivity(item)
-    }
 
     fun onMovieClicked(adapter: MoviesRecyclerAdapter, recyclerView: RecyclerView) {
 
@@ -143,19 +155,11 @@ class MoviesFragment : Fragment() {
                 requireActivity(),
                 recyclerView,
                 object : RecyclerItemClickListener.OnItemClickListener {
-
                     override fun onItemClick(view: View, position: Int) {
-                        goToDetailsActivity(adapter.getItemAt(position))
+                        handleNavigationToMovieDetailsFragment(adapter.getItemAt(position))
                     }
                 })
         )
-    }
-
-    private fun goToDetailsActivity(tappedMovie: MovieModel) {
-        val intent = Intent(requireActivity(), MoviesDetailsActivity::class.java)
-        intent.putExtra("Movie", tappedMovie)
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        requireActivity().startActivity(intent)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

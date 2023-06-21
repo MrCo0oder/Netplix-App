@@ -1,8 +1,6 @@
 package com.example.netplix.viewmodel
 
-import android.annotation.SuppressLint
 import android.util.Log
-import android.view.View
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,9 +9,10 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.cachedIn
 import com.example.netplix.PagingMoviesSource
-import com.example.netplix.databinding.FragmentMoviesBinding
 import com.example.netplix.pojo.*
 import com.example.netplix.pojo.movieDetails.MovieDetails
+import com.example.netplix.pojo.images.BackDrops
+import com.example.netplix.pojo.stream.Links
 import com.example.netplix.repository.Repo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
@@ -25,6 +24,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
+    private var movieLinks:  MutableLiveData<Links> =
+        MutableLiveData<Links>()
     private val TAG = "MovieViewModel"
     var compositeDisposable = CompositeDisposable()
 
@@ -32,6 +33,8 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
         MutableLiveData<List<MovieModel>>()
     private val movieDetails: MutableLiveData<MovieDetails> =
         MutableLiveData<MovieDetails>()
+    private val movieImages: MutableLiveData<BackDrops> =
+        MutableLiveData<BackDrops>()
 
     private val moviesSearchList: MutableLiveData<List<MovieModel>> =
         MutableLiveData<List<MovieModel>>()
@@ -53,6 +56,8 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
     }
 
     fun getMovieDetails() = movieDetails
+    fun getMovieImages() = movieImages
+    fun getMovieLinks() = movieLinks
     fun getMoviesSearchList(): MutableLiveData<List<MovieModel>> {
         return moviesSearchList
     }
@@ -74,6 +79,26 @@ class MovieViewModel @Inject constructor(var repository: Repo) : ViewModel() {
                 .subscribeOn(AndroidSchedulers.mainThread())
                 .subscribe({ s -> movieDetails.postValue(s) }, { it ->
                     Log.e(TAG, "getUpComingMovies: " + it)
+                })
+        )
+    }
+    fun getMovieImages(id: Int) {
+        compositeDisposable.add(
+            repository.getMovieImages(id)
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe({ s -> movieImages.postValue(s) }, { it ->
+                    Log.e(TAG, "getUpComingMovies: " + it)
+                })
+        )
+    }
+    fun getMovieLinks(id: Int) {
+        compositeDisposable.add(
+            repository.getMovieLinks(id)
+                .subscribeOn(Schedulers.io())
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .subscribe({ s -> movieLinks.postValue(s) }, { it ->
+                    Log.e("Links", it.message.toString())
                 })
         )
     }

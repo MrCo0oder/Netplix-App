@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.Netplix" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.Netplix" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/plix_red</item>
         <item name="colorPrimaryVariant">@color/plix_red</item>
@@ -17,10 +17,16 @@
     <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
         <item name="android:fontFamily">@font/patrick_hand_sc</item>
     </style>
+
     <style name="SplashTheme" parent="Theme.SplashScreen">
         <item name="windowSplashScreenBackground">@color/black</item>
         <item name="windowSplashScreenAnimatedIcon">@drawable/ic_launcher_foreground2</item>
         <item name="postSplashScreenTheme">@style/Theme.Netplix</item>
+    </style>
+
+    <style name="ThemeOverlay.Netplix.FullscreenContainer" parent="">
+        <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
+        <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
 
 </resources>

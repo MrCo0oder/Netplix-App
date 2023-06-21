@@ -3,6 +3,7 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
+    id 'androidx.navigation.safeargs'
 }
 android {
     namespace 'com.example.netplix'
@@ -60,6 +61,7 @@ dependencies {
     //Retrofit & Gson Converter
     implementation 'com.squareup.retrofit2:retrofit:2.9.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
+    implementation 'com.squareup.retrofit2:converter-scalars:2.9.0'
     //picasso
     //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.8'
@@ -107,8 +109,20 @@ dependencies {
     implementation "androidx.paging:paging-runtime:$paging_version"
     testImplementation "androidx.paging:paging-common:$paging_version"
     
-    def lottieVersion = "3.4.0"
+    def lottieVersion = "6.0.1"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+    def nav_version = "2.5.3"
+
+    // Kotlin
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
+
+    // Circle Indicator (To fix the xml preview "Missing classes" error)
+    implementation 'me.relex:circleindicator:2.1.6'
+
+    implementation 'org.imaginativeworld.whynotimagecarousel:whynotimagecarousel:2.1.0'
 }
 kapt {
     correctErrorTypes true

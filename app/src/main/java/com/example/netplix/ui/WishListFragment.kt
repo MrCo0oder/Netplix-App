@@ -1,17 +1,14 @@
 package com.example.netplix.ui
 
 import android.annotation.SuppressLint
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
-import android.transition.Visibility
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.annotation.NonNull
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -23,8 +20,12 @@ import com.example.netplix.adapter.MoviesRecyclerAdapter
 import com.example.netplix.adapter.RecyclerItemClickListener
 import com.example.netplix.adapter.TvRecyclerAdapter
 import com.example.netplix.databinding.FragmentWishListBinding
+import com.example.netplix.di.NavigationModule
 import com.example.netplix.pojo.MovieModel
 import com.example.netplix.pojo.TvModel
+import com.example.netplix.utils.Constants
+import com.example.netplix.utils.gone
+import com.example.netplix.utils.show
 import com.example.netplix.viewmodel.MovieViewModel
 import com.example.netplix.viewmodel.TvViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,16 +34,14 @@ import dagger.hilt.android.AndroidEntryPoint
 @Suppress("DEPRECATION")
 @AndroidEntryPoint
 class WishListFragment : Fragment() {
+    private lateinit var navigationModule: NavigationModule
     val moviesViewModel: MovieViewModel by lazy { ViewModelProvider(this)[MovieViewModel::class.java] }
-    val tvViewModel:TvViewModel by lazy { ViewModelProvider(this).get(TvViewModel::class.java) }
+    val tvViewModel: TvViewModel by lazy { ViewModelProvider(this).get(TvViewModel::class.java) }
     lateinit var moviesAdapter: MoviesRecyclerAdapter
     lateinit var tvAdapter: TvRecyclerAdapter
     lateinit var moviesList: List<MovieModel>
     lateinit var tvList: List<TvModel>
     lateinit var binding: FragmentWishListBinding
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     @SuppressLint("ObsoleteSdkInt")
     override fun onCreateView(
@@ -51,6 +50,13 @@ class WishListFragment : Fragment() {
     ): View? {
         val layoutInflater = LayoutInflater.from(requireActivity())
         binding = FragmentWishListBinding.inflate(layoutInflater, container, false)
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        navigationModule = NavigationModule(requireActivity())
         binding.button.setOnClickListener {
             if (binding.moviesWishList.visibility == View.VISIBLE) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -59,7 +65,7 @@ class WishListFragment : Fragment() {
                         AutoTransition()
                     )
                 }
-                binding.moviesWishList.visibility = View.GONE
+                binding.moviesWishList.gone()
                 binding.button.text = getText(R.string.expand)
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
@@ -68,7 +74,7 @@ class WishListFragment : Fragment() {
                         AutoTransition()
                     )
                 }
-                binding.moviesWishList.visibility = View.VISIBLE
+                binding.moviesWishList.show()
                 binding.button.text = getText(R.string.collapse)
             }
         }
@@ -77,98 +83,105 @@ class WishListFragment : Fragment() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     TransitionManager.beginDelayedTransition(binding.tvCardview, AutoTransition())
                 }
-                binding.tvWishList.visibility = View.GONE
+                binding.tvWishList.gone()
                 binding.button2.text = getText(R.string.expand)
             } else {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
                     TransitionManager.beginDelayedTransition(binding.tvCardview, AutoTransition())
                 }
-                binding.tvWishList.visibility = View.VISIBLE
+                binding.tvWishList.show()
                 binding.button2.text = getText(R.string.collapse)
             }
         }
         initRV()
-        onMovieClicked(moviesAdapter,binding.moviesWishList)
-        onTvClicked(tvAdapter,binding.tvWishList)
+        onMovieClicked(moviesAdapter, binding.moviesWishList)
         moviesViewModel.getAllMovies()
-        moviesViewModel.getMoviesFromDB().observe(viewLifecycleOwner,object :Observer<List<MovieModel>>{
-            override fun onChanged(t: List<MovieModel>) {
+        moviesViewModel.getMoviesFromDB().observe(viewLifecycleOwner, object : Observer<List<MovieModel>> {
+                override fun onChanged(t: List<MovieModel>) {
 
-                if (t.isEmpty())
-                {
-                    binding.moviesCardview.visibility=View.GONE
+                    if (t.isEmpty()) {
+                        binding.moviesCardview.gone()
 
-                }else
-                {
-                    moviesList=t
-                    moviesAdapter.setData(t)
-                    binding.moviesCardview.visibility=View.VISIBLE
+                    } else {
+                        moviesList = t
+                        moviesAdapter.setData(t)
+                        binding.moviesCardview.show()
+                    }
+
                 }
-
-            }
-
-        })
+            })
         tvViewModel.getAllTv()
-        tvViewModel.getTVFromDB().observe(viewLifecycleOwner,object :Observer<List<TvModel>>{
+        tvViewModel.getTVFromDB().observe(viewLifecycleOwner, object : Observer<List<TvModel>> {
             override fun onChanged(t: List<TvModel>) {
-                if (t.isEmpty())
-                {
-                    binding.tvCardview.visibility=View.GONE
-                }else
-                {
-                    tvList=t
+                if (t.isEmpty()) {
+                    binding.tvCardview.gone()
+                } else {
+                    tvList = t
                     tvAdapter.setData(tvList)
-                    binding.tvCardview.visibility=View.VISIBLE
+                    binding.tvCardview.show()
                 }
             }
         })
         setupMoviesSwipe()
         setupTVSwipe()
-        return binding.root
     }
+
     fun initRV() {
         moviesList = ArrayList()
-        binding.moviesWishList.layoutManager = GridLayoutManager(requireContext(),2)
+        binding.moviesWishList.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.moviesWishList.setHasFixedSize(true)
-        moviesAdapter= MoviesRecyclerAdapter(requireActivity())
+        moviesAdapter = MoviesRecyclerAdapter(requireActivity()){
+            handleNavigationToMovieDetailsFragment(it)
+        }
         binding.moviesWishList.adapter = moviesAdapter
         moviesAdapter.setData(moviesList)
         tvList = ArrayList()
-        binding.tvWishList.layoutManager = GridLayoutManager(requireContext(),2)
+        binding.tvWishList.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.tvWishList.setHasFixedSize(true)
-        tvAdapter= TvRecyclerAdapter(requireActivity())
+        tvAdapter = TvRecyclerAdapter(requireActivity()) {
+            handleNavigationToTVDetailsFragment(it)
+        }
         binding.tvWishList.adapter = tvAdapter
         tvAdapter.setData(tvList)
 
     }
-    fun onMovieClicked(adapter: MoviesRecyclerAdapter, recyclerView: RecyclerView){
 
-        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireContext(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
+    fun onMovieClicked(adapter: MoviesRecyclerAdapter, recyclerView: RecyclerView) {
 
-            override fun onItemClick(view: View, position: Int) {
-                val tappedMovie: MovieModel = adapter.getItemAt(position)
-                val intent = Intent(requireActivity(), MoviesDetailsActivity::class.java)
-                intent.putExtra("Movie",tappedMovie)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireActivity().startActivity(intent)
-            }
-
-        }))
+        recyclerView.addOnItemTouchListener(
+            RecyclerItemClickListener(
+                requireContext(),
+                recyclerView,
+                object : RecyclerItemClickListener.OnItemClickListener {
+                    override fun onItemClick(view: View, position: Int) {
+                        val tappedMovie: MovieModel = adapter.getItemAt(position)
+                        handleNavigationToMovieDetailsFragment(tappedMovie)
+                    }
+                })
+        )
     }
 
-    fun onTvClicked(adapter: TvRecyclerAdapter, recyclerView: RecyclerView){
-
-        recyclerView.addOnItemTouchListener(RecyclerItemClickListener(requireContext(),recyclerView, object : RecyclerItemClickListener.OnItemClickListener {
-
-            override fun onItemClick(view: View, position: Int) {
-                val tappedTv: TvModel = adapter.getTvAt(position)
-                val intent = Intent(requireActivity(), TvDetailsActivity::class.java)
-                intent.putExtra("Tv",tappedTv)
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                requireActivity().startActivity(intent)
-            }
-        }))
+    private fun handleNavigationToMovieDetailsFragment(tappedMovie: MovieModel) {
+        navigationModule.navigateTo(
+            R.id.action_homeFragment_to_detailsFragment,
+            R.id.nav_host_fragment,
+            Bundle().apply {
+                putBoolean(Constants.IS_MOVE,true)
+                putSerializable(Constants.MOVIE_ID, tappedMovie)
+            })
     }
+
+
+    private fun handleNavigationToTVDetailsFragment(tappedTv: TvModel) {
+        navigationModule.navigateTo(
+            R.id.action_homeFragment_to_detailsFragment,
+            R.id.nav_host_fragment,
+            Bundle().apply {
+                putBoolean(Constants.IS_MOVE,false)
+                putSerializable(Constants.TV_ID, tappedTv)
+            })
+    }
+
     @SuppressLint("NotifyDataSetChanged")
     private fun setupMoviesSwipe() {
         val callback: ItemTouchHelper.SimpleCallback =
@@ -200,6 +213,7 @@ class WishListFragment : Fragment() {
         val itemTouchHelper = ItemTouchHelper(callback)
         itemTouchHelper.attachToRecyclerView(binding.moviesWishList)
     }
+
     private fun setupTVSwipe() {
         val callback: ItemTouchHelper.SimpleCallback =
             object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
