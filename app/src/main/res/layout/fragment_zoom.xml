@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg"
     android:theme="@style/ThemeOverlay.Netplix.FullscreenContainer"
-    tools:context=".ZoomFragment">
+    tools:context=".ui.ZoomFragment">
 
     <com.github.chrisbanes.photoview.PhotoView
         android:id="@+id/zoomed_image"
@@ -21,7 +21,7 @@
         android:id="@+id/zoom_progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        layout="@layout/progress_layout"
+        layout="@layout/loading_view"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

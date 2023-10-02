@@ -31,7 +31,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                >
+                tools:visibility="visible">
 
                 <com.github.chuross.AspectRatioImageView
                     android:id="@+id/movie_img"
@@ -82,16 +82,17 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:fontFamily="@font/patrick_hand_sc"
                     android:gravity="start|center_vertical"
+                    android:maxLines="3"
                     android:padding="4dp"
                     android:selectAllOnFocus="false"
+                    android:singleLine="false"
                     android:textColor="@color/white"
                     android:textIsSelectable="true"
                     android:textSize="26sp"
                     android:textStyle="bold"
                     app:layout_constraintBottom_toBottomOf="@+id/posterCard"
-                    app:layout_constraintEnd_toEndOf="@+id/adultTV"
+                    app:layout_constraintEnd_toStartOf="@+id/home_page_image_view"
                     app:layout_constraintStart_toEndOf="@+id/posterCard"
                     app:layout_constraintTop_toTopOf="@+id/posterCard"
                     app:layout_constraintVertical_bias="0.31"
@@ -104,7 +105,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:ellipsize="middle"
-                    android:fontFamily="@font/patrick_hand_sc"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -133,9 +133,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:layout_marginBottom="16dp"
                     android:contentDescription="@string/storyline"
-                    android:fontFamily="@font/patrick_hand_sc"
                     android:minHeight="48dp"
                     android:selectAllOnFocus="true"
                     android:textAlignment="viewStart"
@@ -146,7 +144,6 @@
                     android:textSize="16sp"
                     android:textStyle="normal"
                     android:typeface="monospace"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="@+id/textView4"
                     app:layout_constraintHorizontal_bias="1.0"
                     app:layout_constraintStart_toStartOf="@+id/textView4"
@@ -164,7 +161,6 @@
                     android:contentDescription="@string/back"
                     android:focusable="true"
                     android:tooltipText="@string/back"
-                    android:visibility="invisible"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:rippleColor="#FFFFFF"
@@ -179,7 +175,6 @@
                     android:clickable="true"
                     android:ellipsize="middle"
                     android:focusable="true"
-                    android:fontFamily="@font/patrick_hand_sc"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -210,7 +205,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
                     android:ellipsize="middle"
-                    android:fontFamily="@font/patrick_hand_sc"
                     android:gravity="center"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -225,7 +219,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:ellipsize="middle"
-                    android:fontFamily="@font/patrick_hand_sc"
                     android:gravity="start|center_vertical"
                     android:textColor="@color/white"
                     android:textSize="16sp"
@@ -314,6 +307,7 @@
                         android:layout_height="250dp"
                         android:contentDescription=""
                         android:scaleType="centerCrop"
+                        android:transitionName="my_image"
                         app:ariv_fit="height"
                         app:ariv_heightRatio="3"
                         app:ariv_widthRatio="2"
@@ -340,7 +334,7 @@
                     app:layout_constraintTop_toTopOf="@+id/posterCard" />
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/rating_image_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"
@@ -348,6 +342,17 @@
                     app:layout_constraintStart_toEndOf="@+id/ratingTV"
                     app:layout_constraintTop_toTopOf="@+id/ratingTV"
                     app:srcCompat="@drawable/ic_star" />
+
+                <ImageView
+                    android:id="@+id/home_page_image_view"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/titleTV"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/titleTV"
+                    app:layout_constraintTop_toTopOf="@+id/titleTV"
+                    app:srcCompat="@drawable/ic_globe" />
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/carouselCard"
@@ -363,21 +368,59 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/infoTV">
 
-                    <org.imaginativeworld.whynotimagecarousel.ImageCarousel
-                        android:id="@+id/carousel_img"
+                    <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="300dp"
-                        android:contentDescription=""
-                        android:scaleType="centerCrop"
-                        app:carouselBackground="@color/bg"
-                        app:imagePlaceholder="@drawable/placeholder"
-                        app:showBottomShadow="false"
-                        app:showNavigationButtons="false"
-                        app:showTopShadow="false"
-                        tools:ignore="ImageContrastCheck,UnusedAttribute"
-                        tools:targetApi="m" />
+                        android:layout_height="wrap_content">
+
+                        <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                            android:id="@+id/carousel_img"
+                            android:layout_width="match_parent"
+                            android:layout_height="300dp"
+                            android:contentDescription=""
+                            android:scaleType="centerCrop"
+                            app:carouselBackground="@color/bg"
+                            app:imagePlaceholder="@drawable/placeholder"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintHorizontal_bias="1.0"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintVertical_bias="1.0"
+                            app:showBottomShadow="false"
+                            app:showNavigationButtons="false"
+                            app:showTopShadow="false"
+                            tools:ignore="ImageContrastCheck,UnusedAttribute"
+                            tools:targetApi="m" />
+
+                        <ImageView
+                            android:id="@+id/fullscreen_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="16dp"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@drawable/ic_full_screen" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
                 </androidx.cardview.widget.CardView>
 
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/companies_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:clipToOutline="true"
+                    android:clipToPadding="true"
+                    android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/storyTV"
+                    app:spanCount="1"
+                    tools:itemCount="13"
+                    tools:listitem="@layout/company_logo_layout" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <include
@@ -389,8 +432,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-              />
+                app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>

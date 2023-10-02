@@ -39,7 +39,6 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:fontFamily="@font/patrick_hand_sc"
             android:gravity="center"
             android:textOff="@string/movies"
             android:textOn="@string/tv_shows"

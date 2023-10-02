@@ -1,6 +1,9 @@
 package com.example.netplix.di
 
+import android.app.Activity
+import android.content.Context
 import com.example.netplix.database.Dao
+import com.example.netplix.database.NetplixDB
 import com.example.netplix.network.Api
 import com.example.netplix.repository.Repo
 import com.example.netplix.utils.Constants
@@ -33,9 +36,10 @@ object AppModule {
             .build()
             .create(Api::class.java)
     }
+
     @Provides
     @Singleton
-    fun provideMyRepo(api: Api,dao: Dao): Repo {
-        return Repo(api,dao)
+    fun provideMyRepo(api: Api, dao: Dao,db: NetplixDB): Repo {
+        return Repo(api, dao,db )
     }
 }

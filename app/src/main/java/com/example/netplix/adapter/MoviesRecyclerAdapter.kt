@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.netplix.databinding.MovieCardBinding
-import com.example.netplix.pojo.MovieModel
+import com.example.netplix.models.MovieModel
 
 class MoviesRecyclerAdapter(var context: Context, val clickListener: (movie: MovieModel) -> Unit) :
     RecyclerView.Adapter<MoviesRecyclerAdapter.ViewHolder>() {
@@ -36,10 +36,6 @@ class MoviesRecyclerAdapter(var context: Context, val clickListener: (movie: Mov
         return moviesList.size
     }
 
-    /*   override  fun  onViewAttachedToWindow(holder: ViewHolder) {
-           super.onViewAttachedToWindow(holder)
-           holder.itemView.startAnimation(AnimationUtils.loadAnimation(context, R.anim.anim))
-       }*/
     fun setData(list: List<MovieModel>) {
         moviesList = list
         notifyDataSetChanged()

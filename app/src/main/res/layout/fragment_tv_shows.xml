@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/bg"
-        tools:context=".ui.MainActivity">
+        tools:context=".MainActivity">
 
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipe"
@@ -40,7 +40,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
-                        android:fontFamily="@font/patrick_hand_sc"
                         android:text="@string/toprated_tv_shows"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
@@ -82,7 +81,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
-                        android:fontFamily="@font/patrick_hand_sc"
                         android:text="@string/popular"
                         android:textAllCaps="true"
                         android:textColor="@color/white"

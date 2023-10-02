@@ -1,23 +1,35 @@
 package com.example.netplix.repository
 
+import android.app.Activity
+import android.content.Context
+import android.content.Intent
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.example.netplix.BuildConfig
 import com.example.netplix.database.Dao
+import com.example.netplix.database.NetplixDB
+import com.example.netplix.models.MovieModel
+import com.example.netplix.models.MoviesPage
+import com.example.netplix.models.TvModel
+import com.example.netplix.models.TvPage
+import com.example.netplix.models.images.BackDrops
+import com.example.netplix.models.mm.Data
+import com.example.netplix.models.movieDetails.MovieDetails
+import com.example.netplix.models.stream.Links
+import com.example.netplix.models.tvDetails.TvDetails
 import com.example.netplix.network.Api
-import com.example.netplix.pojo.MovieModel
-import com.example.netplix.pojo.MoviesPage
-import com.example.netplix.pojo.TvModel
-import com.example.netplix.pojo.TvPage
-import com.example.netplix.pojo.movieDetails.MovieDetails
-import com.example.netplix.pojo.images.BackDrops
-import com.example.netplix.pojo.stream.Links
-import com.example.netplix.pojo.tvDetails.TvDetails
+import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.Response
 import java.util.Locale
 import javax.inject.Inject
+import kotlin.math.log
 
-class Repo @Inject constructor(private val apiService: Api, private val dbService: Dao) {
+class Repo @Inject constructor(
+    private val apiService: Api,
+    private val dbService: Dao,
+    private val db: NetplixDB
+) {
     private val apiKey = BuildConfig.API_KEY
 
     //API
@@ -105,6 +117,7 @@ class Repo @Inject constructor(private val apiService: Api, private val dbServic
         return apiService
             .getShowImages(api_key = apiKey, id = id)
     }
+
     //Search
     public fun getSearchMovies(query: String): Observable<MoviesPage> {
         return apiService
@@ -126,7 +139,7 @@ class Repo @Inject constructor(private val apiService: Api, private val dbServic
 
     //Room
     //Movies
-    public fun insertMovie(movieModel: MovieModel){
+    public fun insertMovie(movieModel: MovieModel) {
         dbService.insertMovie(movieModel)
     }
 
@@ -137,8 +150,13 @@ class Repo @Inject constructor(private val apiService: Api, private val dbServic
     public fun getAllMovies(): LiveData<List<MovieModel>> {
         return dbService.getAllMovies()
     }
-    public fun findMovie(id: Int):Boolean{
+
+    public fun findMovie(id: Int): Boolean {
         return dbService.findMovie(id)
+    }
+
+    public fun isMoviesListExists(): Boolean {
+        return dbService.isMovieTableExist()
     }
 
     //Tv
@@ -153,7 +171,19 @@ class Repo @Inject constructor(private val apiService: Api, private val dbServic
     public fun getAllTv(): LiveData<List<TvModel>> {
         return dbService.getAllTv()
     }
+
     public fun findTv(id: Int): Boolean {
         return dbService.findTv(id)
+    }
+
+    fun isTvListExists(): Boolean {
+        return dbService.isTvTableExist()
+    }
+
+    fun DELETE_DATABASE() {
+        db.clearAllTables()
+    }
+
+    fun DATABASE() {
     }
 }

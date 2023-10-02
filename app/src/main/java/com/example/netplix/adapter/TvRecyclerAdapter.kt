@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.netplix.databinding.TvCardBinding
-import com.example.netplix.pojo.TvModel
+import com.example.netplix.models.TvModel
 
 class TvRecyclerAdapter(var context: Context, val clickListener: (show: TvModel) -> Unit) :
     RecyclerView.Adapter<TvRecyclerAdapter.ViewHolder>() {

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "726794438823",
+    "project_id": "netplix-a2240",
+    "storage_bucket": "netplix-a2240.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:726794438823:android:99f492a89c8d0fd30e3382",
+        "android_client_info": {
+          "package_name": "com.example.netplix"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "726794438823-b1kvffs3rg5cn39r9ird0j93ctedaql2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDDDCyDHJ-qHUkgS53_9k7po36__ozSZh0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "726794438823-b1kvffs3rg5cn39r9ird0j93ctedaql2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

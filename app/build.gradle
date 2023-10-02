@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
     id 'androidx.navigation.safeargs'
+    id 'com.google.gms.google-services'
 }
 android {
     namespace 'com.example.netplix'
@@ -47,8 +48,19 @@ android {
 
 dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.2.1'
-    def lifecycle_version = "2.5.1"
+    implementation 'androidx.browser:browser:1.5.0'
+    implementation 'com.google.firebase:firebase-auth-ktx:21.1.0'
+    implementation 'com.google.firebase:firebase-firestore-ktx:24.6.1'
+    implementation 'androidx.lifecycle:lifecycle-livedata-ktx:2.6.1'
+    // Import the BoM for the Firebase platform
+    implementation(platform("com.google.firebase:firebase-bom:32.1.1"))
 
+    // Add the dependency for the Cloud Storage library
+    // When using the BoM, you don't specify versions in Firebase library dependencies
+    implementation("com.google.firebase:firebase-storage-ktx")
+
+    def lifecycle_version = "2.5.1"
+    implementation(platform("org.jetbrains.kotlin:kotlin-bom:1.8.0"))
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
@@ -65,6 +77,9 @@ dependencies {
     //picasso
     //noinspection GradleDependency
     implementation 'com.squareup.picasso:picasso:2.8'
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    kapt 'com.github.bumptech.glide:compiler:4.15.1'
     //Swipe Refresh Layout
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     //aspect-ratio-imageview & carousel recyclerview
@@ -95,7 +110,7 @@ dependencies {
     kapt "com.google.dagger:hilt-android-compiler:2.44.2"
     kapt "androidx.hilt:hilt-compiler:1.0.0"
     //room
-    def room_version = "2.4.3"
+    def room_version = "2.5.0"
     //noinspection GradleDependency
     implementation "androidx.room:room-runtime:$room_version"
 //annotationProcessor "androidx.room:room-compiler:$room_version"
@@ -108,7 +123,7 @@ dependencies {
     def paging_version = "3.1.1"
     implementation "androidx.paging:paging-runtime:$paging_version"
     testImplementation "androidx.paging:paging-common:$paging_version"
-    
+
     def lottieVersion = "6.0.1"
     implementation "com.airbnb.android:lottie:$lottieVersion"
     def nav_version = "2.5.3"
@@ -123,6 +138,13 @@ dependencies {
     implementation 'me.relex:circleindicator:2.1.6'
 
     implementation 'org.imaginativeworld.whynotimagecarousel:whynotimagecarousel:2.1.0'
+    implementation 'com.github.chnouman:AwesomeDialog:1.0.5'
+
+    implementation 'de.raphaelebner:roomdatabasebackup:1.0.0-beta12'
+    //image picker
+    implementation 'com.github.dhaval2404:imagepicker:2.1'
+    //permissionX
+    implementation 'com.guolindev.permissionx:permissionx:1.7.1'
 }
 kapt {
     correctErrorTypes true

@@ -3,12 +3,14 @@
     <item
         android:id="@+id/moviesFragment"
         android:icon="@drawable/ic_movies"
-        android:title="@string/movies"
-        />
+        android:title="@string/movies" />
     <item
         android:id="@+id/tvShowsFragment"
         android:icon="@drawable/ic_tv_show"
         android:title="@string/tv_shows" />
+    <item
+        android:id="@+id/profileFragment"
+        android:title="" />
     <item
         android:id="@+id/wishListFragment"
         android:icon="@drawable/heart"
@@ -17,6 +19,5 @@
         android:id="@+id/searchFragment"
         android:icon="@drawable/ic_search"
         android:title="@string/search" />
-
 
 </menu>

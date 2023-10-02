@@ -1,11 +1,12 @@
 package com.example.netplix.network
 
-import com.example.netplix.pojo.MoviesPage
-import com.example.netplix.pojo.TvPage
-import com.example.netplix.pojo.movieDetails.MovieDetails
-import com.example.netplix.pojo.images.BackDrops
-import com.example.netplix.pojo.stream.Links
-import com.example.netplix.pojo.tvDetails.TvDetails
+import com.example.netplix.models.MoviesPage
+import com.example.netplix.models.TvPage
+import com.example.netplix.models.images.BackDrops
+import com.example.netplix.models.mm.Data
+import com.example.netplix.models.movieDetails.MovieDetails
+import com.example.netplix.models.stream.Links
+import com.example.netplix.models.tvDetails.TvDetails
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.Response
 import retrofit2.http.GET
@@ -37,12 +38,14 @@ public interface Api {
         @Query("api_key") api_key: String,
         @Query("include_adult") adult: Boolean = false
     ): Observable<BackDrops>
+
     @GET("tv/{series_id}/images")
     fun getShowImages(
         @Path("series_id") id: Int,
         @Query("api_key") api_key: String,
         @Query("include_adult") adult: Boolean = false
     ): Observable<BackDrops>
+
     @GET
     fun getLinks(
         @Url url: String,
@@ -87,8 +90,7 @@ public interface Api {
     fun getLatestTv(
         @Query("api_key") api_key: String,
         @Query("language") language: String,
-        @Query("include_adult") adult: Boolean = false,
-        @Query("timezone") timeZone: String = "UTC+03:00"
+        @Query("include_adult") adult: Boolean = false
     ): Observable<TvPage>
 
     @GET("tv/{show_id}")
@@ -98,6 +100,7 @@ public interface Api {
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false
     ): Observable<TvDetails>
+
     //Search
     @GET("search/movie")
     fun searchMovie(
@@ -114,4 +117,9 @@ public interface Api {
         @Query("language") language: String,
         @Query("include_adult") adult: Boolean = false
     ): Observable<TvPage>
+
+    @GET
+    fun get(
+        @Url url: String = "http://broadcastmp-001-site18.atempurl.com/api/v1/Role/GetRegisterRoles"
+    ): Observable<Data>
 }

@@ -1,6 +1,7 @@
 package com.example.netplix.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -9,29 +10,28 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.RecyclerView
 import com.example.netplix.R
 import com.example.netplix.adapter.MoviesRecyclerAdapter
-import com.example.netplix.adapter.RecyclerItemClickListener
 import com.example.netplix.adapter.TvRecyclerAdapter
 import com.example.netplix.databinding.FragmentSearchBinding
 import com.example.netplix.di.NavigationModule
-import com.example.netplix.pojo.MovieModel
-import com.example.netplix.pojo.TvModel
+import com.example.netplix.models.MovieModel
+import com.example.netplix.models.TvModel
+import com.example.netplix.ui.movies.MovieViewModel
 import com.example.netplix.utils.Constants
-import com.example.netplix.viewmodel.MovieViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class SearchFragment : Fragment() {
 
-    private lateinit var navigationModule: NavigationModule
+    @Inject
+    lateinit var navigationModule: NavigationModule
+
     lateinit var binding: FragmentSearchBinding
     private val viewModel: MovieViewModel by lazy { ViewModelProvider(this).get(MovieViewModel::class.java) }
-
     lateinit var searchMoviesAdapter: MoviesRecyclerAdapter
     lateinit var searchMoviesList: List<MovieModel>
-
     lateinit var searchTvAdapter: TvRecyclerAdapter
     lateinit var searchTvList: List<TvModel>
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,8 +58,7 @@ class SearchFragment : Fragment() {
             }
 
         }
-        onTvClicked(searchTvAdapter, binding.tvSearchList)
-        onMovieClicked(searchMoviesAdapter, binding.movisSearchList)
+
         return binding.root
     }
 
@@ -104,6 +103,7 @@ class SearchFragment : Fragment() {
         searchMoviesList = ArrayList<MovieModel>()
         binding.movisSearchList.setHasFixedSize(true)
         searchMoviesAdapter = MoviesRecyclerAdapter(requireActivity()) {
+            Log.d("initRV: ", it.title)
             handleNavigationToMovieDetailsFragment(it)
         }
         binding.movisSearchList.adapter = searchMoviesAdapter
@@ -111,60 +111,33 @@ class SearchFragment : Fragment() {
         searchTvList = ArrayList<TvModel>()
         binding.tvSearchList.setHasFixedSize(true)
         searchTvAdapter = TvRecyclerAdapter(requireActivity()) {
-
+            Log.d("initRV: ", it.name)
+            handleNavigationToTVDetailsFragment(it)
         }
         binding.tvSearchList.adapter = searchTvAdapter
         searchTvAdapter.setData(searchTvList)
     }
 
-    fun onMovieClicked(adapter: MoviesRecyclerAdapter, recyclerView: RecyclerView) {
-
-        recyclerView.addOnItemTouchListener(
-            RecyclerItemClickListener(
-                requireActivity(),
-                recyclerView,
-                object : RecyclerItemClickListener.OnItemClickListener {
-
-                    override fun onItemClick(view: View, position: Int) {
-                        val tappedMovie: MovieModel = adapter.getItemAt(position)
-                        handleNavigationToMovieDetailsFragment(tappedMovie)
-                    }
-                })
-        )
-    }
 
     private fun handleNavigationToMovieDetailsFragment(tappedMovie: MovieModel) {
         navigationModule.navigateTo(
-            R.id.action_homeFragment_to_detailsFragment,
+            R.id.detailsFragment,
             R.id.nav_host_fragment,
             Bundle().apply {
                 putBoolean(Constants.IS_MOVE, true)
                 putSerializable(Constants.MOVIE_ID, tappedMovie)
-            })
-    }
-
-    fun onTvClicked(adapter: TvRecyclerAdapter, recyclerView: RecyclerView) {
-
-        recyclerView.addOnItemTouchListener(
-            RecyclerItemClickListener(
-                requireActivity(),
-                recyclerView,
-                object : RecyclerItemClickListener.OnItemClickListener {
-                    override fun onItemClick(view: View, position: Int) {
-                        val tappedTv: TvModel = adapter.getTvAt(position)
-                        handleNavigationToTVDetailsFragment(tappedTv)
-                    }
-                })
+            },
         )
     }
 
     private fun handleNavigationToTVDetailsFragment(tappedTv: TvModel) {
         navigationModule.navigateTo(
-            R.id.action_homeFragment_to_detailsFragment,
+            R.id.detailsFragment,
             R.id.nav_host_fragment,
             Bundle().apply {
                 putBoolean(Constants.IS_MOVE, false)
                 putSerializable(Constants.TV_ID, tappedTv)
-            })
+            },
+        )
     }
 }

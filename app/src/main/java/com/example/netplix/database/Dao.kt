@@ -5,8 +5,8 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.example.netplix.pojo.MovieModel
-import com.example.netplix.pojo.TvModel
+import com.example.netplix.models.MovieModel
+import com.example.netplix.models.TvModel
 
 @Dao
 public interface Dao {
@@ -22,6 +22,9 @@ public interface Dao {
     @Query("SELECT id FROM FILM_LIST WHERE EXISTS(SELECT id FROM FILM_LIST WHERE id = :id ) ")
     public fun findMovie(id: Int): Boolean
 
+    @Query("SELECT id FROM film_list WHERE EXISTS(SELECT * FROM film_list) ")
+    public fun isMovieTableExist(): Boolean
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public fun insertTv(tv: TvModel)
 
@@ -33,4 +36,7 @@ public interface Dao {
 
     @Query("SELECT id FROM TV_LIST WHERE EXISTS(SELECT id FROM TV_LIST WHERE id = :id ) ")
     public fun findTv(id: Int): Boolean
+
+    @Query("SELECT id FROM TV_LIST WHERE EXISTS(SELECT * FROM TV_LIST) ")
+    public fun isTvTableExist(): Boolean
 }

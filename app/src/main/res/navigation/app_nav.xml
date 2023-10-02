@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/zoomFragment"
-        android:name="com.example.netplix.ZoomFragment"
+        android:name="com.example.netplix.ui.ZoomFragment"
         android:label="fragment_zoom"
         tools:layout="@layout/fragment_zoom" />
     <fragment
         android:id="@+id/detailsFragment"
-        android:name="com.example.netplix.DetailsFragment"
+        android:name="com.example.netplix.ui.DetailsFragment"
         android:label="fragment_details"
         tools:layout="@layout/fragment_details">
         <action
@@ -28,8 +28,17 @@
         <action
             android:id="@+id/action_homeFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_showMoreFragment"
+            app:destination="@id/showMoreFragment"
+            app:enterAnim="@anim/enter_animation" />
+
 
     </fragment>
-
+    <fragment
+        android:id="@+id/showMoreFragment"
+        android:name="com.example.netplix.ui.ShowMoreFragment"
+        android:label="fragment_show_more"
+        tools:layout="@layout/fragment_show_more" />
 
 </navigation>

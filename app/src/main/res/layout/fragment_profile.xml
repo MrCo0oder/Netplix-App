@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:paddingHorizontal="16dp"
+    tools:context=".ui.ProfileFragment">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/profile_pic_image_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="32dp"
+        android:elevation="5dp"
+        android:padding="4dp"
+        app:layout_constraintBottom_toTopOf="@id/welcome_text_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="spread"
+        app:shapeAppearanceOverlay="@style/rounded_image"
+        app:srcCompat="@drawable/imge"
+        app:strokeColor="@color/plix_red"
+        app:strokeWidth="3dp" />
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/camera_image_view"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/plix_red"
+        android:elevation="5dp"
+        android:src="@drawable/ic_camera"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_pic_image_view"
+        app:layout_constraintEnd_toEndOf="@+id/profile_pic_image_view"
+        app:shapeAppearanceOverlay="@style/rounded_image" />
+
+    <include
+        android:id="@+id/profile_pic_progress"
+        layout="@layout/loading_view"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_pic_image_view"
+        app:layout_constraintEnd_toEndOf="@+id/profile_pic_image_view"
+        app:layout_constraintStart_toStartOf="@+id/profile_pic_image_view"
+        app:layout_constraintTop_toTopOf="@+id/profile_pic_image_view" />
+
+    <TextView
+        android:id="@+id/welcome_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:maxEms="1"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_pic_image_view"
+        tools:text="Welcome, Ahmed" />
+
+    <include
+        android:id="@+id/info_progress"
+        layout="@layout/loading_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/flow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_pic_image_view" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/full_name_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_user"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:maxEms="2"
+        android:singleLine="true"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/email_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/welcome_text_view"
+        app:layout_constraintVertical_chainStyle="packed"
+        tools:layout_editor_absoluteX="16dp"
+        tools:text="Ahmed-Badawii Ehab Badawii" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/email_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_mail"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:maxEms="2"
+        android:singleLine="true"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/phone_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/full_name_text_view"
+        tools:text="AhmedBadawiiEhab@gmail.com" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/phone_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_smartphone"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:maxEms="2"
+        android:singleLine="true"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/gender_text_view"
+        app:layout_constraintTop_toBottomOf="@+id/email_text_view"
+        tools:text="+20 1069595665" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/gender_text_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="32dp"
+        android:drawableStart="@drawable/ic_gender"
+        android:drawablePadding="16dp"
+        android:gravity="center_vertical"
+        android:maxEms="2"
+        android:singleLine="true"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@+id/flow"
+        app:layout_constraintTop_toBottomOf="@+id/phone_text_view"
+        tools:text="Male" />
+
+    <androidx.constraintlayout.widget.Group
+        android:id="@+id/group"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:visibility="invisible"
+        app:constraint_referenced_ids="welcome_text_view,full_name_text_view,email_text_view,phone_text_view,gender_text_view"
+        app:layout_constraintBottom_toTopOf="@+id/flow"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_pic_image_view"
+        app:layout_constraintVertical_weight="1" />
+
+    <androidx.constraintlayout.helper.widget.Flow
+        android:id="@+id/flow"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        app:constraint_referenced_ids="logout_image_view,group_divider,upload_imag_view,group_divider2,delete_account_image_view"
+        app:flow_horizontalGap="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/logout_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_log_out"
+        android:tooltipText="LogOut."
+        app:layout_constraintEnd_toStartOf="@+id/group_divider"
+        tools:targetApi="o" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/group_divider"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        app:dividerColor="@color/plix_red"
+        app:dividerThickness="2dp" />
+
+
+    <ImageView
+        android:id="@+id/upload_imag_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_upload_cloud"
+        android:tooltipText="Upload Your Data."
+        app:layout_constraintStart_toEndOf="@+id/group_divider"
+        tools:targetApi="o" />
+
+    <com.google.android.material.divider.MaterialDivider
+        android:id="@+id/group_divider2"
+        android:layout_width="2dp"
+        android:layout_height="0dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="horizontal"
+        app:dividerColor="@color/plix_red"
+        app:dividerThickness="2dp" />
+
+    <ImageView
+        android:id="@+id/delete_account_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:src="@drawable/ic_delete"
+        android:tooltipText="Delete Your Account."
+        app:layout_constraintStart_toEndOf="@+id/group_divider2"
+        tools:targetApi="o" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

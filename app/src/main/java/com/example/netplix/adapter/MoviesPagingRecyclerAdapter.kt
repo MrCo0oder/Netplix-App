@@ -1,6 +1,5 @@
 package com.example.netplix.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -10,7 +9,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.netplix.R
 import com.example.netplix.databinding.MovieCardBinding
-import com.example.netplix.pojo.MovieModel
+import com.example.netplix.models.MovieModel
 
 class MoviesPagingRecyclerAdapter(
     private val context: Context,

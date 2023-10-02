@@ -7,8 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.net.ConnectivityManager
-import android.view.View
-import android.widget.ImageView
 import androidx.core.content.ContextCompat
 import com.example.netplix.R
 import com.google.android.material.snackbar.Snackbar
