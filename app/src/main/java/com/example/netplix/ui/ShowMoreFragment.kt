@@ -39,6 +39,7 @@ class ShowMoreFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navigationModule.init(requireActivity())
         initViewModels()
         init()
         initRecyclerView()

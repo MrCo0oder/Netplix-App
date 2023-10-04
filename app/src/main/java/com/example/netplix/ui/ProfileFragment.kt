@@ -76,7 +76,6 @@ class ProfileFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         movieViewModel = ViewModelProvider(requireActivity())[MovieViewModel::class.java]
         firebaseModule.init(requireActivity())
-
         initLogoutButton()
         initDeleteAccountButton()
         initUploadPic()
@@ -88,25 +87,7 @@ class ProfileFragment : Fragment() {
         }
 //        restore(appModule.dbService(requireActivity().application))
     }
-
-    @RequiresApi(Build.VERSION_CODES.R)
-    private fun initBackupButton() {
-        val fragmentActivity = (requireActivity() as MainActivity)
-//        backup = fragmentActivity.backup
-//        backUp(appModule.dbService(requireActivity().application))
-        binding.uploadImagView.setOnClickListener {
-            showMenu(it)
-            if (checkStoragePermissions()) {
-            } else {
-                requestStoragePermissionsExport()
-                Log.d("exportData: ", "444444")
-
-            }
-        }
-    }
-
-
-    private fun showMenu(view: View) {
+    private fun showMenu() {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.getMenuInflater().inflate(R.menu.bottom_navigation, popupMenu.getMenu())
         popupMenu.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
@@ -126,7 +107,7 @@ class ProfileFragment : Fragment() {
     private fun initUploadPic() {
         binding.cameraImageView.setOnClickListener {
             ImagePicker.with(this)
-                .galleryOnly()
+//                .galleryOnly()
                 .cropSquare()
                 .compress(720)
                 .maxResultSize(1080, 1080)
@@ -155,7 +136,6 @@ class ProfileFragment : Fragment() {
         binding.logoutImageView.setOnClickListener {
             firebaseModule.logOut()
             gotoWelcomeScreen()
-//            handleNavigation(R.id.welcomeFragment, true)
         }
     }
 
@@ -201,7 +181,6 @@ class ProfileFragment : Fragment() {
     private fun displayUserInfo() {
         firebaseModule.getUserInfo { task ->
             binding.infoProgress.root.gone()
-//            Log.d(this.javaClass.simpleName, "displayUserInfo: ".plus(task.result.get("imageUrl")))
 
             if (task.isSuccessful) {
                 if (task.result != null) {
@@ -288,7 +267,7 @@ class ProfileFragment : Fragment() {
                 })
         }
     }
-
+/*
     @RequiresApi(Build.VERSION_CODES.R)
     private fun checkStoragePermissions(): Boolean {
         return ContextCompat.checkSelfPermission(
@@ -329,5 +308,5 @@ class ProfileFragment : Fragment() {
                 }
             }
         }
-    }
+    }*/
 }

@@ -18,6 +18,7 @@ import com.example.netplix.models.images.BackDrops
 import com.example.netplix.models.movieDetails.MovieDetails
 import com.example.netplix.models.stream.Links
 import com.example.netplix.repository.Repo
+import com.example.netplix.utils.NetworkState
 import com.example.netplix.utils.PagingMoviesSource
 import com.google.android.gms.tasks.Task
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -45,17 +46,28 @@ class MovieViewModel @Inject constructor(var repository: Repo, var firebaseModul
 
     private val moviesSearchList: MutableLiveData<List<MovieModel>> =
         MutableLiveData<List<MovieModel>>()
+
+    private val popularNetworkState: MutableLiveData<NetworkState> = MutableLiveData<NetworkState>()
+    private val trendyNetworkState: MutableLiveData<NetworkState> = MutableLiveData<NetworkState>()
+
     private val tvSearchList: MutableLiveData<List<TvModel>> = MutableLiveData<List<TvModel>>()
     private lateinit var moviesList: LiveData<List<MovieModel>>
+
     val popularMoviesList = Pager(PagingConfig(1)) {
-        PagingMoviesSource(repository, 1)
+        PagingMoviesSource(repository, 1) {
+            popularNetworkState.postValue(it)
+        }
     }.flow.cachedIn(viewModelScope)
-    val trendyMoviesList = Pager(PagingConfig(2)) {
-        PagingMoviesSource(repository, 2)
+    val trendyMoviesList = Pager(PagingConfig(1)) {
+        PagingMoviesSource(repository, 2) {
+            trendyNetworkState.postValue(it)
+        }
     }.flow.cachedIn(viewModelScope)
 
     init {
         movieDetails.postValue(null)
+        popularNetworkState.postValue(NetworkState.LOADING)
+        trendyNetworkState.postValue(NetworkState.LOADING)
     }
 
     fun getUpComingList(): MutableLiveData<List<MovieModel>> {
@@ -218,6 +230,8 @@ class MovieViewModel @Inject constructor(var repository: Repo, var firebaseModul
         repository.DATABASE()
     }
 
+    fun getPopularNetworkState() = popularNetworkState
+    fun getTrendyNetworkState() = trendyNetworkState
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()

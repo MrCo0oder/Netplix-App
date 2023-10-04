@@ -46,7 +46,7 @@ class SearchFragment : Fragment() {
         binding = FragmentSearchBinding.inflate(layoutInflater, container, false)
         SearchSetup()
         initRV()
-        navigationModule = NavigationModule(requireActivity())
+        navigationModule.init(requireActivity())
         binding.switch1.setOnClickListener {
             searchMoviesAdapter.clearData()
             searchTvAdapter.clearData()

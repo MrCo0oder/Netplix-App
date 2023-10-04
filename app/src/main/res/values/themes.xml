@@ -11,11 +11,7 @@
         <item name="colorOnSecondary">@color/white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">?attr/colorSecondary</item>
-        <item name="android:fontFamily">@font/alata</item>
-    </style>
-
-    <style name="tab_text" parent="@android:style/TextAppearance.Widget.TabWidget">
-        <item name="android:fontFamily">@font/alata</item>
+        <item name="android:fontFamily">@font/advent_pro</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.SplashScreen">
@@ -28,14 +24,5 @@
         <item name="fullscreenBackgroundColor">@color/light_blue_600</item>
         <item name="fullscreenTextColor">@color/light_blue_A200</item>
     </style>
-
-    <style name="Theme.Netplix.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
-
-    <style name="Theme.Netplix.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.Netplix.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

@@ -46,6 +46,7 @@ class SignUpFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         firebaseModule.init(requireActivity())
+        navigationModule.init(requireActivity())
         initViewModel()
         initNavigation()
         initGenderDropDown()
@@ -123,7 +124,6 @@ class SignUpFragment : Fragment() {
     }
 
     private fun gotoHomeFragment() {
-//        handleNavigation(R.id.homeFragment, true)
         requireActivity().startActivity(Intent(requireActivity(), MainActivity::class.java))
         requireActivity().finish()
     }

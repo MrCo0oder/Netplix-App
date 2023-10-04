@@ -18,12 +18,7 @@ import javax.inject.Inject
 
 @AndroidEntryPoint
 class RegisterActivity : AppCompatActivity() {
-    @Inject
-    lateinit var firebaseModule: FirebaseModule
-    @Inject
-    lateinit var appModule: DatabaseModule
 
-    public lateinit var backup: RoomBackup
     lateinit var networkChecker: NetworkChecker
     lateinit var binding: ActivityRegisterBinding
 
@@ -36,7 +31,6 @@ class RegisterActivity : AppCompatActivity() {
         supportActionBar?.hide()
         networkChecker = NetworkChecker(this)
         registerReceiver(networkChecker, IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
-        backup = RoomBackup(this)
     }
 
     override fun onStart() {

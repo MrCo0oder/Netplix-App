@@ -156,7 +156,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="32dp"
-        app:constraint_referenced_ids="logout_image_view,group_divider,upload_imag_view,group_divider2,delete_account_image_view"
+        app:constraint_referenced_ids="logout_image_view,group_divider,delete_account_image_view"
         app:flow_horizontalGap="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -186,33 +186,13 @@
 
 
     <ImageView
-        android:id="@+id/upload_imag_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:src="@drawable/ic_upload_cloud"
-        android:tooltipText="Upload Your Data."
-        app:layout_constraintStart_toEndOf="@+id/group_divider"
-        tools:targetApi="o" />
-
-    <com.google.android.material.divider.MaterialDivider
-        android:id="@+id/group_divider2"
-        android:layout_width="2dp"
-        android:layout_height="0dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:orientation="horizontal"
-        app:dividerColor="@color/plix_red"
-        app:dividerThickness="2dp" />
-
-    <ImageView
         android:id="@+id/delete_account_image_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
         android:src="@drawable/ic_delete"
         android:tooltipText="Delete Your Account."
-        app:layout_constraintStart_toEndOf="@+id/group_divider2"
+        tools:layout_editor_absoluteX="284dp"
+        tools:layout_editor_absoluteY="675dp"
         tools:targetApi="o" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,23 +34,23 @@ class TvShowsFragment : Fragment() {
     lateinit var latestList: List<TvModel>
     lateinit var carouselLatestAdapter: TvRecyclerAdapter
     lateinit var linearLayoutManager: CarouselLayoutManager
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val layoutInflater = LayoutInflater.from(requireActivity())
-        binding = FragmentTvShowsBinding.inflate(layoutInflater, container, false)
+    ): View {
+        binding = FragmentTvShowsBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.swipe.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             loadData()
             binding.swipe.setRefreshing(false)
         })
         initRV()
         loadData()
-        return binding.root
     }
 
     private fun loadData() {

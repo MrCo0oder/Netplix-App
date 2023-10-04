@@ -48,7 +48,6 @@ class LoginFragment : Fragment() {
 
     private lateinit var binding: FragmentLoginBinding
     private lateinit var loginViewModel: LoginViewModel
-    private lateinit var backup: RoomBackup
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -60,83 +59,16 @@ class LoginFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navigationModule.init(requireActivity())
         handleNavigationToSignUp()
         loginButtonSetup()
         forgetPasswordDialog()
         loginViewModel = loginViewModel()
         handleFormValidation()
-        val fragmentActivity = (requireActivity() as RegisterActivity)
-        backup = fragmentActivity.backup
-
-        if (checkStoragePermissions()) {
-            importData()
-        } else {
-            requestStoragePermissionsImport()
-        }
     }
 
-    private fun importData() {
-        TODO("Not yet implemented")
-    }
 
-    private fun restoreZData() {
-        val storage = FirebaseStorage.getInstance()
-        val NETPLIX_DB =
-            storage.getReferenceFromUrl("gs://netplix-a2240.appspot.com/" + firebaseModule.getAuth().uid + "/" + Constants.NETPLIX_DB)
-        val NETPLIX_DB_EX =
-            storage.getReferenceFromUrl("gs://netplix-a2240.appspot.com/" + firebaseModule.getAuth().uid + "/" + Constants.NETPLIX_DB + "-wal")
-        val rootPath = File(
-            "/data/data/com.example.netplix/database/"
-        )
-        if (!rootPath.exists()) {
-            rootPath.mkdirs()
-        }
-        val localFile = File(rootPath, Constants.NETPLIX_DB)
-        val exFile = File(rootPath, Constants.NETPLIX_DB + "-wal")
-        NETPLIX_DB_EX.getFile(exFile).addOnCompleteListener {
-            if (it.isSuccessful) {
-                NETPLIX_DB.getFile(localFile).addOnSuccessListener {
-                    restore(dbModule.dbService(requireActivity().application))
-                }.addOnFailureListener {
-                    // Handle any errors
-                    Toast.makeText(
-                        requireContext(),
-                        it.message,
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            } else {
-                Toast.makeText(
-                    requireContext(),
-                    it.exception?.message,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
 
-        }
-
-    }
-
-    fun restore(db: NetplixDB) {
-        backup
-            .database(db)
-            .enableLogDebug(true)
-            .backupIsEncrypted(false)
-            .customBackupFileName(Constants.NETPLIX_DB)
-            .backupLocation(RoomBackup.BACKUP_FILE_LOCATION_INTERNAL)
-            .maxFileCount(1)
-            .onCompleteListener { success, m, _ ->
-                Toast.makeText(
-                    requireActivity(),
-                    m,
-                    Toast.LENGTH_SHORT
-                ).show()
-                backup.restartApp(requireActivity().intent)
-                if (success) {
-                }
-            }
-            .restore()
-    }
 
     private fun loginViewModel() = ViewModelProvider(this)[LoginViewModel::class.java]
 
@@ -165,7 +97,6 @@ class LoginFragment : Fragment() {
                 ) { isSuccessful, message ->
                     binding.progressCardView.root.gone()
                     if (isSuccessful) {
-                        restoreZData()
                         dialogModule.initDialog(
                             getString(R.string.welcome_back),
                             "",
@@ -222,41 +153,4 @@ class LoginFragment : Fragment() {
         }
     }
 
-    private fun checkStoragePermissions(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ) == (PackageManager.PERMISSION_GRANTED)
-    }
-
-    private fun requestStoragePermissionsImport() {
-        val storagePermission = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        ActivityCompat.requestPermissions(requireActivity(), storagePermission, 2)
-    }
-
-
-
-    @Deprecated("Deprecated in Java")
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-        when (requestCode) {
-
-            2 -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    importData()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Storage Permission Required...",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-    }
 }

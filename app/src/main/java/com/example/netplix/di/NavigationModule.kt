@@ -15,9 +15,13 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-class NavigationModule @Inject constructor(
-    var activity: Activity
-) {
+class NavigationModule @Inject constructor() {
+
+    private var activity: Activity? = null
+    fun init(activity: Activity?) {
+        this.activity = activity
+    }
+
     @Singleton
     fun navigateTo(
         destination: Int,
@@ -29,10 +33,12 @@ class NavigationModule @Inject constructor(
     ) {
         try {
             if (clearBackStack) {
-                Navigation.findNavController(activity, navHostId).backQueue.clear()
+                activity?.let { Navigation.findNavController(it, navHostId).backQueue.clear() }
             }
-            Navigation.findNavController(activity, navHostId)
-                .navigate(destination, bundle, navOptions, extras)
+            activity?.let {
+                Navigation.findNavController(it, navHostId)
+                    .navigate(destination, bundle, navOptions, extras)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
         }
@@ -40,9 +46,12 @@ class NavigationModule @Inject constructor(
 
     fun popBack(navHostId: Int = R.id.nav_host_fragment) {
         try {
-            Navigation.findNavController(activity, navHostId).popBackStack()
+            activity?.let { Navigation.findNavController(it, navHostId).popBackStack() }
         } catch (e: Exception) {
             e.printStackTrace()
         }
+    }
+    fun destroy() {
+        activity = null
     }
 }

@@ -1,6 +1,7 @@
 package com.example.netplix.ui.movies
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,9 @@ import com.example.netplix.databinding.FragmentMoviesBinding
 import com.example.netplix.di.NavigationModule
 import com.example.netplix.models.MovieModel
 import com.example.netplix.utils.Constants
+import com.example.netplix.utils.NetworkState
+import com.example.netplix.utils.gone
+import com.example.netplix.utils.show
 import com.jackandphantom.carouselrecyclerview.CarouselLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -45,7 +49,7 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        navigationModule.init(requireActivity())
         binding.swipe.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             loadData()
             binding.swipe.setRefreshing(false)
@@ -53,6 +57,42 @@ class MoviesFragment : Fragment() {
         initRV()
         loadData()
         showMoreSetup()
+        moviesViewModel.apply {
+            getPopularNetworkState().observe(viewLifecycleOwner)
+            {
+                Log.i("onViewCreated: ", it.msg)
+                when (it) {
+                    NetworkState.LOADED -> {
+                        binding.popProgress.root.gone()
+                    }
+
+                    NetworkState.LOADING -> {
+                        binding.popProgress.root.show()
+                    }
+
+                    NetworkState.ERROR -> {
+                        binding.popProgress.root.gone()
+                    }
+                }
+            }
+            getTrendyNetworkState().observe(viewLifecycleOwner) {
+                Log.i("onViewCreated: ", it.msg)
+                when (it) {
+                    NetworkState.LOADED -> {
+                        binding.trendyProgress.root.gone()
+                    }
+
+                    NetworkState.LOADING -> {
+                        binding.trendyProgress.root.show()
+                    }
+
+                    NetworkState.ERROR -> {
+                        binding.trendyProgress.root.gone()
+                    }
+                }
+            }
+        }
+
     }
 
     private fun showMoreSetup() {

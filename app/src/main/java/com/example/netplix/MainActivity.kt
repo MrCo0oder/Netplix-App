@@ -46,27 +46,20 @@ class MainActivity : AppCompatActivity() {
     lateinit var navigationModule: NavigationModule
 
 
-    @Inject
-    lateinit var appModule: DatabaseModule
-
-//    public lateinit var backup: RoomBackup
     private lateinit var navController: NavController
     private lateinit var navGraph: NavGraph
 
-    @RequiresApi(Build.VERSION_CODES.R)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         installSplashScreen()
+        navigationModule.init(this)
         binding = ActivityMainBinding.inflate(layoutInflater)
-//        Thread.sleep(3000)
         setContentView(binding.root)
         //Network Checker
         supportActionBar?.hide()
         checkNetworkConnection()
         handleStartDestinationFragment()
         handleOnBackPressed()
-//        backup = RoomBackup(this)
-
     }
 
     private fun checkNetworkConnection() {

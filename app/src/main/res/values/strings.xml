@@ -7,8 +7,6 @@
     <string name="back">Back</string>
     <string name="popularity">Popularity</string>
     <string name="total_rating">Total Rating</string>
-    <string name="rating">Rating</string>
-    <string name="internet_connection">Good Internet Connection</string>
     <string name="tv_shows">TV Shows</string>
     <string name="movies">Movies</string>
     <string name="search">Search</string>
@@ -16,52 +14,17 @@
     <string name="tv_search">Looking for a amazing Tv Show? 👀</string>
     <string name="toprated_tv_shows">TopRated TV Shows🤩 📺 </string>
     <string name="yes">Yes 😭 </string>
-    <string name="no">No 🥳 </string>
-    <string name="exit">Exit Application ?🥺</string>
     <string name="wish_list">Watch List</string>
     <string name="expand">Expand</string>
     <string name="collapse">Collapse</string>
-    <string name="action">Action</string>
-    <string name="adventure">Adventure</string>
-    <string name="animation">Animation</string>
-    <string name="comedy">Comedy</string>
-    <string name="Crime">Crime</string>
-    <string name="Documentary">Documentary</string>
-    <string name="Drama">Drama</string>
-    <string name="Family">Family</string>
-    <string name="Fantasy">Fantasy</string>
-    <string name="Horror">Horror</string>
-    <string name="Music">Music</string>
-    <string name="Mystery">Mystery</string>
-    <string name="Romance">Romance</string>
-    <string name="science_fiction">Science Fiction</string>
-    <string name="TV_Movie">TV Movie</string>
-    <string name="Thriller">Thriller</string>
-    <string name="War">War</string>
-    <string name="Western">Western</string>
-    <string name="Action_Adventure">Action-Adventure</string>
-    <string name="Kids">Kids</string>
-    <string name="News">News</string>
-    <string name="Reality">Reality</string>
-    <string name="SciFi_Fantasy">Sci-Fi-Fantasy</string>
-    <string name="Soap">Soap</string>
-    <string name="Talk">Talk</string>
-    <string name="War_Politics">War-Politics</string>
-    <string name="History">History</string>
     <string name="FirstShow">" First Show: </string>
     <string name="rate">" /10"</string>
     <string name="movie">movie</string>
     <string name="tv_show">TV Show</string>
-    <string name="Added">Added To Watch List</string>
     <string name="deleted">item deleted from database</string>
     <string name="nostory">No story provided yet 👀</string>
-    <string name="dummy_button">Dummy Button</string>
-    <string name="dummy_content">DUMMY\nCONTENT</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="show_more">Show More</string>
-    <string name="retry">Retry</string>
-    <string name="sign_in">Sign In</string>
     <string name="login">Login</string>
     <string name="sign_up">SignUp</string>
     <string name="full_name">Full Name</string>
@@ -86,32 +49,9 @@
     <string name="gender">Gender</string>
     <string name="male">Male</string>
     <string name="female">Female</string>
-    <string name="title_activity_register">RegisterActivity</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
-    <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
 
-    <string name="menu_transform">Transform</string>
-    <string name="menu_reflow">Reflow</string>
-    <string name="menu_slideshow">Slideshow</string>
-    <string name="menu_settings">Settings</string>
-
-    <string name="lorem_ipsum_title">Lorem Ipsum"</string>
-    <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
-        typesetting industry. Lorem Ipsum has been the industry\'s standard placeholder text ever
-        since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-        type specimen book"
-    </string>
-    <string name="fab_content_description">Represents a view to invoke an action</string>
-    <string name="image_view_item_transform_content_description">Represents an image view in the
-        item
-    </string>
     <string name="enter_a_valid_email">Enter a valid email.</string>
     <string name="enter_a_valid_password">Enter a valid password.</string>
     <string name="welcome">"Welcome, "</string>
     <string name="enter_a_valid_egyptian_phone_no">Enter a valid egyptian phone no.</string>
-    <string name="failed_to_restore_your_watch_list">Failed to restore your watch list.</string>
 </resources>
