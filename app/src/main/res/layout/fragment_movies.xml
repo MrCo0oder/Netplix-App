@@ -76,8 +76,8 @@
 
                     <com.jackandphantom.carouselrecyclerview.CarouselRecyclerview
                         android:id="@+id/carouselRecyclerview"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="400dp"
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="8dp"
@@ -134,8 +134,7 @@
                         app:layout_constraintBottom_toTopOf="@+id/trendyTV"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/popularTV"
-                         />
+                        app:layout_constraintTop_toBottomOf="@+id/popularTV" />
 
                     <include
                         android:id="@+id/trendy_progress"
@@ -145,6 +144,17 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/trendyTV" />
+
+                    <include
+                        android:id="@+id/upcoming_progress"
+                        layout="@layout/progress_layout"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        app:layout_constraintBottom_toBottomOf="@+id/carouselRecyclerview"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/carouselRecyclerview" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </ScrollView>

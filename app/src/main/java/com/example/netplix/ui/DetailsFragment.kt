@@ -116,7 +116,7 @@ class DetailsFragment : Fragment() {
                 binding.mainProgressBar.progressView.gone()
                 binding.parent.show()
                 initCarouselImage()
-                handleIsLikedButton(movie)
+                handleIsLikedMoviesButton(movie)
                 handleMovieImagesApi(movie)
                 initInfoTextView(movieDetails)
                 movieDetails.adult?.let { handleContentTypeBadge(it) }
@@ -125,8 +125,6 @@ class DetailsFragment : Fragment() {
                 handleCategoriesTextView(movieDetails)
                 bindingSomeViews(movieDetails)
                 movieDetails.productionCompanies?.let { initCompanyLogosRecycler(it as List<ProductionCompany>) }
-
-//              listeningToLinksApi(movie)
             } else {
                 binding.mainProgressBar.progressView.show()
                 binding.parent.gone()
@@ -143,61 +141,10 @@ class DetailsFragment : Fragment() {
         tvViewModel.getTvDetails().observe(viewLifecycleOwner) { tvShow ->
             if (tvShow != null) {
                 tvShow.adult?.let { handleContentTypeBadge(it) }
-                binding.likeBTN.setOnClickListener {
-                    if (tvShow.id?.let { it1 -> tvViewModel.findTv(it1) } != true) {
-                        addTvToFirebase(tv) { b, m ->
-                            if (b) {
-                                tvViewModel.insertTv(tv)
-
-                                binding.likeBTN.setImageResource(R.drawable.filled_heart)
-                            }
-                            Toast.makeText(
-                                requireContext(),
-                                m,
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    } else {
-                        //delete
-                        binding.likeBTN.setImageResource(R.drawable.heart)
-                        tvViewModel.deleteTv(tvId = tv.id)
-                        Toast.makeText(
-                            requireContext(),
-                            getString(R.string.deleted),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-
-//                        if (tvShow.id?.let { it1 -> tvViewModel.findTv(it1) } == true) {
-//                            binding.likeBTN.setImageResource(R.drawable.heart)
-//                            tvViewModel.deleteTv(tvId = tv.id)
-//                            Toast.makeText(
-//                                requireContext(),
-//                                getString(R.string.deleted),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        } else {
-//                            binding.likeBTN.setImageResource(R.drawable.filled_heart)
-//                            Toast.makeText(
-//                                requireContext(),
-//                                getString(R.string.Added),
-//                                Toast.LENGTH_SHORT
-//                            ).show()
-//                        }
-                }
-                when (tvViewModel.findTv(tv.id)) {
-                    true -> {
-                        binding.likeBTN.setImageResource(R.drawable.filled_heart)
-                    }
-
-                    false -> {
-                        binding.likeBTN.setImageResource(R.drawable.heart)
-                    }
-                }
                 initInfoTextView(show = tvShow)
                 initPosterImage(tvShow.posterPath.toString())
                 initBackDropImage(tvShow.backdropPath.toString())
+                handleIsLikedTvButton(tv)
                 var str = ""
                 for (i in tvShow.genres!!) {
                     str += i?.name + " | "
@@ -252,8 +199,12 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun handleIsLikedButton(movie: MovieModel) {
+    private fun handleIsLikedMoviesButton(movie: MovieModel) {
         moviesViewModel.isFav(movie.id.toString()) { b, s ->
+            binding.likeProgressBar.progressView.visibility = View.INVISIBLE
+            binding.likeBTN.show()
+            Log.d("handleIsLikedButton:", s)
+
             when (b) {
                 true -> {
                     binding.likeBTN.setImageResource(R.drawable.filled_heart)
@@ -264,67 +215,79 @@ class DetailsFragment : Fragment() {
                 }
             }
             binding.likeBTN.setOnClickListener {
-                when (b) {
-                    true -> {
-                        moviesViewModel.deleteMovieFromFB(movie.id.toString()) {
-                            if (it.isSuccessful)
-                                binding.likeBTN.setImageResource(R.drawable.heart)
+                binding.likeProgressBar.progressView.show()
+                binding.likeBTN.visibility = View.INVISIBLE
+                moviesViewModel.isFav(movie.id.toString()) { b, s ->
+                    when (b) {
+                        true -> {
+                            moviesViewModel.deleteMovieFromFB(movie.id.toString()) {
+                                if (it.isSuccessful)
+                                    binding.likeBTN.setImageResource(R.drawable.heart)
+                                binding.likeProgressBar.progressView.visibility = View.INVISIBLE
+                                binding.likeBTN.show()
+                            }
                         }
-                    }
 
-                    false -> {
-                        moviesViewModel.addMovieToFB(movie) { b, s ->
-                            if (b) {
-                                binding.likeBTN.setImageResource(R.drawable.filled_heart)
+                        false -> {
+                            moviesViewModel.addMovieToFB(movie) { b, s ->
+
+                                if (b) {
+                                    binding.likeBTN.setImageResource(R.drawable.filled_heart)
+                                    Log.d("handleIsLikedButton:add", s)
+                                }
+                                binding.likeProgressBar.progressView.visibility = View.INVISIBLE
+                                binding.likeBTN.show()
                             }
                         }
                     }
                 }
             }
         }
+    }
 
-//        binding.likeBTN.setOnClickListener {
-//            if ()
-//            if (movie.let { movie -> moviesViewModel.findMovie(movie.id) } != true) {
-//                moviesViewModel.getAllMovies()
-//                moviesViewModel.getMoviesFromDB().observe(viewLifecycleOwner) {
-//                    addMovieToFirebase(it) { b, m ->
-//                        if (b) {
-//                            moviesViewModel.insertMovie(movie)
-//                            binding.likeBTN.setImageResource(R.drawable.filled_heart)
-//                            moviesViewModel.getMoviesFromDB().removeObservers(viewLifecycleOwner)
-//                        }
-//                        Toast.makeText(
-//                            requireContext(),
-//                            m,
-//                            Toast.LENGTH_SHORT
-//                        ).show()
-//                    }
-//                }
-//
-//            } else {
-//                //delete
-//                binding.likeBTN.setImageResource(R.drawable.heart)
-//                moviesViewModel.deleteMovie(movieId = movie.id)
-//                Toast.makeText(
-//                    requireContext(),
-//                    getString(R.string.deleted),
-//                    Toast.LENGTH_SHORT
-//                ).show()
-//            }
-//
-////            if (movie.let { movie -> moviesViewModel.findMovie(movie.id) } == true) {
-////
-////                binding.likeBTN.setImageResource(R.drawable.heart)
-////                moviesViewModel.deleteMovie(movieId = movie.id)
-////                Toast.makeText(
-////                    requireContext(),
-////                    getString(R.string.deleted),
-////                    Toast.LENGTH_SHORT
-////                ).show()
-////            } else {
-////            }
-//        }
+    private fun handleIsLikedTvButton(tv: TvModel) {
+        tvViewModel.isFav(tv.id.toString()) { b, s ->
+            binding.likeProgressBar.progressView.visibility = View.INVISIBLE
+            binding.likeBTN.show()
+            Log.d("handleIsLikedButton:", s)
+            when (b) {
+                true -> {
+                    binding.likeBTN.setImageResource(R.drawable.filled_heart)
+                }
+
+                false -> {
+                    binding.likeBTN.setImageResource(R.drawable.heart)
+                }
+            }
+            binding.likeBTN.setOnClickListener {
+                binding.likeProgressBar.progressView.show()
+                binding.likeBTN.visibility = View.INVISIBLE
+                tvViewModel.isFav(tv.id.toString()) { b, s ->
+                    when (b) {
+                        true -> {
+                            tvViewModel.deleteTvFromFB(tv.id.toString()) {
+                                if (it.isSuccessful)
+                                    binding.likeBTN.setImageResource(R.drawable.heart)
+                                binding.likeProgressBar.progressView.visibility = View.INVISIBLE
+                                binding.likeBTN.show()
+                            }
+                        }
+
+                        false -> {
+                            tvViewModel.addTvToFB(tv) { b, s ->
+
+                                if (b) {
+                                    binding.likeBTN.setImageResource(R.drawable.filled_heart)
+                                    Log.d("handleIsLikedButton:add", s)
+                                }
+                                binding.likeProgressBar.progressView.visibility = View.INVISIBLE
+                                binding.likeBTN.show()
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     private fun handleContentTypeBadge(isAdult: Boolean) {
@@ -392,19 +355,19 @@ class DetailsFragment : Fragment() {
         val list = mutableListOf<CarouselItem>()
         moviesViewModel.getMovieImages()
             .observe(viewLifecycleOwner) {
-            if (!it.backdrops.isNullOrEmpty()) {
-                it.backdrops.forEach {
-                    list.add(
-                        CarouselItem(
-                            IMAGES_BASE + it?.filePath
+                if (!it.backdrops.isNullOrEmpty()) {
+                    it.backdrops.forEach {
+                        list.add(
+                            CarouselItem(
+                                IMAGES_BASE + it?.filePath
+                            )
                         )
-                    )
-                }
-                binding.carouselImg.setData(list)
-                binding.carouselCard.show()
-            } else
-                binding.carouselCard.hide()
-        }
+                    }
+                    binding.carouselImg.setData(list)
+                    binding.carouselCard.show()
+                } else
+                    binding.carouselCard.hide()
+            }
     }
 
     private fun handleTvImagesApi(tv: TvModel) {

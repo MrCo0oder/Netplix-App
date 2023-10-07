@@ -45,6 +45,7 @@ class TvShowsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        navigationModule.init(requireActivity())
         binding.swipe.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
             loadData()
             binding.swipe.setRefreshing(false)

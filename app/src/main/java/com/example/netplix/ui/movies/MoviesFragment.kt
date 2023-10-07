@@ -51,6 +51,7 @@ class MoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navigationModule.init(requireActivity())
         binding.swipe.setOnRefreshListener(SwipeRefreshLayout.OnRefreshListener {
+
             loadData()
             binding.swipe.setRefreshing(false)
         })
@@ -88,6 +89,21 @@ class MoviesFragment : Fragment() {
 
                     NetworkState.ERROR -> {
                         binding.trendyProgress.root.gone()
+                    }
+                }
+            }
+            getupComingNetworkState().observe(viewLifecycleOwner){
+                when (it) {
+                    NetworkState.LOADED -> {
+                        binding.upcomingProgress.root.gone()
+                    }
+
+                    NetworkState.LOADING -> {
+                        binding.upcomingProgress.root.show()
+                    }
+
+                    NetworkState.ERROR -> {
+                        binding.upcomingProgress.root.gone()
                     }
                 }
             }

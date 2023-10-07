@@ -2,6 +2,7 @@ package com.example.netplix.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,9 @@ import com.example.netplix.di.NavigationModule
 import com.example.netplix.ui.movies.MovieViewModel
 import com.example.netplix.ui.tv.TvViewModel
 import com.example.netplix.utils.Constants
+import com.example.netplix.utils.NetworkState
+import com.example.netplix.utils.gone
+import com.example.netplix.utils.show
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -41,14 +45,8 @@ class ShowMoreFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         navigationModule.init(requireActivity())
         initViewModels()
-        init()
         initRecyclerView()
         handleListeningFromApi()
-    }
-
-
-    private fun init() {
-
     }
 
     private fun handleListeningFromApi() {
@@ -86,12 +84,51 @@ class ShowMoreFragment : Fragment() {
                 moviesAdapter.submitData(it)
             }
         }
+        movieViewModel.apply {
+            getTrendyNetworkState().observe(viewLifecycleOwner) {
+                Log.i("onViewCreated: ", it.msg)
+                when (it) {
+                    NetworkState.LOADED -> {
+                        binding.progressBar.root.gone()
+                        binding.moviesRecyclerview.show()
+                    }
+
+                    NetworkState.LOADING -> {
+                        binding.progressBar.root.show()
+                    }
+
+                    NetworkState.ERROR -> {
+                        binding.progressBar.root.gone()
+                    }
+                }
+            }
+        }
     }
 
     private fun listenForPopularMoviesApi() {
         lifecycleScope.launchWhenCreated {
             movieViewModel.popularMoviesList.collect() {
                 moviesAdapter.submitData(it)
+            }
+        }
+        movieViewModel.apply {
+            getPopularNetworkState().observe(viewLifecycleOwner)
+            {
+                Log.i("onViewCreated: ", it.msg)
+                when (it) {
+                    NetworkState.LOADED -> {
+                        binding.progressBar.root.gone()
+                        binding.moviesRecyclerview.show()
+                    }
+
+                    NetworkState.LOADING -> {
+                        binding.progressBar.root.show()
+                    }
+
+                    NetworkState.ERROR -> {
+                        binding.progressBar.root.gone()
+                    }
+                }
             }
         }
     }

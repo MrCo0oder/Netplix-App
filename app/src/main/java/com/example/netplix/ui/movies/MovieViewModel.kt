@@ -1,6 +1,5 @@
 package com.example.netplix.ui.movies
 
-import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -49,6 +48,8 @@ class MovieViewModel @Inject constructor(var repository: Repo, var firebaseModul
 
     private val popularNetworkState: MutableLiveData<NetworkState> = MutableLiveData<NetworkState>()
     private val trendyNetworkState: MutableLiveData<NetworkState> = MutableLiveData<NetworkState>()
+    private val upComingNetworkState: MutableLiveData<NetworkState> =
+        MutableLiveData<NetworkState>()
 
     private val tvSearchList: MutableLiveData<List<TvModel>> = MutableLiveData<List<TvModel>>()
     private lateinit var moviesList: LiveData<List<MovieModel>>
@@ -68,6 +69,7 @@ class MovieViewModel @Inject constructor(var repository: Repo, var firebaseModul
         movieDetails.postValue(null)
         popularNetworkState.postValue(NetworkState.LOADING)
         trendyNetworkState.postValue(NetworkState.LOADING)
+        upComingNetworkState.postValue(NetworkState.LOADING)
     }
 
     fun getUpComingList(): MutableLiveData<List<MovieModel>> {
@@ -135,7 +137,11 @@ class MovieViewModel @Inject constructor(var repository: Repo, var firebaseModul
                 })
                 .distinctUntilChanged()
                 .subscribeOn(AndroidSchedulers.mainThread())
-                .subscribe({ s -> upComingList.postValue(s) }, { it ->
+                .subscribe({ s ->
+                    upComingList.postValue(s)
+                    upComingNetworkState.postValue(NetworkState.LOADED)
+                }, { it ->
+                    upComingNetworkState.postValue(NetworkState.ERROR)
                     Log.e(TAG, "getUpComingMovies: " + it)
                 })
         )
@@ -220,18 +226,13 @@ class MovieViewModel @Inject constructor(var repository: Repo, var firebaseModul
         repository.DELETE_DATABASE()
     }
 
-    //    //firebase
-//    fun addToFirebase(movieModel: MovieModel, callback: (Boolean, String) -> Unit) {
-//        firebaseModule.addMovieToList(movieModel) { b, s ->
-//            callback(b, s)
-//        }
-//    }
     fun DATABASE() {
         repository.DATABASE()
     }
 
     fun getPopularNetworkState() = popularNetworkState
     fun getTrendyNetworkState() = trendyNetworkState
+    fun getupComingNetworkState() = upComingNetworkState
     override fun onCleared() {
         super.onCleared()
         compositeDisposable.dispose()
