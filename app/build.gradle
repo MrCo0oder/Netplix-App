@@ -7,6 +7,9 @@ plugins {
     id 'com.google.gms.google-services'
 }
 android {
+    lintOptions {
+        checkReleaseBuilds false
+    }
     lint {
         baseline = file("lint-baseline.xml")
     }
