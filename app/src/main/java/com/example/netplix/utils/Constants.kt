@@ -18,9 +18,7 @@ class Constants {
         const val PASSWORD_REGEX = "^(?=.*[A-Z])(?=.*[!@#\$%^&*])[a-zA-Z0-9!@#\$%^&*]{8,}\$"
         const val _8CHAR_PASSWORD_REGEX = "^[a-zA-Z0-9!@#\$%^&*]{8,}\$"
         const val PHONE_REGEX = "^(010|011|015|012)\\d{8}\$"
-        const val FEMALE_AVATAR =
-            "https://firebasestorage.googleapis.com/v0/b/netplix-a2240.appspot.com/o/female_avatar.jpg?alt=media&token=be009dfc-39d3-49be-a02e-70c61e457c81"
-        const val MALE_AVATAR =
-            "https://firebasestorage.googleapis.com/v0/b/netplix-a2240.appspot.com/o/male_avatar.jpg?alt=media&token=be009dfc-39d3-49be-a02e-70c61e457c81"
+        const val FEMALE_AVATAR = "gs://netplix-a2240.appspot.com/female_avatar.jpg"
+        const val MALE_AVATAR = "gs://netplix-a2240.appspot.com/male_avatar.jpg"
     }
 }

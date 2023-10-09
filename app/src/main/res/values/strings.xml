@@ -54,4 +54,5 @@
     <string name="enter_a_valid_password">Enter a valid password.</string>
     <string name="welcome">"Welcome, "</string>
     <string name="enter_a_valid_egyptian_phone_no">Enter a valid egyptian phone no.</string>
+    <string name="production">Production</string>
 </resources>

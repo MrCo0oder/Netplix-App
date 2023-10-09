@@ -66,7 +66,7 @@ class MovieViewModel @Inject constructor(var repository: Repo, var firebaseModul
     }.flow.cachedIn(viewModelScope)
 
     init {
-        movieDetails.postValue(null)
+
         popularNetworkState.postValue(NetworkState.LOADING)
         trendyNetworkState.postValue(NetworkState.LOADING)
         upComingNetworkState.postValue(NetworkState.LOADING)

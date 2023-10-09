@@ -10,7 +10,7 @@ import com.example.netplix.models.movieDetails.ProductionCompany
 class CompaniesRecyclerAdapter(val clickListener: (item: ProductionCompany) -> Unit) :
     RecyclerView.Adapter<CompaniesRecyclerAdapter.ViewHolder>() {
 
-    private  var itemsList: MutableList<ProductionCompany> = mutableListOf()
+    private var itemsList: MutableList<ProductionCompany> = mutableListOf()
 
     class ViewHolder(val binding: CompanyLogoLayoutBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -37,11 +37,9 @@ class CompaniesRecyclerAdapter(val clickListener: (item: ProductionCompany) -> U
     }
 
     fun setData(list: List<ProductionCompany>) {
-        list.forEach {
-            if (!it.logoPath.isNullOrEmpty()) {
-                itemsList.add(it)
-            }
-        }
+        itemsList = list.filter {
+            !it.logoPath.isNullOrEmpty()
+        }.toMutableList()
         notifyDataSetChanged()
     }
 }

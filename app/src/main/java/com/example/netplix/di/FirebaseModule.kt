@@ -6,6 +6,8 @@ import android.util.Log
 import com.example.netplix.models.MovieModel
 import com.example.netplix.models.TvModel
 import com.example.netplix.utils.Constants
+import com.example.netplix.utils.Constants.Companion.FEMALE_AVATAR
+import com.example.netplix.utils.Constants.Companion.MALE_AVATAR
 import com.example.netplix.utils.Constants.Companion.MOVIES_LIST
 import com.example.netplix.utils.Constants.Companion.NETPLIX_USERS
 import com.example.netplix.utils.Constants.Companion.TV_LIST
@@ -56,32 +58,26 @@ class FirebaseModule @Inject constructor() {
         callback: (FirebaseUser?, Boolean, String) -> Unit
     ) {
         activity?.let {
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(it) { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        Log.i(
-                            this.javaClass.simpleName,
-                            "User info= ${user?.email}/displayName ${user?.displayName}/uid ${user?.uid} /isEmailVerified ${user?.isEmailVerified}"
-                        )
-                        updateUserInfo(
-                            firstName,
-                            secondName,
-                            gender,
-                            phone,
-                            email,
-                            user?.uid.toString()
-                        ) { isSuccessful, message ->
-                            if (isSuccessful) {
-                                callback(user, true, "")
-                            } else {
-                                callback(user, false, message)
-                            }
+            auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(it) { task ->
+                if (task.isSuccessful) {
+                    val user = auth.currentUser
+                    Log.i(
+                        this.javaClass.simpleName,
+                        "User info= ${user?.email}/displayName ${user?.displayName}/uid ${user?.uid} /isEmailVerified ${user?.isEmailVerified}"
+                    )
+                    updateUserInfo(
+                        firstName, secondName, gender, phone, email, user?.uid.toString()
+                    ) { isSuccessful, message ->
+                        if (isSuccessful) {
+                            callback(user, true, "")
+                        } else {
+                            callback(user, false, message)
                         }
-                    } else {
-                        callback(null, false, task.exception?.message + "")
                     }
+                } else {
+                    callback(null, false, task.exception?.message + "")
                 }
+            }
         }
     }
 
@@ -99,17 +95,12 @@ class FirebaseModule @Inject constructor() {
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     callback(true, "")
-                } else
-                    callback(false, task.exception?.message + "")
+                } else callback(false, task.exception?.message + "")
             }
     }
 
     private fun userInfoMap(
-        firstName: String,
-        secondName: String,
-        gender: String,
-        phone: String,
-        email: String
+        firstName: String, secondName: String, gender: String, phone: String, email: String
     ) = mapOf(
         "firstName" to firstName,
         "secondName" to secondName,
@@ -119,9 +110,7 @@ class FirebaseModule @Inject constructor() {
     )
 
     fun login(
-        email: String,
-        password: String,
-        callback: (Boolean, String) -> Unit
+        email: String, password: String, callback: (Boolean, String) -> Unit
     ) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -137,39 +126,34 @@ class FirebaseModule @Inject constructor() {
     }
 
     fun sendEmailVerification(callback: (Boolean, String) -> Unit) {
-        auth.currentUser!!.sendEmailVerification()
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    callback(true, "Email sent.")
-                } else {
-                    callback(false, task.exception?.message.toString())
-                }
+        auth.currentUser!!.sendEmailVerification().addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                callback(true, "Email sent.")
+            } else {
+                callback(false, task.exception?.message.toString())
             }
+        }
     }
 
     fun deleteAccount(callback: (Boolean, String) -> Unit) {
         auth.currentUser?.delete()?.addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 callback(true, "Account Deleted.")
-            } else
-                callback(false, task.exception?.message.toString())
+            } else callback(false, task.exception?.message.toString())
         }
     }
 
     fun resetPassword(emailAddress: String, callback: (Boolean, String) -> Unit) {
-        auth.sendPasswordResetEmail(emailAddress)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    callback(true, "Email sent.")
-                } else
-                    callback(false, task.exception?.message.toString())
-            }
+        auth.sendPasswordResetEmail(emailAddress).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                callback(true, "Email sent.")
+            } else callback(false, task.exception?.message.toString())
+        }
     }
 
     fun addMovieToList(movieModel: MovieModel, callback: (Boolean, String) -> Unit) {
         db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(MOVIES_LIST)
-            .document(movieModel.id.toString())
-            .set(movieModel).addOnCompleteListener { task ->
+            .document(movieModel.id.toString()).set(movieModel).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     callback(true, "Added")
                 } else {
@@ -180,39 +164,40 @@ class FirebaseModule @Inject constructor() {
 
     fun getMoviesList(callback: (MutableList<MovieModel>) -> Unit) {
         var tempList = mutableListOf<MovieModel>()
-        db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(MOVIES_LIST)
-            .get().addOnSuccessListener {
+        db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(MOVIES_LIST).get()
+            .addOnSuccessListener {
                 if (!it?.isEmpty!!) {
                     it.forEach {
                         tempList.add(it.toObject(MovieModel::class.java))
                     }
                     callback(tempList.toMutableList())
-                } else
-                    callback(mutableListOf())
+                } else callback(mutableListOf())
             }
 
     }
 
     fun getShowsList(callback: (MutableList<TvModel>) -> Unit) {
         var tempList = mutableListOf<TvModel>()
-        db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(TV_LIST)
-            .get().addOnSuccessListener {
+        db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(TV_LIST).get()
+            .addOnSuccessListener {
                 if (!it?.isEmpty!!) {
                     it.forEach {
                         tempList.add(it.toObject(TvModel::class.java))
                     }
                     callback(tempList.toMutableList())
-                } else
-                    callback(mutableListOf())
+                } else callback(mutableListOf())
             }
 
     }
 
 
     fun addTvShowToList(tvModel: TvModel, callback: (Boolean, String) -> Unit) {
-        db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(Constants.TV_LIST)
+        db.collection(NETPLIX_USERS)
+            .document(auth.uid.toString())
+            .collection(Constants.TV_LIST)
             .document(tvModel.id.toString())
-            .set(tvModel).addOnCompleteListener { task ->
+            .set(tvModel)
+            .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     callback(true, "Added")
                 } else {
@@ -231,27 +216,34 @@ class FirebaseModule @Inject constructor() {
 
     fun removeMovie(id: String, callback: (task: Task<Void>) -> Unit) {
         db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(MOVIES_LIST)
-            .document(id).delete()
-            .addOnCompleteListener { task ->
+            .document(id).delete().addOnCompleteListener { task ->
                 callback(task)
             }
     }
 
     fun removeTvShow(id: String, callback: (task: Task<Void>) -> Unit) {
-        db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(TV_LIST)
-            .document(id).delete()
+        db.collection(NETPLIX_USERS).document(auth.uid.toString())
+            .collection(TV_LIST).document(id)
+            .delete()
             .addOnCompleteListener { task ->
                 callback(task)
             }
     }
 
+    /**
+     *
+     * @author Ahmed Ehab - AhmedBadawiiEhab@gmail.com
+     * @see
+     * @param gender it has two expected values,
+     * 0 for Male And
+     * 1 for Female.
+     *
+     */
     fun getUserPic(gender: Int, callback: (task: Task<Uri>) -> Unit) {
         if (gender == 0) {
             activity?.let {
                 FirebaseStorage.getInstance()
-                    .getReferenceFromUrl("gs://netplix-a2240.appspot.com/male_avatar.jpg")
-                    .downloadUrl
-                    .addOnCompleteListener(
+                    .getReferenceFromUrl(MALE_AVATAR).downloadUrl.addOnCompleteListener(
                         it
                     ) { task ->
                         callback(task)
@@ -260,9 +252,7 @@ class FirebaseModule @Inject constructor() {
         } else {
             activity?.let {
                 FirebaseStorage.getInstance()
-                    .getReferenceFromUrl("gs://netplix-a2240.appspot.com/female_avatar.jpg")
-                    .downloadUrl
-                    .addOnCompleteListener(
+                    .getReferenceFromUrl(FEMALE_AVATAR).downloadUrl.addOnCompleteListener(
                         it
                     ) { task ->
                         callback(task)
@@ -273,8 +263,7 @@ class FirebaseModule @Inject constructor() {
 
     fun isFavMovie(id: String, callback: (Boolean, String) -> Unit) {
         db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(MOVIES_LIST)
-            .document(id).get()
-            .addOnSuccessListener { task ->
+            .document(id).get().addOnSuccessListener { task ->
                 if (task.exists()) {
                     callback(true, "Founded.")
                 } else {
@@ -284,8 +273,11 @@ class FirebaseModule @Inject constructor() {
     }
 
     fun isFavTvShow(id: String, callback: (Boolean, String) -> Unit) {
-        db.collection(NETPLIX_USERS).document(auth.uid.toString()).collection(TV_LIST)
-            .document(id).get()
+        db.collection(NETPLIX_USERS)
+            .document(auth.uid.toString())
+            .collection(TV_LIST)
+            .document(id)
+            .get()
             .addOnSuccessListener { task ->
                 if (task.exists()) {
                     callback(true, "Founded.")

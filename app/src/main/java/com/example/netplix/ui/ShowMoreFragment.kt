@@ -20,6 +20,7 @@ import com.example.netplix.utils.NetworkState
 import com.example.netplix.utils.gone
 import com.example.netplix.utils.show
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -51,8 +52,20 @@ class ShowMoreFragment : Fragment() {
 
     private fun handleListeningFromApi() {
         if (arguments?.getBoolean(Constants.IS_POP) == true) {
+            binding.headerTextView.text =
+                buildString {
+                    append(getString(R.string.popular))
+//                    append(" ")
+//                    append(getString(R.string.movies))
+                }
             listenForPopularMoviesApi()
         } else {
+            binding.headerTextView.text =
+                buildString {
+                    append(getString(R.string.trendy_this_week))
+//                    append(" ")
+//                    append(getString(R.string.movies))
+                }
             listenForTrendyMoviesApi()
         }
         binding.moviesRecyclerview.adapter = moviesAdapter
@@ -79,7 +92,7 @@ class ShowMoreFragment : Fragment() {
 
     @SuppressLint("LongLogTag")
     private fun listenForTrendyMoviesApi() {
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             movieViewModel.trendyMoviesList.collect {
                 moviesAdapter.submitData(it)
             }
@@ -106,7 +119,7 @@ class ShowMoreFragment : Fragment() {
     }
 
     private fun listenForPopularMoviesApi() {
-        lifecycleScope.launchWhenCreated {
+        lifecycleScope.launch {
             movieViewModel.popularMoviesList.collect() {
                 moviesAdapter.submitData(it)
             }

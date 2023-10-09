@@ -33,21 +33,25 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:visibility="visible">
 
-                <com.github.chuross.AspectRatioImageView
-                    android:id="@+id/movie_img"
+                <org.imaginativeworld.whynotimagecarousel.ImageCarousel
+                    android:id="@+id/carousel_img"
                     android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:contentDescription=""
+                    android:drawingCacheQuality="low"
                     android:scaleType="centerCrop"
-                    app:ariv_fit="width"
-                    app:ariv_heightRatio="2"
-                    app:ariv_widthRatio="3"
+                    app:carouselBackground="@color/bg"
+                    app:imagePlaceholder="@color/trans_black"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:srcCompat="@drawable/placeholder"
+                    app:showBottomShadow="false"
+                    app:showIndicator="false"
+                    app:showNavigationButtons="false"
+                    app:showTopShadow="true"
                     tools:ignore="ImageContrastCheck,UnusedAttribute"
                     tools:targetApi="m" />
+
 
                 <TextView
                     android:id="@+id/textView2"
@@ -58,24 +62,12 @@
                     android:backgroundTintMode="src_atop"
                     android:fitsSystemWindows="true"
                     android:visibility="visible"
-                    app:layout_constraintBottom_toBottomOf="@+id/movie_img"
-                    app:layout_constraintEnd_toEndOf="@+id/movie_img"
+                    app:layout_constraintBottom_toBottomOf="@+id/carousel_img"
+                    app:layout_constraintEnd_toEndOf="@+id/carousel_img"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/movie_img"
+                    app:layout_constraintTop_toTopOf="@+id/carousel_img"
                     app:layout_constraintVertical_bias="0.0" />
-
-                <include
-                    android:id="@+id/progressBar"
-                    style="?android:attr/progressBarStyle"
-                    layout="@layout/progress_layout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:indeterminateTint="@color/plix_red"
-                    app:layout_constraintBottom_toBottomOf="@+id/movie_img"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/movie_img" />
 
                 <TextView
                     android:id="@+id/titleTV"
@@ -119,14 +111,13 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
-                    android:gravity="center"
                     android:text="@string/storyline"
                     android:textColor="@color/white"
                     android:textSize="24sp"
                     android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="@id/carouselCard"
-                    app:layout_constraintStart_toStartOf="@id/carouselCard"
-                    app:layout_constraintTop_toBottomOf="@+id/carouselCard" />
+                    app:layout_constraintEnd_toEndOf="@+id/infoTV"
+                    app:layout_constraintStart_toStartOf="@+id/infoTV"
+                    app:layout_constraintTop_toBottomOf="@+id/infoTV" />
 
                 <TextView
                     android:id="@+id/storyTV"
@@ -297,10 +288,10 @@
                     android:layout_height="wrap_content"
                     android:elevation="10dp"
                     app:cardCornerRadius="20dp"
-                    app:cardElevation="10dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/movie_img"
+                    app:cardElevation="20dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/carousel_img"
                     app:layout_constraintStart_toStartOf="@+id/backBtn"
-                    app:layout_constraintTop_toBottomOf="@+id/movie_img">
+                    app:layout_constraintTop_toBottomOf="@+id/carousel_img">
 
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:layout_width="wrap_content"
@@ -360,71 +351,34 @@
                     app:layout_constraintTop_toTopOf="@+id/titleTV"
                     app:srcCompat="@drawable/ic_globe" />
 
-                <androidx.cardview.widget.CardView
-                    android:id="@+id/carouselCard"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:id="@+id/companies_label"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
                     android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:elevation="10dp"
-                    app:cardCornerRadius="20dp"
-                    app:cardElevation="10dp"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:text="@string/production"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/infoTV">
-
-                    <androidx.constraintlayout.widget.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <org.imaginativeworld.whynotimagecarousel.ImageCarousel
-                            android:id="@+id/carousel_img"
-                            android:layout_width="match_parent"
-                            android:layout_height="300dp"
-                            android:contentDescription=""
-                            android:scaleType="centerCrop"
-                            app:carouselBackground="@color/bg"
-                            app:imagePlaceholder="@drawable/placeholder"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintHorizontal_bias="1.0"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:layout_constraintVertical_bias="1.0"
-                            app:showBottomShadow="false"
-                            app:showNavigationButtons="false"
-                            app:showTopShadow="false"
-                            tools:ignore="ImageContrastCheck,UnusedAttribute"
-                            tools:targetApi="m" />
-
-                        <ImageView
-                            android:id="@+id/fullscreen_image_view"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="16dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"
-                            app:srcCompat="@drawable/ic_full_screen" />
-                    </androidx.constraintlayout.widget.ConstraintLayout>
-                </androidx.cardview.widget.CardView>
+                    app:layout_constraintTop_toBottomOf="@+id/storyTV" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/companies_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     android:layout_marginBottom="16dp"
                     android:clipToOutline="true"
                     android:clipToPadding="true"
                     android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/storyTV"
-                    app:spanCount="1"
+                    app:layout_constraintTop_toBottomOf="@+id/companies_label"
                     tools:itemCount="13"
                     tools:listitem="@layout/company_logo_layout" />
             </androidx.constraintlayout.widget.ConstraintLayout>

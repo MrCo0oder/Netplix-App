@@ -81,7 +81,6 @@ class DetailsFragment : Fragment() {
 
     private fun init() {
         initViewModels()
-//        navigationModule = NavigationModule(requireActivity())
         initCarouselImage()
         initCompaniesAdapter()
     }
@@ -121,10 +120,17 @@ class DetailsFragment : Fragment() {
                 initInfoTextView(movieDetails)
                 movieDetails.adult?.let { handleContentTypeBadge(it) }
                 initPosterImage(movieDetails.posterPath.toString())
-                initBackDropImage(movieDetails.backdropPath.toString())
+//                initBackDropImage(movieDetails.backdropPath.toString())
                 handleCategoriesTextView(movieDetails)
                 bindingSomeViews(movieDetails)
-                movieDetails.productionCompanies?.let { initCompanyLogosRecycler(it as List<ProductionCompany>) }
+                movieDetails.productionCompanies?.filter {
+                    !it?.logoPath.isNullOrEmpty()
+                }?.let {
+                    if (it.isNotEmpty())
+                        initCompanyLogosRecycler(it as List<ProductionCompany>)
+                    else
+                        binding.companiesLabel.gone()
+                }
             } else {
                 binding.mainProgressBar.progressView.show()
                 binding.parent.gone()
@@ -143,7 +149,7 @@ class DetailsFragment : Fragment() {
                 tvShow.adult?.let { handleContentTypeBadge(it) }
                 initInfoTextView(show = tvShow)
                 initPosterImage(tvShow.posterPath.toString())
-                initBackDropImage(tvShow.backdropPath.toString())
+//                initBackDropImage(tvShow.backdropPath.toString())
                 handleIsLikedTvButton(tv)
                 var str = ""
                 for (i in tvShow.genres!!) {
@@ -168,7 +174,15 @@ class DetailsFragment : Fragment() {
                     tvShow.voteAverage?.toFloat().toString().plus(getString(R.string.rate))
                 binding.countTV.text = tvShow.voteCount.toString()
                 binding.popTV.text = tvShow.popularity.toString()
-                tvShow.productionCompanies?.let { initCompanyLogosRecycler(it as List<ProductionCompany>) }
+                tvShow.productionCompanies?.filter {
+                    !it?.logoPath.isNullOrEmpty()
+                }?.let {
+                    if (it.isNotEmpty())
+                        initCompanyLogosRecycler(it as List<ProductionCompany>)
+                    else
+                        binding.companiesLabel.gone()
+                }
+
                 binding.homePageImageView.setOnClickListener {
                     if (!tvShow.homepage.isNullOrEmpty()) {
                         openUrlWithChromeTab(tvShow.homepage)
@@ -315,21 +329,21 @@ class DetailsFragment : Fragment() {
         }
     }
 
-    private fun initBackDropImage(backdropPath: String) {
-        binding.movieImg.setOnClickListener {
-            if (!backdropPath.isNullOrEmpty())
-                handelNavigationToZoomFragment(backdropPath)
-        }
-        binding.movieImg.loadImage(this, backdropPath) { isSucceed, message ->
-            if (isSucceed) {
-                binding.progressBar.progressView.gone()
-            } else {
-                binding.progressBar.progressView.gone()
-                Log.d(this.javaClass.simpleName, message)
-                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
+//    private fun initBackDropImage(backdropPath: String) {
+//        binding.movieImg.setOnClickListener {
+//            if (!backdropPath.isNullOrEmpty())
+//                handelNavigationToZoomFragment(backdropPath)
+//        }
+//        binding.movieImg.loadImage(this, backdropPath) { isSucceed, message ->
+//            if (isSucceed) {
+//                binding.progressBar.progressView.gone()
+//            } else {
+//                binding.progressBar.progressView.gone()
+//                Log.d(this.javaClass.simpleName, message)
+//                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+//            }
+//        }
+//    }
 
     private fun initInfoTextView(movie: MovieDetails? = null, show: TvDetails? = null) {
         var info: String =
@@ -364,9 +378,7 @@ class DetailsFragment : Fragment() {
                         )
                     }
                     binding.carouselImg.setData(list)
-                    binding.carouselCard.show()
-                } else
-                    binding.carouselCard.hide()
+                }
             }
     }
 
@@ -383,9 +395,7 @@ class DetailsFragment : Fragment() {
                     )
                 }
                 binding.carouselImg.setData(list)
-                binding.carouselCard.show()
-            } else
-                binding.carouselCard.hide()
+            }
         }
     }
 

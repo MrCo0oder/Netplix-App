@@ -7,6 +7,9 @@ plugins {
     id 'com.google.gms.google-services'
 }
 android {
+    lint {
+        baseline = file("lint-baseline.xml")
+    }
     namespace 'com.example.netplix'
     compileSdk 33
 
@@ -30,6 +33,7 @@ android {
             //make it true for Hiding the Api Key
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.debug
         }
     }
     buildFeatures {
