@@ -226,10 +226,6 @@ class MovieViewModel @Inject constructor(var repository: Repo, var firebaseModul
         repository.DELETE_DATABASE()
     }
 
-    fun DATABASE() {
-        repository.DATABASE()
-    }
-
     fun getPopularNetworkState() = popularNetworkState
     fun getTrendyNetworkState() = trendyNetworkState
     fun getupComingNetworkState() = upComingNetworkState

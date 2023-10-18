@@ -13,7 +13,6 @@ import com.example.netplix.utils.NetworkChecker
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
-import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import javax.inject.Inject
 
 @AndroidEntryPoint

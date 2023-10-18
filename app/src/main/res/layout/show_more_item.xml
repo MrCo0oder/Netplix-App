@@ -31,7 +31,7 @@
             app:ariv_fit="height"
             app:ariv_heightRatio="16"
             app:ariv_widthRatio="9"
-            app:image="@{listItem.poster_path}" />
+            app:imageUrl="@{listItem.poster_path}" />
     </androidx.cardview.widget.CardView>
 </layout>
 

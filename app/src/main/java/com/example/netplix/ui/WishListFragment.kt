@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.transition.AutoTransition
 import android.transition.TransitionManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,11 +14,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.netplix.R
-import com.example.netplix.adapter.MoviesRecyclerAdapter
 import com.example.netplix.adapter.TvRecyclerAdapter
-import com.example.netplix.database.NetplixDB
+import com.example.netplix.adapter.WishListMoviesAdapter
+import com.example.netplix.adapter.WishListTVAdapter
 import com.example.netplix.databinding.FragmentWishListBinding
-import com.example.netplix.di.DatabaseModule
 import com.example.netplix.di.FirebaseModule
 import com.example.netplix.di.NavigationModule
 import com.example.netplix.models.MovieModel
@@ -30,7 +28,6 @@ import com.example.netplix.utils.Constants
 import com.example.netplix.utils.gone
 import com.example.netplix.utils.show
 import dagger.hilt.android.AndroidEntryPoint
-import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import javax.inject.Inject
 
 
@@ -45,8 +42,8 @@ class WishListFragment : Fragment() {
 
     val moviesViewModel: MovieViewModel by lazy { ViewModelProvider(this)[MovieViewModel::class.java] }
     val tvViewModel: TvViewModel by lazy { ViewModelProvider(this).get(TvViewModel::class.java) }
-    lateinit var moviesAdapter: MoviesRecyclerAdapter
-    lateinit var tvAdapter: TvRecyclerAdapter
+    lateinit var moviesAdapter: WishListMoviesAdapter
+    lateinit var tvAdapter: WishListTVAdapter
     lateinit var binding: FragmentWishListBinding
 
     @SuppressLint("ObsoleteSdkInt")
@@ -145,15 +142,13 @@ class WishListFragment : Fragment() {
     }
 
     fun initRV() {
-        binding.moviesWishList.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.moviesWishList.setHasFixedSize(true)
-        moviesAdapter = MoviesRecyclerAdapter(requireActivity()) {
+        moviesAdapter = WishListMoviesAdapter(this) {
             handleNavigationToMovieDetailsFragment(it)
         }
         binding.moviesWishList.adapter = moviesAdapter
-        binding.tvWishList.layoutManager = GridLayoutManager(requireContext(), 2)
         binding.tvWishList.setHasFixedSize(true)
-        tvAdapter = TvRecyclerAdapter(requireActivity()) {
+        tvAdapter = WishListTVAdapter(this) {
             handleNavigationToTVDetailsFragment(it)
         }
         binding.tvWishList.adapter = tvAdapter
@@ -244,7 +239,7 @@ class WishListFragment : Fragment() {
                     direction: Int
                 ) {
                     val swipedTvPosition = viewHolder.adapterPosition
-                    val swipedTv: TvModel = tvAdapter.getTvAt(swipedTvPosition)
+                    val swipedTv: TvModel = tvAdapter.getItemAt(swipedTvPosition)
                     tvViewModel.deleteTvFromFB(swipedTv.id.toString()) {
                         if (it.isSuccessful) {
                             Toast.makeText(

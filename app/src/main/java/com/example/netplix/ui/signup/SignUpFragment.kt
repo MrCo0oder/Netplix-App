@@ -95,17 +95,19 @@ class SignUpFragment : Fragment() {
                     binding.progressCardView.root.gone()
                     if (isSuccessful) {
                         dialogModule.initDialog(
-                            getString(R.string.congrats), buildString {
+                            getString(R.string.congrats),
+                            buildString {
                                 append(getString(R.string.welcome))
                                 append(firstName)
                                 append("\n")
                                 getString(R.string.your_account_created_successfully)
                             },
                             R.color.white,
-                            iconId = R.drawable.account_created_successfully,
+                            iconId = null,
                             pAction = ::gotoHomeFragment,
                             pText = getString(R.string.go_to_home),
-                            nAction = ::gotoHomeFragment
+                            pBtnBackgroundRes = R.drawable.rounded_background_white,
+                            pTextColor = requireActivity().getColor(R.color.black),
                         )
                     } else {
                         dialogModule.initDialog(
@@ -113,9 +115,13 @@ class SignUpFragment : Fragment() {
                             message,
                             R.color.white,
                             iconId = R.drawable.access_denied,
-                            pAction = null,
+                            pAction = ::handleSigningUp,
                             pText = getString(R.string.try_again),
-                            nText = getString(R.string.cancel)
+                            nText = getString(R.string.cancel),
+                            pBtnBackgroundRes = R.drawable.rounded_background_white,
+                            pTextColor = requireActivity().getColor(R.color.black),
+                            nBtnBackgroundRes = R.drawable.rounded_background_black,
+                            nTextColor = requireActivity().getColor(R.color.white),
                         )
                     }
                 }

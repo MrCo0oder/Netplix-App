@@ -36,7 +36,7 @@
     <string name="join_now">Join Now</string>
     <string name="forget_password">Forget Password?</string>
     <string name="congrats">Congrats🤩</string>
-    <string name="your_account_created_successfully">" Your account created successfully."</string>
+    <string name="your_account_created_successfully">" Your account has been created successfully."</string>
     <string name="go_to_home">Go to Home!</string>
     <string name="ops">Ops!</string>
     <string name="try_again">Try again</string>
@@ -55,4 +55,6 @@
     <string name="welcome">"Welcome, "</string>
     <string name="enter_a_valid_egyptian_phone_no">Enter a valid egyptian phone no.</string>
     <string name="production">Production</string>
+    <string name="imdb">IMDb</string>
+    <string name="something_went_error">Something went Error!</string>
 </resources>

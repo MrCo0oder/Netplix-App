@@ -13,24 +13,11 @@ import com.example.netplix.R
 fun ImageView.loadImage(
     context: Fragment,
     url: String?,
-    placeholder: Int = R.drawable.placeholder,
+    placeholder: Int = R.drawable.place_holder,
     hasBase: Boolean = true,
     callback: (Boolean, String) -> Unit
 ) {
     if (hasBase) {
-        /*Picasso.get()
-            .load(Constants.IMAGES_BASE + url)
-            .placeholder(placeholder).into(this, object : Callback {
-                override fun onSuccess() {
-                    callback(true, "")
-                }
-
-                override fun onError(e: Exception?) {
-                    if (e != null) {
-                        callback(false, "${e.message.toString()}")
-                    }
-                }
-            })*/
         GlideApp.with(context)
             .load(Constants.IMAGES_BASE + url)
             .addListener(object : RequestListener<Drawable> {
@@ -60,6 +47,7 @@ fun ImageView.loadImage(
             })
             .centerCrop()
             .placeholder(placeholder)
+            .error(R.drawable.placeholder)
             .into(this)
     } else {
         GlideApp.with(context)
@@ -90,6 +78,7 @@ fun ImageView.loadImage(
 
             })
             .placeholder(placeholder)
+            .error(R.drawable.placeholder)
             .into(this)
     }
 }

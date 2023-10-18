@@ -32,7 +32,7 @@
             android:transitionGroup="false">
 
             <com.github.chuross.AspectRatioImageView
-                app:image="@{item.poster_path}"
+                app:imageUrl="@{item.poster_path}"
                 android:id="@+id/movie_imgv"
                 android:layout_width="300dp"
                 android:layout_height="300dp"

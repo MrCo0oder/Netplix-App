@@ -30,7 +30,7 @@ class ShowMoreMoviesPagingRecyclerAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position)!!)
-        holder.setIsRecyclable(false)
+        holder.setIsRecyclable(true)
         holder.itemView.setOnClickListener {
             clickListener(getItem(position)!!)
         }

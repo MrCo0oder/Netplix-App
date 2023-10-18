@@ -1,15 +1,8 @@
 package com.example.netplix.di
 
 import android.app.Activity
-import com.example.awesomedialog.AwesomeDialog
-import com.example.awesomedialog.background
-import com.example.awesomedialog.body
-import com.example.awesomedialog.icon
-import com.example.awesomedialog.onNegative
-import com.example.awesomedialog.onPositive
-import com.example.awesomedialog.position
-import com.example.awesomedialog.title
 import com.example.netplix.R
+import com.example.window.*
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
@@ -23,26 +16,33 @@ class DialogModule @Inject constructor(var activity: Activity) {
     fun initDialog(
         title: String = "",
         body: String,
-        dialogBackgroundColor: Int? = R.drawable.rounded_background,
-        position: AwesomeDialog.POSITIONS = AwesomeDialog.POSITIONS.CENTER,
-        iconId: Int,
+        bodyColor: Int = R.color.white,
+        dialogBackgroundColor: Int? = R.color.black,
+        position: Popup.POSITIONS = Popup.POSITIONS.CENTER,
+        iconId: Int?,
         isAnimated: Boolean = true,
         pAction: (() -> Unit)? = null,
-        pText: String,
+        pText: String? = null,
+        pTextColor: Int? = null,
+        pBtnBackgroundRes: Int = R.drawable.rounded_background_white,
         nAction: (() -> Unit)? = null,
-        nText: String = ""
+        nText: String? = null,
+        nBtnBackgroundRes: Int = R.drawable.rounded_background_black,
+        nTextColor: Int? = null,
+        isCancelable: Boolean = true,
     ) {
-        AwesomeDialog.build(activity)
-            .title(title, titleColor = R.color.white)
-            .body(body, color = R.color.white)
-            .background(dialogBackgroundColor)
+        Popup.init(activity)
+            .header(title, titleColor = activity.getColor(R.color.white))
+            .body(body, titleColor = activity.getColor(bodyColor))
+            .background(dialogBackgroundColor?.let { activity.getColor(it) })
             .position(position)
-            .icon(iconId, isAnimated)
-            .onPositive(pText, R.drawable.rounded_background) {
+            .icon(iconId)
+            .isCancelable(isCancelable)
+            .onPositive(pText, buttonBackground = pBtnBackgroundRes, textColor = pTextColor) {
                 pAction?.invoke()
             }
-            .onNegative(nText, R.color.white, textColor = R.color.plix_red) {
+            .onNegative(nText, buttonBackground = nBtnBackgroundRes, textColor = nTextColor) {
                 nAction?.invoke()
-            }
+            }.show()
     }
 }

@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:background="@color/bg"
     android:paddingHorizontal="16dp"
-    tools:context=".ui.ProfileFragment">
+    tools:context=".ui.profile.ProfileFragment">
 
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/profile_pic_image_view"

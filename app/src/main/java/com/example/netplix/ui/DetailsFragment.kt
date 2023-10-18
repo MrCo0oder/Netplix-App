@@ -56,7 +56,6 @@ class DetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -289,7 +288,6 @@ class DetailsFragment : Fragment() {
 
                         false -> {
                             tvViewModel.addTvToFB(tv) { b, s ->
-
                                 if (b) {
                                     binding.likeBTN.setImageResource(R.drawable.filled_heart)
                                     Log.d("handleIsLikedButton:add", s)
@@ -329,22 +327,6 @@ class DetailsFragment : Fragment() {
         }
     }
 
-//    private fun initBackDropImage(backdropPath: String) {
-//        binding.movieImg.setOnClickListener {
-//            if (!backdropPath.isNullOrEmpty())
-//                handelNavigationToZoomFragment(backdropPath)
-//        }
-//        binding.movieImg.loadImage(this, backdropPath) { isSucceed, message ->
-//            if (isSucceed) {
-//                binding.progressBar.progressView.gone()
-//            } else {
-//                binding.progressBar.progressView.gone()
-//                Log.d(this.javaClass.simpleName, message)
-//                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
-
     private fun initInfoTextView(movie: MovieDetails? = null, show: TvDetails? = null) {
         var info: String =
             if (arguments?.getBoolean(Constants.IS_MOVE) == true)
@@ -367,19 +349,21 @@ class DetailsFragment : Fragment() {
     private fun handleMovieImagesApi(movie: MovieModel) {
         moviesViewModel.getMovieImages(movie.id)
         val list = mutableListOf<CarouselItem>()
-        moviesViewModel.getMovieImages()
-            .observe(viewLifecycleOwner) {
-                if (!it.backdrops.isNullOrEmpty()) {
-                    it.backdrops.forEach {
-                        list.add(
-                            CarouselItem(
-                                IMAGES_BASE + it?.filePath
+        if (view != null) {
+            moviesViewModel.getMovieImages()
+                .observe(viewLifecycleOwner) {
+                    if (!it.backdrops.isNullOrEmpty()) {
+                        it.backdrops.forEach {
+                            list.add(
+                                CarouselItem(
+                                    IMAGES_BASE + it?.filePath
+                                )
                             )
-                        )
+                        }
+                        binding.carouselImg.setData(list)
                     }
-                    binding.carouselImg.setData(list)
                 }
-            }
+        }
     }
 
     private fun handleTvImagesApi(tv: TvModel) {
@@ -436,6 +420,14 @@ class DetailsFragment : Fragment() {
             false -> {
                 binding.storyTV.text = model.overview
             }
+        }
+        if (model.imdbId.isNullOrEmpty().not()) {
+            binding.imdbImageView.show()
+        } else {
+            binding.imdbImageView.gone()
+        }
+        binding.imdbImageView.setOnClickListener {
+            openUrlWithChromeTab("https://www.imdb.com/title/${model.imdbId}/")
         }
         binding.titleTV.text = model.title
         binding.ratingTV.text = model.voteAverage?.toString().plus(getString(R.string.rate))

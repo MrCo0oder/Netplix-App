@@ -1,10 +1,7 @@
-package com.example.netplix.ui
+package com.example.netplix.ui.profile
 
-import android.Manifest
-import android.R.attr.button
 import android.app.Activity
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -16,14 +13,11 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.netplix.MainActivity
+import com.bumptech.glide.Glide
 import com.example.netplix.R
 import com.example.netplix.RegisterActivity
-import com.example.netplix.database.NetplixDB
 import com.example.netplix.databinding.FragmentProfileBinding
 import com.example.netplix.di.DatabaseModule
 import com.example.netplix.di.DialogModule
@@ -37,12 +31,12 @@ import com.example.netplix.utils.show
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.gms.tasks.OnSuccessListener
 import com.google.android.gms.tasks.Task
-import com.google.firebase.auth.UserProfileChangeRequest
 import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.UploadTask
+import com.google.firebase.storage.ktx.storage
 import dagger.hilt.android.AndroidEntryPoint
-import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import javax.inject.Inject
 
 
@@ -57,10 +51,6 @@ class ProfileFragment : Fragment() {
     @Inject
     lateinit var dialogModule: DialogModule
 
-    @Inject
-    lateinit var appModule: DatabaseModule
-
-    lateinit var backup: RoomBackup
     private lateinit var binding: FragmentProfileBinding
     private lateinit var movieViewModel: MovieViewModel
     override fun onCreateView(
@@ -85,8 +75,8 @@ class ProfileFragment : Fragment() {
             profilePicProgress.root.background = null
             infoProgress.root.background = null
         }
-//        restore(appModule.dbService(requireActivity().application))
     }
+
     private fun showMenu() {
         val popupMenu = PopupMenu(requireContext(), view)
         popupMenu.getMenuInflater().inflate(R.menu.bottom_navigation, popupMenu.getMenu())
@@ -141,28 +131,28 @@ class ProfileFragment : Fragment() {
 
     private fun initDeleteAccountButton() {
         binding.deleteAccountImageView.setOnClickListener {
-            firebaseModule.deleteAccount() { isDeleted, message ->
-                if (isDeleted) {
-
-                    gotoWelcomeScreen()
-                } else {
-                    dialogModule.initDialog(
-                        getString(R.string.ops),
-                        message,
-                        R.color.white,
-                        iconId = R.drawable.access_denied,
-                        pAction = ::tryAgain,
-                        pText = getString(R.string.try_again),
-                        nText = getString(R.string.cancel)
-                    )
-                }
-            }
+            deleteAcount()
         }
     }
 
-    private fun tryAgain() {
-        firebaseModule.deleteAccount() { _, _ ->
+    private fun deleteAcount() {
+        firebaseModule.deleteAccount() { isDeleted, message ->
+            if (isDeleted) {
+                gotoWelcomeScreen()
+            } else {
+                dialogModule.initDialog(
+                    getString(R.string.ops),
+                    message,
+                    R.color.white,
+                    iconId = R.drawable.access_denied,
+                    pAction = null,
+                    pText = getString(R.string.try_again),
+                    pBtnBackgroundRes = R.drawable.rounded_background_white,
+                    pTextColor = requireActivity().getColor(R.color.black),
+                )
+            }
         }
+
     }
 
     private fun gotoWelcomeScreen() {
@@ -210,35 +200,30 @@ class ProfileFragment : Fragment() {
             emailTextView.text = task.result.get("email").toString()
             phoneTextView.text = task.result.get("phone").toString()
             genderTextView.text = task.result.get("gender").toString()
-            when (task.result.get("gender").toString()) {
-                "Male" -> loadProfileImage(0)
-                else -> loadProfileImage(1)
-            }
+            if (task.result.get("photoUrl").toString().isNullOrEmpty().not())
+                loadProfileImage(task.result.get("photoUrl").toString())
 
         }
     }
 
-    private fun loadProfileImage(gender: Int) {
-        firebaseModule.getUserPic(gender) { task ->
-            if (task.isSuccessful) {
-                binding.profilePicProgress.root.gone()
-                binding.apply {
-                    profilePicImageView.loadImage(
-                        this@ProfileFragment,
-                        firebaseModule.getAuth().currentUser?.photoUrl.toString(),
-                        placeholder = R.drawable.imge,
-                        hasBase = false
-                    ) { state, m ->
-                        if (!state) {
-                            Log.d("imageLoad", m)
-                        }
-                    }
-                }
-            } else {
-                binding.profilePicProgress.root.gone()
-                Log.d("displayUser", task.exception.toString())
+    private fun loadProfileImage(url: String) {
+        try {
+            binding.profilePicImageView.loadImage(
+                this,
+                url,
+                hasBase = false,
+                placeholder = R.drawable.ic_profile
+            ) { isComplete, _ ->
+                if (isComplete)
+                    binding.profilePicProgress.root.gone()
+
             }
+
+        } catch (e: Exception) {
+            Log.e("TAG", "loadProfileImage: ", e)
+            binding.profilePicProgress.root.gone()
         }
+
     }
 
     @Deprecated("Deprecated in Java")
@@ -260,53 +245,17 @@ class ProfileFragment : Fragment() {
                 FirebaseStorage.getInstance().getReference(firebaseModule.getAuth().uid + "/pic")
             storageReference.putFile(uri)
                 .addOnSuccessListener(OnSuccessListener<UploadTask.TaskSnapshot?> {
-                    val profileUpdates: UserProfileChangeRequest
-                    profileUpdates = UserProfileChangeRequest.Builder().setPhotoUri(uri).build()
-                    firebaseModule.getAuth().currentUser?.updateProfile(profileUpdates)
-                    binding.profilePicImageView.setImageURI(uri)
+                    it.task.result.storage.downloadUrl.addOnSuccessListener {
+                        firebaseModule.updateProfileImage(it.toString()) { status, m ->
+                            if (status) {
+                                binding.profilePicImageView.setImageURI(uri)
+                            } else {
+                                Toast.makeText(requireContext(), m, Toast.LENGTH_SHORT).show()
+                            }
+                        }
+                    }
+
                 })
         }
     }
-/*
-    @RequiresApi(Build.VERSION_CODES.R)
-    private fun checkStoragePermissions(): Boolean {
-        return ContextCompat.checkSelfPermission(
-            requireContext(),
-            Manifest.permission.MANAGE_EXTERNAL_STORAGE
-        ) == (PackageManager.PERMISSION_GRANTED)
-    }
-
-
-    @RequiresApi(Build.VERSION_CODES.R)
-    private fun requestStoragePermissionsExport() {
-        ActivityCompat.requestPermissions(
-            requireActivity(),
-            arrayOf(Manifest.permission.MANAGE_EXTERNAL_STORAGE), 1
-        )
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            1 -> {
-                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    Toast.makeText(
-                        requireContext(),
-                        "upload",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Storage Permission Required...",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-            }
-        }
-    }*/
 }

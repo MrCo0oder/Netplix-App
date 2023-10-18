@@ -28,7 +28,6 @@ import com.example.netplix.utils.gone
 import com.example.netplix.utils.show
 import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.AndroidEntryPoint
-import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import java.io.File
 import javax.inject.Inject
 
@@ -68,8 +67,6 @@ class LoginFragment : Fragment() {
     }
 
 
-
-
     private fun loginViewModel() = ViewModelProvider(this)[LoginViewModel::class.java]
 
     private fun handleFormValidation() {
@@ -95,6 +92,20 @@ class LoginFragment : Fragment() {
                     email,
                     password
                 ) { isSuccessful, message ->
+                    /*
+                    * initDialog(
+                            getString(R.string.ops),
+                            "Bye 👋", R.color.white,
+                            R.color.black,
+                            iconId = R.drawable.ic_sad,
+                            pAction = { exitProcess(0) },
+                            pText = "Bye 👋",
+                            nText = getString(R.string.cancel),
+                            pBtnBackgroundRes = R.drawable.rounded_background_white,
+                            pTextColor = getColor(R.color.black),
+                            nBtnBackgroundRes = R.drawable.rounded_background_black,
+                            nTextColor = getColor(R.color.white),
+                        )*/
                     binding.progressCardView.root.gone()
                     if (isSuccessful) {
                         dialogModule.initDialog(
@@ -104,17 +115,23 @@ class LoginFragment : Fragment() {
                             iconId = R.drawable.welcoming,
                             pAction = ::gotoHomeFragment,
                             pText = getString(R.string.go_to_home),
-                            nAction = ::gotoHomeFragment
-                        )
+                            pBtnBackgroundRes = R.drawable.rounded_background_white,
+                            pTextColor = requireActivity().getColor(R.color.black),
+                            isCancelable = false
+                            )
                     } else {
                         dialogModule.initDialog(
-                            getString(R.string.ops),
+                            getString(R.string.something_went_error),
                             message,
                             R.color.white,
                             iconId = R.drawable.access_denied,
-                            pAction = null,
+                            pAction = ::handleLogin,
                             pText = getString(R.string.try_again),
-                            nText = getString(R.string.cancel)
+                            nText = getString(R.string.cancel),
+                            pBtnBackgroundRes = R.drawable.rounded_background_white,
+                            pTextColor = requireActivity().getColor(R.color.black),
+                            nBtnBackgroundRes = R.drawable.rounded_background_black,
+                            nTextColor = requireActivity().getColor(R.color.white),
                         )
                     }
                 }

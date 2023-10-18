@@ -18,7 +18,6 @@ import com.example.netplix.models.movieDetails.MovieDetails
 import com.example.netplix.models.stream.Links
 import com.example.netplix.models.tvDetails.TvDetails
 import com.example.netplix.network.Api
-import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import io.reactivex.rxjava3.core.Observable
 import retrofit2.Response
 import java.util.Locale
@@ -182,8 +181,5 @@ class Repo @Inject constructor(
 
     fun DELETE_DATABASE() {
         db.clearAllTables()
-    }
-
-    fun DATABASE() {
     }
 }

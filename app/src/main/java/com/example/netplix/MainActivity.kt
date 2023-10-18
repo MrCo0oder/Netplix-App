@@ -24,7 +24,6 @@ import com.example.netplix.utils.NetworkChecker
 import dagger.Provides
 import dagger.hilt.android.AndroidEntryPoint
 import dagger.hilt.android.qualifiers.ActivityContext
-import de.raphaelebner.roomdatabasebackup.core.RoomBackup
 import java.util.jar.Manifest
 import javax.inject.Inject
 import kotlin.system.exitProcess
@@ -75,12 +74,16 @@ class MainActivity : AppCompatActivity() {
                     if (navController.currentDestination?.id == R.id.homeFragment) {
                         dialogModule.initDialog(
                             getString(R.string.ops),
-                            "Bye 👋",
-                            R.color.white,
+                            "Bye 👋", R.color.white,
+                            R.color.black,
                             iconId = R.drawable.ic_sad,
                             pAction = { exitProcess(0) },
                             pText = "Bye 👋",
-                            nText = getString(R.string.cancel)
+                            nText = getString(R.string.cancel),
+                            pBtnBackgroundRes = R.drawable.rounded_background_white,
+                            pTextColor = getColor(R.color.black),
+                            nBtnBackgroundRes = R.drawable.rounded_background_black,
+                            nTextColor = getColor(R.color.white),
                         )
                     } else {
                         navigationModule.popBack()

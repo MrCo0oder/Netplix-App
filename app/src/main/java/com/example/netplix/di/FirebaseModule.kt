@@ -98,6 +98,18 @@ class FirebaseModule @Inject constructor() {
                 } else callback(false, task.exception?.message + "")
             }
     }
+    fun updateProfileImage(
+        url: String,
+        callback: (Boolean, String) -> Unit
+    ) {
+        db.collection(NETPLIX_USERS).document(auth.uid.toString())
+            .update("photoUrl",url)
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    callback(true, "")
+                } else callback(false, task.exception?.message + "")
+            }
+    }
 
     private fun userInfoMap(
         firstName: String, secondName: String, gender: String, phone: String, email: String
@@ -106,7 +118,8 @@ class FirebaseModule @Inject constructor() {
         "secondName" to secondName,
         "gender" to gender,
         "phone" to phone,
-        "email" to email
+        "email" to email,
+        "photoUrl" to if (gender == "Male") Constants.MALE_AVATAR else Constants.FEMALE_AVATAR
     )
 
     fun login(
@@ -229,35 +242,15 @@ class FirebaseModule @Inject constructor() {
                 callback(task)
             }
     }
-
-    /**
-     *
-     * @author Ahmed Ehab - AhmedBadawiiEhab@gmail.com
-     * @see
-     * @param gender it has two expected values,
-     * 0 for Male And
-     * 1 for Female.
-     *
-     */
-    fun getUserPic(gender: Int, callback: (task: Task<Uri>) -> Unit) {
-        if (gender == 0) {
-            activity?.let {
-                FirebaseStorage.getInstance()
-                    .getReferenceFromUrl(MALE_AVATAR).downloadUrl.addOnCompleteListener(
-                        it
-                    ) { task ->
-                        callback(task)
-                    }
-            }
-        } else {
-            activity?.let {
-                FirebaseStorage.getInstance()
-                    .getReferenceFromUrl(FEMALE_AVATAR).downloadUrl.addOnCompleteListener(
-                        it
-                    ) { task ->
-                        callback(task)
-                    }
-            }
+    fun getUserPic(url: String, callback: (task: Task<Uri>) -> Unit) {
+        activity?.let {
+            FirebaseStorage.getInstance()
+                .getReferenceFromUrl(url)
+                .downloadUrl.addOnCompleteListener(
+                    it
+                ) { task ->
+                    callback(task)
+                }
         }
     }
 

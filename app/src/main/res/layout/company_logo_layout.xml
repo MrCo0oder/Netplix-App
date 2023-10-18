@@ -11,7 +11,7 @@
     </data>
 
     <com.google.android.material.imageview.ShapeableImageView
-        image="@{listItem.logoPath}"
+        imageUrl="@{listItem.logoPath}"
         android:layout_width="52dp"
         android:layout_height="52dp"
         android:layout_margin="4dp"
